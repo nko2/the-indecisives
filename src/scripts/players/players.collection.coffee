@@ -1,6 +1,6 @@
 if require?
   Backbone = require('backbone')
-  PlayerModel = require('./src/scripts/players/player.model')
+  PlayerModel = require('./player.model')
 else
   Backbone = window.Backbone
   PlayerModel = window.PlayerModel
@@ -23,3 +23,8 @@ PlayersCollection = Backbone.Collection.extend
   ships: -> 
     return @select (player) ->
       return player.get('team') is 'ships'  
+
+if module?.exports?
+  module.exports = PlayersCollection
+else
+  window.PlayersCollection = PlayersCollection
