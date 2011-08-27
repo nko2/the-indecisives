@@ -1,11 +1,13 @@
 (function() {
-  var Backbone, PlayerModel, Vector;
+  var Backbone, PlayerModel, ProjectileModel, Vector;
   if (typeof require !== "undefined" && require !== null) {
     Backbone = require('backbone');
     Vector = require('../vector');
+    ProjectileModel = require('../projectiles/projectile.model');
   } else {
     Backbone = window.Backbone;
     Vector = window.Vector;
+    ProjectileModel = window.ProjectileModel;
   }
   PlayerModel = Backbone.Model.extend({
     defaults: {
@@ -64,7 +66,19 @@
         });
       }
     },
-    fire: function() {},
+    fire: function() {
+      var player_fires, player_id, player_position, player_team, player_trajectory;
+      player_id = this.get('id');
+      player_team = this.get('team');
+      player_position = this.get('position');
+      player_trajectory = this.get('trajectory');
+      player_fires = this.get('fires');
+      return this.set({
+        fires: ++player_fires
+      }, {
+        silent: true
+      });
+    },
     update: function() {
       var position, rotation, team, velocity;
       velocity = this.get('velocity');

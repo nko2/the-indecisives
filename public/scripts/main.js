@@ -16,6 +16,9 @@
       return players.draw(this);
     });
     window.socket = socket = io.connect();
+    socket.socket.on('error', function(reason) {
+      return console.error('unable to connect socket.io', reason);
+    });
     socket.on('players:update', function(players_data) {
       return _.each(players_data, function(player_data) {
         if (player_data.id === socket.socket.sessionid) {
@@ -33,7 +36,9 @@
         }
         player.clear();
         player.set(player_data);
-        if (!player_data.self) {}
+        if (!player_data.self) {
+          ;
+        }
       });
     });
     socket.on('player:disconnect', function(player_data) {
