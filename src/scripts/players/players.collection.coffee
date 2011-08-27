@@ -1,6 +1,6 @@
 if require?
   Backbone = require('backbone')
-  PlayerModel = require('./src/scripts/player.model')
+  PlayerModel = require('./src/scripts/players/player.model')
 else
   Backbone = window.Backbone
   PlayerModel = window.PlayerModel
