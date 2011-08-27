@@ -94,7 +94,7 @@
         direction = 14;
       }
       position = new Vector(0, offset).rotate(player_position);
-      velocity = new Vector(1, direction).rotate(player_position);
+      velocity = new Vector(1, direction).rotate(player_position).rotate(player_trajectory);
       id = "" + player_id + "_" + (Date.now());
       return projectile = new ProjectileModel({
         id: id,
