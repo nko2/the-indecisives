@@ -4,7 +4,6 @@ window.onload = ->
   planet = new Planet()
   orbit = new Orbit(200)
   
-  
   helper.draw ->
     background.draw(this)
     planet.draw(this)
