@@ -18,7 +18,7 @@ window.onload = ->
   window.socket = socket = io.connect()
   
   socket.on 'player:update', (player_data) -> 
-    player_data.self = true if player_data is socket.socket.sessionid
+    player_data.self = true if player_data.id is socket.socket.sessionid
     player = players.get(player_data.id)
     
     unless player
@@ -40,6 +40,25 @@ window.onload = ->
 
 
   socket.on 'connect', ->
-  
+    socket.on 'error',(err) -> console.error(err)
+    window.addEventListener 'keypress', (event) =>
+      switch event.keyCode
+        when 100, 68
+          socket.emit('player:update', 'UP')
+          current_player.aim_left() if current_player.get('state') is 'alive'
+        when 97, 65
+          socket.emit('player:update', 'DOWN')  
+          current_player.aim_right() if current_player.get('state') is 'alive'
+    , false
+    window.addEventListener 'keyup', (event) =>
+      switch event.keyCode
+        when 83
+          socket.emit('player:update', 'LEFT')
+          current_player.move_left() if current_player.get('state') is 'alive'
+        when 87
+          socket.emit('player:update', 'RIGHT')  
+          current_player.move_right() if current_player.get('state') is 'alive'
+    , false
+      
   socket.on 'disconnect', ->
     console.error('disconnected')
