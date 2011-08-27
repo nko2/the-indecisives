@@ -1,9 +1,7 @@
-http = require('http') 
 nko = require('nko')('L3U8N469dCVshmal')
+express = require('express')
 
-app = http.createServer (req, res) ->
-  res.writeHead(200, 'Content-Type': 'text/html')
-  res.end('Hello, World')
-
-app.listen(parseInt(process.env.PORT) || 7777)
-console.log('listening on ' + app.address().port)
+app = express.createServer()
+app.use(express.compiler(src: "#{__dirname}/src", dest: "#{__dirname}/public", enable: ['coffeescript', 'less']))
+app.use(express.static("#{__dirname}/public"))
+app.listen(80)
