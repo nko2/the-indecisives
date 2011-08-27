@@ -81,10 +81,10 @@
       });
       if (player_team === 'spores') {
         offset = -100;
-        direction = -10;
+        direction = -14;
       } else {
         offset = -200;
-        direction = 10;
+        direction = 14;
       }
       position = new Vector(0, offset).rotate(player_position);
       velocity = new Vector(1, direction).rotate(player_position);
