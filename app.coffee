@@ -47,7 +47,7 @@ game_loop = ->
 
   setTimeout ->
     game_loop()
-  , 1000 / 60
+  , 1000 / 30
 
 game_loop()
 

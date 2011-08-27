@@ -43,7 +43,7 @@
     io.sockets.volatile.emit('players:update', players.toJSON());
     return setTimeout(function() {
       return game_loop();
-    }, 1000 / 60);
+    }, 1000 / 30);
   };
   game_loop();
   io.sockets.on('connection', function(socket) {
