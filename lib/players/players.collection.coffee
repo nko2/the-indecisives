@@ -12,6 +12,8 @@ PlayersCollection = Backbone.Collection.extend
   
   draw: (helper) ->
     @each (player) -> player.draw(helper)
+
+  comparator: (player) -> return -player.get('score')
   
   update: ->
     @each (player) -> player.update()

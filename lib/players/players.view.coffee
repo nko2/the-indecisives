@@ -1,9 +1,8 @@
 window.PlayersView = Backbone.View.extend
   initialize: ->
-    _.bindAll(this, 'add', 'remove', 'reset')
+    _.bindAll(this, 'add', 'reset')
 
     @reset = _.throttle(@reset, 1000)
-
     @collection.bind('all', @reset)
 
   reset: ->
@@ -19,5 +18,3 @@ window.PlayersView = Backbone.View.extend
       return
 
     $(@el).append(view.render().el)
-
-  remove: (model) -> model.view.remove()

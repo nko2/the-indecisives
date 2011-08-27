@@ -16,6 +16,9 @@
         return player.draw(helper);
       });
     },
+    comparator: function(player) {
+      return -player.get('score');
+    },
     update: function() {
       return this.each(function(player) {
         return player.update();

@@ -1,7 +1,7 @@
 (function() {
   window.PlayersView = Backbone.View.extend({
     initialize: function() {
-      _.bindAll(this, 'add', 'remove', 'reset');
+      _.bindAll(this, 'add', 'reset');
       this.reset = _.throttle(this.reset, 1000);
       return this.collection.bind('all', this.reset);
     },
@@ -20,9 +20,6 @@
         return;
       }
       return $(this.el).append(view.render().el);
-    },
-    remove: function(model) {
-      return model.view.remove();
     }
   });
 }).call(this);
