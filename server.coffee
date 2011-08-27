@@ -29,7 +29,7 @@ game_loop = ->
   setTimeout ->
     players.update()
     game_loop()
-  , 1000 / 60
+  , 1000 / 1
 
 game_loop()
 
