@@ -1,4 +1,4 @@
-nko = require('nko')('L3U8N469dCVshmal')
+# nko = require('nko')('L3U8N469dCVshmal')
 
 express = require('express')
 _ = require('underscore')
@@ -15,14 +15,19 @@ app.listen(80)
 console.log("listening on #{80}...")
 
 io = require('socket.io').listen(app)
+io.configure 'production', ->
+  io.enable('browser client minification')
+  io.enable('browser client etag')
+  io.set('log level', 1)
+  io.set 'transports', [
+         'websocket'
+         'flashsocket'
+         'htmlfile'
+         'xhr-polling'
+         'jsonp-polling'
+  ]
 
-io.configure ->
-  io.set('log level', 2)
-  io.set('transports', ['websocket'])
-
-io.configure 'development', ->
-  io.set('transports', ['websocket'])
-  io.enable('log')
+io.configure 'development', -> io.set('transports', ['websocket'])
 
 players = new PlayersCollection()
 
