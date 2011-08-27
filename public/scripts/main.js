@@ -40,7 +40,9 @@
         }
         player.clear();
         player.set(player_data);
-        if (!player_data.self) {}
+        if (!player_data.self) {
+          ;
+        }
       });
     });
     socket.on('player:disconnect', function(player_data) {
@@ -84,6 +86,7 @@
             }
             break;
           case 32:
+            console.log(current_player.toJSON());
             if (current_player.get('state') === 'alive') {
               projectile = current_player.fire();
               projectile.projectiles = projectiles;
