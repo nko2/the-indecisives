@@ -34,7 +34,7 @@ class window.Canvas
   save: -> @context.save()
   restore: -> @context.restore()
 
-  draw_image: (src, x, y, width, height) ->
+  draw_image: (src, x = 0, y = 0, width = @width, height = @height) ->
     if typeof src isnt 'string'
       @context.drawImage(src, x, y, width, height)
       return
