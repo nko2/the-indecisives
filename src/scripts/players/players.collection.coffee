@@ -8,13 +8,13 @@ else
 PlayersCollection = Backbone.Collection.extend
   model: PlayerModel
   
-  draw:(helper) ->
+  draw: (helper) ->
     @each (player) -> 
       player.draw(helper)
   
-  update:(helper) ->
+  update: (helper) ->
     @each (player) -> 
-      player.update(helper)
+      player.update()
     
   spores: -> 
     return @select (player) ->
