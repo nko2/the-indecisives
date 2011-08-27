@@ -40,14 +40,8 @@ io.configure 'production', ->
 players = new PlayersCollection()
 projectiles = new ProjectilesCollection()
 
-players.bind 'add', (player) ->
-  io.sockets.emit('player:connect', player.toJSON())
-
 players.bind 'remove', (player) ->
   io.sockets.emit('player:disconnect', player.toJSON())
-
-projectiles.bind 'add', (projectile) ->
-  io.sockets.volatile.emit('projectile:add', projectile.toJSON())
 
 projectiles.bind 'remove', (projectile) ->
   io.sockets.volatile.emit('projectile:remove', projectile.toJSON())

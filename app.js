@@ -38,14 +38,8 @@
   });
   players = new PlayersCollection();
   projectiles = new ProjectilesCollection();
-  players.bind('add', function(player) {
-    return io.sockets.emit('player:connect', player.toJSON());
-  });
   players.bind('remove', function(player) {
     return io.sockets.emit('player:disconnect', player.toJSON());
-  });
-  projectiles.bind('add', function(projectile) {
-    return io.sockets.volatile.emit('projectile:add', projectile.toJSON());
   });
   projectiles.bind('remove', function(projectile) {
     return io.sockets.volatile.emit('projectile:remove', projectile.toJSON());

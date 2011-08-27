@@ -102,15 +102,6 @@ window.onload = ->
           splash.show()
         else unless state is 'waiting'
           splash.hide()
-      
-    # PLAYER CONNECT
-    socket.on 'player:connect', (player_data) ->
-      player_data.self = true if player_data.id is socket.socket.sessionid
-      player = new PlayerModel(player_data)
-      window.current_player = player if player_data.self
-      player.players = players
-      player.projectiles = projectiles
-      players.add(player)
 
     # PLAYER DISCONNECT
     socket.on 'player:disconnect', (player_data) ->
@@ -130,16 +121,6 @@ window.onload = ->
           projectile.projectiles = projectiles
           projectiles.add(projectile)
         else projectile.set(projectile_data)
-
-    # PROJECTILE ADD
-    socket.on 'projectile:add', (projectile_data) ->
-      projectile_data.self = true if projectile_data.player is socket.socket.sessionid
-      projectile_data.position = new Vector(projectile_data.position.x, projectile_data.position.y) if projectile_data.position
-      projectile_data.velocity = new Vector(projectile_data.velocity.x, projectile_data.velocity.y) if projectile_data.velocity
-      projectile = new ProjectileModel(projectile_data)
-      projectile.players = players 
-      projectile.projectiles = projectiles
-      projectiles.add(projectile)
       
     # PROJECTILE REMOVE  
     socket.on 'projectile:remove', (projectile_data) ->
