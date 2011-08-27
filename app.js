@@ -65,6 +65,13 @@
     players.add(player, {
       silent: true
     });
+    socket.on('player:name', function(name) {
+      return player.set({
+        name: name
+      }, {
+        silent: true
+      });
+    });
     socket.on('player:update', function(action, callback) {
       var player_state, projectile;
       player_state = player.get('state');

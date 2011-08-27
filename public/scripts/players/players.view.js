@@ -3,9 +3,7 @@
     initialize: function() {
       _.bindAll(this, 'add', 'remove', 'reset');
       this.reset = _.throttle(this.reset, 1000);
-      this.collection.bind('add', this.add);
-      this.collection.bind('remove', this.remove);
-      return this.collection.bind('reset', this.reset);
+      return this.collection.bind('all', this.reset);
     },
     reset: function() {
       this.el.innerHTML = '';

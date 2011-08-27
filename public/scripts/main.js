@@ -1,7 +1,7 @@
 (function() {
   var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
   window.onload = function() {
-    var background, helper, orbit, planet, players, projectiles, socket, splash;
+    var background, helper, orbit, planet, players, players_view, projectiles, socket, splash;
     helper = new Canvas(document.getElementById('game-canvas'));
     background = new Background();
     planet = new Planet();
@@ -10,6 +10,10 @@
     window.projectiles = projectiles = new ProjectilesCollection();
     window.explosion = new Explosion();
     splash = new Splash('Get Started', 'Press the spacebar to join the fight!');
+    players_view = new PlayersView({
+      collection: players,
+      el: document.getElementById('players')
+    });
     helper.draw(function() {
       projectiles.update();
       players.update();
@@ -22,6 +26,10 @@
     });
     window.socket = socket = io.connect();
     return socket.on('connect', function() {
+      $(document.getElementById('name-form')).bind('submit', function(e) {
+        e.preventDefault();
+        return socket.emit('player:name', document.getElementById('name').value);
+      });
       window.addEventListener('keypress', __bind(function(event) {
         switch (event.keyCode) {
           case 100:

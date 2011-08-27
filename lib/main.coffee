@@ -9,7 +9,10 @@ window.onload = ->
   window.players = players = new PlayersCollection()
   window.projectiles = projectiles = new ProjectilesCollection()
   window.explosion = new Explosion()
+
   splash = new Splash('Get Started', 'Press the spacebar to join the fight!')
+
+  players_view = new PlayersView(collection: players, el: document.getElementById('players'))
   
   helper.draw ->
     projectiles.update()
@@ -27,6 +30,10 @@ window.onload = ->
   window.socket = socket = io.connect()
 
   socket.on 'connect', ->
+    $(document.getElementById('name-form')).bind 'submit', (e) ->
+      e.preventDefault()
+      socket.emit('player:name', document.getElementById('name').value)
+
     # KEYBOARD COMMANDS
     window.addEventListener 'keypress', (event) =>
       switch event.keyCode

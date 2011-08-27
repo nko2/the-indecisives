@@ -25,13 +25,20 @@
         kills: 0,
         hits: 0,
         fires: 0,
-        start: Date.now()
+        start: Date.now(),
+        name: 'anonymous'
       };
     },
     max_speed: 0.5,
     max_angle: Math.PI / 4,
     initialize: function() {
       return this.speed = this.get('team') === 'spores' ? 0.01 : 0.005;
+    },
+    validate: function(attrs) {
+      var _ref;
+      if (!((attrs != null ? (_ref = attrs.name) != null ? _ref.length : void 0 : void 0) < 11)) {
+        return 'invalid name';
+      }
     },
     move_left: function() {
       var velocity;

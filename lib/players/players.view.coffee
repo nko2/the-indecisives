@@ -4,9 +4,7 @@ window.PlayersView = Backbone.View.extend
 
     @reset = _.throttle(@reset, 1000)
 
-    @collection.bind('add', @add)
-    @collection.bind('remove', @remove)
-    @collection.bind('reset', @reset)
+    @collection.bind('all', @reset)
 
   reset: ->
     @el.innerHTML = ''
