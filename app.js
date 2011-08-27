@@ -1,12 +1,11 @@
 (function() {
-  var PlayerModel, PlayersCollection, ProjectilesCollection, Vector, app, express, game_loop, io, nko, send_updates, _;
+  var PlayerModel, RoomsCollection, Vector, app, express, game_loop, io, nko, rooms, _;
   nko = require('nko')('L3U8N469dCVshmal');
   express = require('express');
   _ = require('underscore');
   Vector = require('./public/scripts/vector');
   PlayerModel = require('./public/scripts/players/player.model');
-  PlayersCollection = require('./public/scripts/players/players.collection');
-  ProjectilesCollection = require('./public/scripts/projectiles/projectiles.collection');
+  RoomsCollection = require('./public/scripts/rooms/rooms.collection');
   app = express.createServer();
   app.use(express.compiler({
     src: "" + __dirname + "/src",
@@ -38,22 +37,21 @@
     io.set('log level', 1);
     return io.set('transports', ['websocket', 'flashsocket', 'htmlfile', 'xhr-polling', 'jsonp-polling']);
   });
-  send_updates = function() {
-    io.sockets.volatile.emit('players:update', players.toJSON());
-    return io.sockets.volatile.emit('projectiles:update', projectiles.toJSON());
-  };
-  send_updates = _.throttle(send_updates, 1000 / 15);
+  rooms = new RoomsCollection(null, {
+    io: io
+  });
   game_loop = function() {
-    projectiles.update();
-    players.update();
-    send_updates();
+    rooms.update();
     return setTimeout(function() {
       return game_loop();
     }, 1000 / 60);
   };
   game_loop();
   io.sockets.on('connection', function(socket) {
-    var player, team;
+    var player, players, projectiles, room, team;
+    room = rooms.next();
+    players = room.players;
+    projectiles = room.projectiles;
     team = players.spores().length > players.ships().length ? 'ships' : 'spores';
     player = new PlayerModel({
       id: socket.id,

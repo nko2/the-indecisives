@@ -5,9 +5,7 @@ _ = require('underscore')
 
 Vector = require('./public/scripts/vector')
 PlayerModel = require('./public/scripts/players/player.model')
-PlayersCollection = require('./public/scripts/players/players.collection')
-
-ProjectilesCollection = require('./public/scripts/projectiles/projectiles.collection')
+RoomsCollection = require('./public/scripts/rooms/rooms.collection')
 
 app = express.createServer()
 app.use(express.compiler(src: "#{__dirname}/src", dest: "#{__dirname}/public", enable: ['coffeescript', 'less']))
@@ -38,17 +36,10 @@ io.configure 'production', ->
          'jsonp-polling'
   ]
 
-send_updates = ->
-  io.sockets.volatile.emit('players:update', players.toJSON())
-  io.sockets.volatile.emit('projectiles:update', projectiles.toJSON())
-
-send_updates = _.throttle(send_updates, 1000 / 15)
+rooms = new RoomsCollection(null, io: io)
 
 game_loop = ->
-  projectiles.update()
-  players.update()
-
-  send_updates()
+  rooms.update()
 
   setTimeout ->
     game_loop()
@@ -57,6 +48,10 @@ game_loop = ->
 game_loop()
 
 io.sockets.on 'connection', (socket) ->
+  room = rooms.next()
+  players = room.players
+  projectiles = room.projectiles
+
   team = if players.spores().length > players.ships().length then 'ships' else 'spores'
 
   player = new PlayerModel(id: socket.id, team: team)
