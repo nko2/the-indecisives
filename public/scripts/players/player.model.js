@@ -2,7 +2,7 @@
   var Backbone, PlayerModel, Vector;
   if (typeof require !== "undefined" && require !== null) {
     Backbone = require('backbone');
-    Vector = require('./src/scripts/vector');
+    Vector = require('../vector');
   } else {
     Backbone = window.Backbone;
     Vector = window.Vector;
@@ -64,6 +64,7 @@
         });
       }
     },
+    fire: function() {},
     update: function() {
       var position, rotation, team, velocity;
       velocity = this.get('velocity');
@@ -80,6 +81,42 @@
       });
       return this.change();
     },
-    draw: function(helper) {}
+    test: function() {},
+    draw: function(helper) {
+      var position, self, team, trajectory;
+      team = this.get('team');
+      self = this.get('self');
+      position = this.get('position');
+      trajectory = this.get('trajectory');
+      helper.save();
+      helper.translate(helper.half_width, helper.half_height);
+      helper.rotate(position);
+      helper.translate(0, team === 'spores' ? -100 : -200);
+      helper.no_stroke();
+      helper.fill('rgba(255, 255, 255, 0.8)');
+      helper.circle(0, 0, 4, 4);
+      helper.no_fill();
+      helper.stroke_width(2);
+      helper.stroke("rgba(255, 255, 255, 1");
+      helper.circle(0, 0, 12, 12);
+      if (self) {
+        helper.stroke('rgba(255, 0, 0, 0.8)');
+        helper.circle(0, 0, 20, 20);
+      }
+      helper.rotate(trajectory);
+      helper.no_stroke();
+      helper.fill('rgba(255, 255, 255, 0.8)');
+      if (team === 'spores') {
+        helper.rect(-1, 4, 2, -18);
+      } else {
+        helper.rect(-1, 4, 2, 10);
+      }
+      return helper.restore();
+    }
   });
+  if ((typeof module !== "undefined" && module !== null ? module.exports : void 0) != null) {
+    module.exports = PlayerModel;
+  } else {
+    window.PlayerModel = PlayerModel;
+  }
 }).call(this);
