@@ -24,6 +24,7 @@ app.listen 80, ->
 console.log("listening on #{80}...")
 
 io = require('socket.io').listen(app)
+io.configure -> io.set('log level', 2)
 io.configure 'production', ->
   io.enable('browser client minification')
   io.enable('browser client etag')
@@ -68,20 +69,21 @@ io.sockets.on 'connection', (socket) ->
   socket.on 'player:update',  (action, callback) ->
     player_state = player.get('state')
 
-    switch action
-      when 'LEFT' then player.move_right()
-      when 'RIGHT' then player.move_left()
-      when 'DOWN' then player.aim_left()
-      when 'UP' then player.aim_right()
-      when 'SPACE'
-        projectile = player.fire()
-        projectile.projectiles = projectiles
-        projectile.players = players
-        projectiles.add(projectile, silent: true)
-        
-        console.log projectile.id
-        
-        callback(projectile.id)
+    if action is 'SPACE' and (player_state is 'waiting' or player_state is 'dead')
+      # reset the players state
+      player.set({ state: 'alive', score: 0, lives: player.defaults.lives, hp: player.defaults.hp, position: player.defaults.position, velocity: 0 }, silent: true)
+    else if player_state is 'alive'
+      switch action
+        when 'LEFT' then player.move_right()
+        when 'RIGHT' then player.move_left()
+        when 'DOWN' then player.aim_left()
+        when 'UP' then player.aim_right()
+        when 'SPACE'
+          projectile = player.fire()
+          projectile.projectiles = projectiles
+          projectile.players = players
+          projectiles.add(projectile, silent: true)
+          callback(projectile.id)
 
   socket.on 'disconnect', ->
     player = players.get(socket.id)
