@@ -10,12 +10,12 @@
   ProjectilesCollection = Backbone.Collection.extend({
     model: ProjectileModel,
     draw: function(helper) {
-      return this.each(projectile)(function() {
+      return this.each(function(projectile) {
         return projectile.draw(helper);
       });
     },
-    update: function(helper) {
-      return this.each(projectile)(function() {
+    update: function() {
+      return this.each(function(projectile) {
         return projectile.update();
       });
     }

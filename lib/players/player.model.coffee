@@ -7,6 +7,8 @@ else
   Vector = window.Vector
   ProjectileModel = window.ProjectileModel
 
+console.log ProjectileModel
+
 PlayerModel = Backbone.Model.extend
 
   defaults:
@@ -15,6 +17,7 @@ PlayerModel = Backbone.Model.extend
     position: Math.random() * Math.PI * 2
     velocity: 0
     trajectory: 0
+    state: 'alive'
 
   max_speed: 0.5
   max_angle: Math.PI / 4 #/
@@ -45,6 +48,20 @@ PlayerModel = Backbone.Model.extend
     player_fires = @get('fires')
     
     @set({fires: ++player_fires}, silent: true)
+    
+    if player_team is 'spores'
+      offset = -100
+      direction = -10
+    else
+      offset = -200
+      direction = 10
+    
+    position = new Vector(0, offset).rotate(player_position)
+    velocity = new Vector(1, direction).rotate(player_position)
+    id = "#{player_id}_#{Date.now()}"
+    
+    projectile = new ProjectileModel(id: id, player: player_id, position: position, velocity: velocity)  
+      
 
   update: ->
     velocity = @get('velocity')
