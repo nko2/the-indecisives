@@ -34,6 +34,8 @@ PlayerModel = Backbone.Model.extend
     trajectory = @get('trajectory')
     @set({ trajectory: trajectory -= 0.1 }, silent: true) if trajectory > -@max_angle
 
+  fire: -> # TODO: player fires their turret
+
   update: ->
     velocity = @get('velocity')
     position = @get('position')
@@ -45,6 +47,8 @@ PlayerModel = Backbone.Model.extend
 
     @set({ velocity: velocity, position: position }, silent: true)
     @change()
+
+  test: -> # TODO: test collisions
 
   draw: (helper) ->
     team = @get('team')
@@ -79,3 +83,8 @@ PlayerModel = Backbone.Model.extend
       helper.rect(-1, 4, 2, 10)
 
     helper.restore()
+
+if model?.exports?
+  module.exports = PlayerModel
+else
+  window.PlayerModel = PlayerModel
