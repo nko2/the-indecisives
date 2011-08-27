@@ -70,8 +70,7 @@ io.sockets.on 'connection', (socket) ->
     player_state = player.get('state')
 
     if action is 'SPACE' and (player_state is 'waiting' or player_state is 'dead')
-      # reset the players state
-      player.set({ state: 'alive', score: 0, lives: player.defaults.lives, hp: player.defaults.hp, position: player.defaults.position, velocity: 0 }, silent: true)
+      player.set({ state: 'alive', score: 0, lives: 3, hp: 100, position: Math.random() * Math.PI * 2, velocity: 0 }, silent: true)
     else if player_state is 'alive'
       switch action
         when 'LEFT' then player.move_right()

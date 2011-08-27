@@ -1,59 +1,26 @@
 (function() {
   var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
   window.onload = function() {
-    var background, helper, orbit, planet, player, players, projectile, projectiles, socket;
+    var background, helper, orbit, planet, players, projectiles, socket, splash;
     helper = new Canvas(document.getElementById('game-canvas'));
     background = new Background();
     planet = new Planet();
     orbit = new Orbit(200);
     window.players = players = new PlayersCollection();
-    window.player = player = new PlayerModel();
     window.projectiles = projectiles = new ProjectilesCollection();
-    window.projectile = projectile = new ProjectileModel();
+    splash = new Splash('Get Started', 'Press the spacebar to join the fight!');
     helper.draw(function() {
-      players.update();
       projectiles.update();
+      players.update();
       background.draw(this);
       planet.draw(this);
       orbit.draw(this);
       players.draw(this);
-      return projectiles.draw(this);
+      projectiles.draw(this);
+      return splash.draw(this);
     });
     window.socket = socket = io.connect();
-    socket.socket.on('error', function(reason) {
-      return console.error('unable to connect socket.io', reason);
-    });
-    socket.on('players:update', function(players_data) {
-      return _.each(players_data, function(player_data) {
-        if (player_data.id === socket.socket.sessionid) {
-          player_data.self = true;
-        }
-        player = players.get(player_data.id);
-        if (!player) {
-          player = new PlayerModel(player_data);
-          if (player_data.self) {
-            window.current_player = player;
-          }
-          player.players = players;
-          player.projectiles = projectiles;
-          players.add(player);
-          return;
-        }
-        player.clear();
-        player.set(player_data);
-        if (!player_data.self) {
-          ;
-        }
-      });
-    });
-    socket.on('player:disconnect', function(player_data) {
-      player = players.get('player_data.id');
-      return players.remove(player);
-    });
-    socket.on('connect', function() {
-      socket.on('error', function(err) {
-        return console.error(err);
-      });
+    return socket.on('connect', function() {
       window.addEventListener('keypress', __bind(function(event) {
         switch (event.keyCode) {
           case 100:
@@ -72,6 +39,7 @@
         }
       }, this), false);
       window.addEventListener('keyup', __bind(function(event) {
+        var projectile;
         switch (event.keyCode) {
           case 83:
             socket.emit('player:update', 'LEFT');
@@ -101,18 +69,62 @@
             });
         }
       }, this), false);
+      socket.on('players:update', function(players_data) {
+        return _.each(players_data, function(player_data) {
+          var accuracy, duration, fires, hits, kills, player, state;
+          if (player_data.id === socket.socket.sessionid) {
+            player_data.self = true;
+          }
+          player = players.get(player_data.id);
+          if (!player) {
+            player = new PlayerModel(player_data);
+            if (player_data.self) {
+              window.current_player = player;
+            }
+            player.players = players;
+            player.projectiles = projectiles;
+            players.add(player);
+            return;
+          }
+          player.clear();
+          player.set(player_data);
+          if (!player_data.self) {
+            return;
+          }
+          state = player_data.state;
+          if (state === 'dead') {
+            kills = player.get('kills');
+            hits = player.get('hits');
+            fires = player.get('fires');
+            accuracy = fires > 0 ? (hits / fires).toPrecision(2) : 0;
+            duration = (player.get('end') - player.get('start')) / 1000;
+            splash.header = 'You died...';
+            splash.body = "" + kills + " total kills\n" + accuracy + "% accuracy\nsurvived " + duration + " seconds\n\nPress the spacebar to rejoin the fight!";
+            splash.height = 220;
+            return splash.show();
+          } else if (state !== 'waiting') {
+            return splash.hide();
+          }
+        });
+      });
+      socket.on('player:disconnect', function(player_data) {
+        var player;
+        player = players.get('player_data.id');
+        return players.remove(player);
+      });
       socket.on('projectiles:update', function(projectiles_data) {
         return _.each(projectiles_data, function(projectile_data) {
+          var projectile;
           if (projectile_data.player === socket.socket.sessionid) {
             projectile_data.self = true;
           }
-          projectile = projectiles.get(projectile_data.id);
           if (projectile_data.position) {
             projectile_data.position = new Vector(projectile_data.position.x, projectile_data.position.y);
           }
           if (projectile_data.velocity) {
             projectile_data.velocity = new Vector(projectile_data.velocity.x, projectile_data.velocity.y);
           }
+          projectile = projectiles.get(projectile_data.id);
           if (!projectile) {
             projectile = new ProjectileModel(projectile_data);
             projectile.players = players;
@@ -125,12 +137,10 @@
         });
       });
       return socket.on('projectile:remove', function(projectile_data) {
+        var projectile;
         projectile = projectiles.get(projectile_data.id);
         return projectiles.remove(projectile);
       });
-    });
-    return socket.on('disconnect', function() {
-      return console.error('disconnected');
     });
   };
 }).call(this);

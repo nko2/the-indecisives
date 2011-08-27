@@ -9,13 +9,13 @@ else
 
 PlayerModel = Backbone.Model.extend
 
-  defaults:
+  defaults: ->
     team: 'ships'
     self: false
     position: Math.random() * Math.PI * 2
     velocity: 0
     trajectory: 0
-    state: 'alive'
+    state: 'waiting'
     lives: 3
     hp: 100
     score: 0
@@ -23,6 +23,7 @@ PlayerModel = Backbone.Model.extend
     kills: 0
     hits: 0
     fires: 0
+    start: Date.now()
 
   max_speed: 0.5
   max_angle: Math.PI / 4 #/
@@ -103,7 +104,7 @@ PlayerModel = Backbone.Model.extend
 
     @set({ hp: hp -= 10 }, silent: true)
 
-    projectile.set({ ttl: 20, state: 'dying' }, silent: true)
+    projectile.set({ ttl: 7, state: 'dying' }, silent: true)
 
     return unless hp < 0
 
@@ -114,11 +115,13 @@ PlayerModel = Backbone.Model.extend
     lives--
 
     if lives < 0
-      @set({ state: 'dead' }, silent: true)
+      @set({ state: 'dead', end: Date.now() }, silent: true)
     else
       @set({ position: Math.random() * Math.PI * 2, velocity: 0, lives: lives, hp: 100 }, silent: true)
 
   draw: (helper) ->
+    return unless @get('state') is 'alive'
+
     team = @get('team')
     self = @get('self')
 

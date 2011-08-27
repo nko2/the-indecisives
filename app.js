@@ -72,9 +72,9 @@
         return player.set({
           state: 'alive',
           score: 0,
-          lives: player.defaults.lives,
-          hp: player.defaults.hp,
-          position: player.defaults.position,
+          lives: 3,
+          hp: 100,
+          position: Math.random() * Math.PI * 2,
           velocity: 0
         }, {
           silent: true
