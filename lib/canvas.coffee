@@ -2,6 +2,8 @@ class window.Canvas
 
   should_stroke: false
   should_fill: true
+  
+  ticks: 0
 
   constructor: (@canvas, @width = 640, @height = 480) ->
     unless @canvas

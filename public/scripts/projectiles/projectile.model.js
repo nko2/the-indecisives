@@ -75,6 +75,9 @@
       helper.translate(helper.width / 2, helper.height / 2);
       helper.translate(position.x, position.y);
       helper.circle(0, 0, 2, 2);
+      if (state === 'dying') {
+        window.explosion.draw(helper);
+      }
       return helper.restore();
     }
   });

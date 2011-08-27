@@ -10,6 +10,7 @@
     window.player = player = new PlayerModel();
     window.projectiles = projectiles = new ProjectilesCollection();
     window.projectile = projectile = new ProjectileModel();
+    window.explosion = new Explosion();
     helper.draw(function() {
       players.update();
       projectiles.update();

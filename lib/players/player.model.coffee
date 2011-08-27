@@ -136,7 +136,7 @@ PlayerModel = Backbone.Model.extend
     helper.circle(0, 0, 4, 4)
     helper.no_fill()
     helper.stroke_width(2)
-    helper.stroke("rgba(255, 255, 255, #{hp / 125}")
+    helper.stroke("rgba(255, 255, 255, #{hp / 125})")
     helper.circle(0, 0, 12, 12)
 
     if self

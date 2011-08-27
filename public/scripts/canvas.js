@@ -3,6 +3,7 @@
   window.Canvas = (function() {
     Canvas.prototype.should_stroke = false;
     Canvas.prototype.should_fill = true;
+    Canvas.prototype.ticks = 0;
     function Canvas(canvas, width, height) {
       this.canvas = canvas;
       this.width = width != null ? width : 640;
