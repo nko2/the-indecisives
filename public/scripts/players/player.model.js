@@ -9,7 +9,6 @@
     Vector = window.Vector;
     ProjectileModel = window.ProjectileModel;
   }
-  console.log(ProjectileModel);
   PlayerModel = Backbone.Model.extend({
     defaults: {
       team: 'ships',
@@ -17,7 +16,14 @@
       position: Math.random() * Math.PI * 2,
       velocity: 0,
       trajectory: 0,
-      state: 'alive'
+      state: 'alive',
+      lives: 3,
+      hp: 100,
+      score: 0,
+      self: false,
+      kills: 0,
+      hits: 0,
+      fires: 0
     },
     max_speed: 0.5,
     max_angle: Math.PI / 4,
@@ -113,7 +119,75 @@
       });
       return this.change();
     },
-    test: function() {},
+    test: function(projectile, projectile_player) {
+      var distance, hp, lives, offset, player_position, player_rotation, player_team, position, projectile_player_hits, projectile_player_kills, projectile_player_score, projectile_player_team;
+      if (this.get('state') !== 'alive') {
+        return;
+      }
+      if (projectile_player) {
+        projectile_player_team = projectile_player.get('team');
+        projectile_player_score = projectile_player.get('score');
+      }
+      position = projectile.get('position');
+      player_team = this.get('team');
+      if (projectile_player_team === player_team) {
+        return;
+      }
+      player_rotation = this.get('position');
+      offset = player_team === 'spores' ? -100 : -200;
+      player_position = new Vector(0, offset).rotate(player_rotation);
+      distance = position.squared_distance(player_position);
+      if (!(distance < 100)) {
+        return;
+      }
+      projectile_player_hits = projectile_player.get('hits');
+      projectile_player.set({
+        score: projectile_player_score += 10,
+        hits: ++projectile_players_hits
+      }, {
+        silent: true
+      });
+      hp = this.get('hp');
+      this.set({
+        hp: hp -= 10
+      }, {
+        silent: true
+      });
+      projectile.set({
+        ttl: 20,
+        state: 'dying'
+      }, {
+        silent: true
+      });
+      if (!(hp < 0)) {
+        return;
+      }
+      projectile_player_kills = projectile_player.get('kills');
+      projectile_player.set({
+        score: projectile_player_score += 100,
+        kills: ++projectile_player_kills
+      }, {
+        silent: true
+      });
+      lives = this.get('lives');
+      lives--;
+      if (lives < 0) {
+        return this.set({
+          state: 'dead'
+        }, {
+          silent: true
+        });
+      } else {
+        return this.set({
+          position: Math.random() * Math.PI * 2,
+          velocity: 0,
+          lives: lives,
+          hp: 100
+        }, {
+          silent: true
+        });
+      }
+    },
     draw: function(helper) {
       var position, self, team, trajectory;
       team = this.get('team');
@@ -129,7 +203,7 @@
       helper.circle(0, 0, 4, 4);
       helper.no_fill();
       helper.stroke_width(2);
-      helper.stroke("rgba(255, 255, 255, 1");
+      helper.stroke("rgba(255, 255, 255, " + (this.get('hp') / 125));
       helper.circle(0, 0, 12, 12);
       if (self) {
         helper.stroke('rgba(255, 0, 0, 0.8)');

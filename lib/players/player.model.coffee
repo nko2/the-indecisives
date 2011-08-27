@@ -7,8 +7,6 @@ else
   Vector = window.Vector
   ProjectileModel = window.ProjectileModel
 
-console.log ProjectileModel
-
 PlayerModel = Backbone.Model.extend
 
   defaults:
@@ -18,6 +16,13 @@ PlayerModel = Backbone.Model.extend
     velocity: 0
     trajectory: 0
     state: 'alive'
+    lives: 3
+    hp: 100
+    score: 0
+    self: false
+    kills: 0
+    hits: 0
+    fires: 0
 
   max_speed: 0.5
   max_angle: Math.PI / 4 #/
@@ -62,7 +67,6 @@ PlayerModel = Backbone.Model.extend
     
     projectile = new ProjectileModel(id: id, player: player_id, position: position, velocity: velocity)  
       
-
   update: ->
     velocity = @get('velocity')
     position = @get('position')
@@ -75,7 +79,35 @@ PlayerModel = Backbone.Model.extend
     @set({ velocity: velocity, position: position }, silent: true)
     @change()
 
-  test: -> # TODO: test collisions
+  test: (projectile, projectile_player) ->
+    return unless @get('state') is 'alive'
+
+    if projectile_player
+      projectile_player_team = projectile_player.get('team')
+      projectile_player_score = projectile_player.get('score')
+
+    position = projectile.get('position')
+    player_team = @get('team')
+    return if projectile_player_team is player_team
+    player_rotation = @get('position')
+    offset = if player_team is 'spores' then -100 else -200
+    player_position = new Vector(0, offset).rotate(player_rotation)
+    distance = position.squared_distance(player_position)
+    return unless distance < 100
+    projectile_player_hits = projectile_player.get('hits')
+    projectile_player.set({ score: projectile_player_score += 10, hits: ++projectile_players_hits }, silent: true)
+    hp = @get('hp')
+    @set({ hp: hp -= 10 }, silent: true)
+    projectile.set({ ttl: 20, state: 'dying' }, silent: true)
+    return unless hp < 0
+    projectile_player_kills = projectile_player.get('kills')
+    projectile_player.set({ score: projectile_player_score += 100, kills: ++projectile_player_kills }, silent: true)
+    lives = @get('lives')
+    lives--
+    if lives < 0
+      @set({ state: 'dead' }, silent: true)
+    else
+      @set({ position: Math.random() * Math.PI * 2, velocity: 0, lives: lives, hp: 100 }, silent: true)
 
   draw: (helper) ->
     team = @get('team')
@@ -93,7 +125,7 @@ PlayerModel = Backbone.Model.extend
     helper.circle(0, 0, 4, 4)
     helper.no_fill()
     helper.stroke_width(2)
-    helper.stroke("rgba(255, 255, 255, 1") # TODO: this will change opacity based on player hp
+    helper.stroke("rgba(255, 255, 255, #{@get('hp') / 125}") # TODO: this will change opacity based on player hp
     helper.circle(0, 0, 12, 12)
 
     if self
