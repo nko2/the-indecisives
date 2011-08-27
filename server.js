@@ -3,9 +3,9 @@
   nko = require('nko')('L3U8N469dCVshmal');
   express = require('express');
   _ = require('underscore');
-  Vector = require('./src/scripts/vector');
-  PlayerModel = require('./src/scripts/players/player.model');
-  PlayersCollection = require('./src/scripts/players/players.collection');
+  Vector = require('./lib/scripts/vector');
+  PlayerModel = require('./lib/scripts/players/player.model');
+  PlayersCollection = require('./lib/scripts/players/players.collection');
   app = express.createServer();
   app.use(express.compiler({
     src: "" + __dirname + "/src",
