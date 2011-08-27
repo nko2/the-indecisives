@@ -21,7 +21,7 @@ window.onload = ->
     console.error('unable to connect socket.io', reason)
 
   socket.on 'players:update', (players_data) -> 
-    # players.reset(players_data)
+    players.reset(players_data)
 
     _.each players_data, (player_data) ->
       player_data.self = true if player_data.id is socket.socket.sessionid

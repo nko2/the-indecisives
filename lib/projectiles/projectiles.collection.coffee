@@ -6,7 +6,7 @@ else
   ProjectileModel = window.ProjectileModel
   
 ProjectilesCollection = Backbone.Collection.extend
-  model = ProjectileModel
+  model: ProjectileModel
   
   draw:(helper) ->
     @each(projectile) ->

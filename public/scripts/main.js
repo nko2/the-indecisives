@@ -20,6 +20,7 @@
       return console.error('unable to connect socket.io', reason);
     });
     socket.on('players:update', function(players_data) {
+      players.reset(players_data);
       return _.each(players_data, function(player_data) {
         if (player_data.id === socket.socket.sessionid) {
           player_data.self = true;
