@@ -14,6 +14,7 @@ PlayersCollection = Backbone.Collection.extend
   
   update: (helper) ->
     @each (player) -> 
+      console.log player
       player.update()
     
   spores: -> 

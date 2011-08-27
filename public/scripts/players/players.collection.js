@@ -16,6 +16,7 @@
     },
     update: function(helper) {
       return this.each(function(player) {
+        console.log(player);
         return player.update();
       });
     },
