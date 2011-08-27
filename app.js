@@ -1,5 +1,5 @@
 (function() {
-  var PlayerModel, PlayersCollection, ProjectileModel, ProjectilesCollection, Vector, app, express, game_loop, io, nko, players, projectiles, _;
+  var PlayerModel, PlayersCollection, ProjectileModel, ProjectilesCollection, Vector, app, express, game_loop, io, nko, players, projectiles, send_updates, _;
   nko = require('nko')('L3U8N469dCVshmal');
   express = require('express');
   _ = require('underscore');
@@ -44,14 +44,18 @@
   projectiles.bind('remove', function(projectile) {
     return io.sockets.volatile.emit('projectile:remove', projectile.toJSON());
   });
+  send_updates = function() {
+    io.sockets.volatile.emit('players:update', players.toJSON());
+    return io.sockets.volatile.emit('projectiles:update', projectiles.toJSON());
+  };
+  send_updates = _.throttle(send_updates, 1000 / 15);
   game_loop = function() {
     projectiles.update();
     players.update();
-    io.sockets.volatile.emit('players:update', players.toJSON());
-    io.sockets.volatile.emit('projectiles:update', projectiles.toJSON());
+    send_updates();
     return setTimeout(function() {
       return game_loop();
-    }, 1000 / 30);
+    }, 1000 / 60);
   };
   game_loop();
   io.sockets.on('connection', function(socket) {

@@ -46,16 +46,21 @@ players.bind 'remove', (player) ->
 projectiles.bind 'remove', (projectile) ->
   io.sockets.volatile.emit('projectile:remove', projectile.toJSON())
 
+send_updates = ->
+  io.sockets.volatile.emit('players:update', players.toJSON())
+  io.sockets.volatile.emit('projectiles:update', projectiles.toJSON())
+
+send_updates = _.throttle(send_updates, 1000 / 15)
+
 game_loop = ->
   projectiles.update()
   players.update()
 
-  io.sockets.volatile.emit('players:update', players.toJSON())
-  io.sockets.volatile.emit('projectiles:update', projectiles.toJSON())
+  send_updates()
 
   setTimeout ->
     game_loop()
-  , 1000 / 30 #/
+  , 1000 / 60 #/
 
 game_loop()
 
