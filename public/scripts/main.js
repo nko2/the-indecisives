@@ -8,9 +8,11 @@
     window.players = players = new PlayersCollection();
     window.player = player = new PlayerModel();
     helper.draw(function() {
+      players.update();
       background.draw(this);
       planet.draw(this);
-      return orbit.draw(this);
+      orbit.draw(this);
+      return players.draw(this);
     });
     window.socket = socket = io.connect();
     socket.on('player:update', function(player_data) {

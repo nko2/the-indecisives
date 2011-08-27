@@ -8,14 +8,16 @@ window.onload = ->
   window.player = player = new PlayerModel()
   
   helper.draw ->
+    players.update()
+  
     background.draw(this)
     planet.draw(this)
     orbit.draw(this)
+    players.draw(this)
   
   window.socket = socket = io.connect()
   
   socket.on 'player:update', (player_data) -> 
-  
     player_data.self = true if player_data is socket.socket.sessionid
     player = players.get(player_data.id)
     
