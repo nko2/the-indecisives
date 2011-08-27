@@ -4,18 +4,20 @@ if require?
 else
   Backbone = window.Backbone
   ProjectileModel = window.ProjectileModel
-  
+
+
 ProjectilesCollection = Backbone.Collection.extend
-  model = ProjectileModel
+  model: ProjectileModel
   
   draw:(helper) ->
-    @each(projectile) ->
+    @each (projectile) ->
       projectile.draw(helper)
 
-  update:(helper) ->
-    @each(projectile) ->
+  update: ->
+    @each (projectile) ->
       projectile.update()
-      
+
+
 if module?.exports?
   module.exports = ProjectilesCollection
 else 

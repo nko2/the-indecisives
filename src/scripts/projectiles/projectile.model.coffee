@@ -13,7 +13,7 @@ ProjectileModel = Backbone.Model.extend
     ttl: 100
     state: 'alive'
     velocity: new Vector()
-    position: new Position()
+    position: new Vector()
     self: false
   
   initialize: -> 

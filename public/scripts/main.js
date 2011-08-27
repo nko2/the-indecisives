@@ -1,21 +1,28 @@
 (function() {
   var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
   window.onload = function() {
-    var background, helper, orbit, planet, player, players, socket;
+    var background, helper, orbit, planet, player, players, projectile, projectiles, socket;
     helper = new Canvas(document.getElementById('game-canvas'));
     background = new Background();
     planet = new Planet();
     orbit = new Orbit(200);
     window.players = players = new PlayersCollection();
     window.player = player = new PlayerModel();
+    window.projectiles = projectiles = new ProjectilesCollection();
+    window.projectile = projectile = new ProjectileModel();
     helper.draw(function() {
       players.update();
+      projectiles.update();
       background.draw(this);
       planet.draw(this);
       orbit.draw(this);
-      return players.draw(this);
+      players.draw(this);
+      return projectiles.draw(this);
     });
     window.socket = socket = io.connect();
+    socket.socket.on('error', function(reason) {
+      return console.error('unable to connect socket.io', reason);
+    });
     socket.on('players:update', function(players_data) {
       return _.each(players_data, function(player_data) {
         if (player_data.id === socket.socket.sessionid) {
@@ -75,6 +82,21 @@
             if (current_player.get('state') === 'alive') {
               return current_player.move_right();
             }
+            break;
+          case 32:
+            if (current_player.get('state') === 'alive') {
+              projectile = current_player.fire();
+              projectile.projectiles = projectiles;
+              projectile.players = players;
+              projectiles.add(projectile);
+            }
+            return socket.emit('player:update', 'SPACE', projectile_id)(function() {
+              if (projectile_id) {
+                return projectile.set({
+                  id: projectile_id
+                });
+              }
+            });
         }
       }, this), false);
     });

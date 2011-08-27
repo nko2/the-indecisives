@@ -6,14 +6,18 @@ window.onload = ->
   
   window.players = players = new PlayersCollection()
   window.player = player = new PlayerModel()
+  window.projectiles = projectiles = new ProjectilesCollection()
+  window.projectile = projectile = new ProjectileModel()
   
   helper.draw ->
     players.update()
-  
+    projectiles.update()
+    
     background.draw(this)
     planet.draw(this)
     orbit.draw(this)
     players.draw(this)
+    projectiles.draw(this)
   
   window.socket = socket = io.connect()
 
@@ -67,6 +71,14 @@ window.onload = ->
         when 87
           socket.emit('player:update', 'RIGHT')  
           current_player.move_right() if current_player.get('state') is 'alive'
+        when 32
+          if current_player.get('state') is 'alive'
+            projectile = current_player.fire()
+            projectile.projectiles = projectiles
+            projectile.players = players
+            projectiles.add(projectile)
+          socket.emit('player:update', 'SPACE', (projectile_id)) ->
+            projectile.set(id: projectile_id) if projectile_id
     , false
       
   socket.on 'disconnect', -> console.error('disconnected')

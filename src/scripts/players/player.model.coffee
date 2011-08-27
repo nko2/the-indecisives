@@ -45,6 +45,20 @@ PlayerModel = Backbone.Model.extend
     player_fires = @get('fires')
     
     @set({fires: ++player_fires}, silent: true)
+    
+    if player_team is 'spores'
+      offset = -100
+      direction = -10
+    else
+      offset = -200
+      direction = 10
+    
+    position = new Vector(0, offset).rotate(player_position)
+    velocity = new Vector(1, direction).rotate(player_postion)
+    id = "#{player_id}_#{Date.now()}"
+    
+    projectile = new ProjectileModel(id: id, player: player_id, position: position, velocity: velocity)  
+      
 
   update: ->
     velocity = @get('velocity')
