@@ -15,7 +15,9 @@
     enable: ['coffeescript', 'less']
   }));
   app.use(express.static("" + __dirname + "/public"));
-  app.post('/', function(req, res) {});
+  app.post('/', function(req, res) {
+    return res.end();
+  });
   app.listen(80, function() {
     if (process.getuid() === 0) {
       return require('fs').stat(__filename, function(err, stats) {
@@ -40,6 +42,7 @@
   players = new PlayersCollection();
   projectiles = new ProjectilesCollection();
   players.bind('remove', function(player) {
+    console.log("removing player " + player.id);
     return io.sockets.emit('player:disconnect', player.toJSON());
   });
   projectiles.bind('remove', function(projectile) {

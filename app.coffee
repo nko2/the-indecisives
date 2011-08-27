@@ -14,7 +14,7 @@ app = express.createServer()
 app.use(express.compiler(src: "#{__dirname}/src", dest: "#{__dirname}/public", enable: ['coffeescript', 'less']))
 app.use(express.static("#{__dirname}/public"))
 
-app.post '/', (req, res) ->
+app.post '/', (req, res) -> res.end()
 
 app.listen 80, ->
   # if run as root, downgrade to the owner of this file
@@ -43,6 +43,7 @@ players = new PlayersCollection()
 projectiles = new ProjectilesCollection()
 
 players.bind 'remove', (player) ->
+  console.log "removing player #{player.id}"
   io.sockets.emit('player:disconnect', player.toJSON())
 
 projectiles.bind 'remove', (projectile) ->
