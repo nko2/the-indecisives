@@ -10,20 +10,23 @@
     ProjectileModel = window.ProjectileModel;
   }
   PlayerModel = Backbone.Model.extend({
-    defaults: {
-      team: 'ships',
-      self: false,
-      position: Math.random() * Math.PI * 2,
-      velocity: 0,
-      trajectory: 0,
-      state: 'alive',
-      lives: 3,
-      hp: 100,
-      score: 0,
-      self: false,
-      kills: 0,
-      hits: 0,
-      fires: 0
+    defaults: function() {
+      return {
+        team: 'ships',
+        self: false,
+        position: Math.random() * Math.PI * 2,
+        velocity: 0,
+        trajectory: 0,
+        state: 'waiting',
+        lives: 3,
+        hp: 100,
+        score: 0,
+        self: false,
+        kills: 0,
+        hits: 0,
+        fires: 0,
+        start: Date.now()
+      };
     },
     max_speed: 0.5,
     max_angle: Math.PI / 4,
@@ -154,7 +157,7 @@
         silent: true
       });
       projectile.set({
-        ttl: 20,
+        ttl: 7,
         state: 'dying'
       }, {
         silent: true
@@ -173,7 +176,8 @@
       lives--;
       if (lives < 0) {
         return this.set({
-          state: 'dead'
+          state: 'dead',
+          end: Date.now()
         }, {
           silent: true
         });
@@ -190,6 +194,9 @@
     },
     draw: function(helper) {
       var hp, position, self, team, trajectory;
+      if (this.get('state') !== 'alive') {
+        return;
+      }
       team = this.get('team');
       self = this.get('self');
       position = this.get('position');

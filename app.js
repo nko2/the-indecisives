@@ -27,6 +27,9 @@
   });
   console.log("listening on " + 80 + "...");
   io = require('socket.io').listen(app);
+  io.configure(function() {
+    return io.set('log level', 2);
+  });
   io.configure('production', function() {
     io.enable('browser client minification');
     io.enable('browser client etag');
@@ -65,24 +68,36 @@
     socket.on('player:update', function(action, callback) {
       var player_state, projectile;
       player_state = player.get('state');
-      switch (action) {
-        case 'LEFT':
-          return player.move_right();
-        case 'RIGHT':
-          return player.move_left();
-        case 'DOWN':
-          return player.aim_left();
-        case 'UP':
-          return player.aim_right();
-        case 'SPACE':
-          projectile = player.fire();
-          projectile.projectiles = projectiles;
-          projectile.players = players;
-          projectiles.add(projectile, {
-            silent: true
-          });
-          console.log(projectile.id);
-          return callback(projectile.id);
+      if (action === 'SPACE' && (player_state === 'waiting' || player_state === 'dead')) {
+        return player.set({
+          state: 'alive',
+          score: 0,
+          lives: 3,
+          hp: 100,
+          position: Math.random() * Math.PI * 2,
+          velocity: 0
+        }, {
+          silent: true
+        });
+      } else if (player_state === 'alive') {
+        switch (action) {
+          case 'LEFT':
+            return player.move_right();
+          case 'RIGHT':
+            return player.move_left();
+          case 'DOWN':
+            return player.aim_left();
+          case 'UP':
+            return player.aim_right();
+          case 'SPACE':
+            projectile = player.fire();
+            projectile.projectiles = projectiles;
+            projectile.players = players;
+            projectiles.add(projectile, {
+              silent: true
+            });
+            return callback(projectile.id);
+        }
       }
     });
     return socket.on('disconnect', function() {
