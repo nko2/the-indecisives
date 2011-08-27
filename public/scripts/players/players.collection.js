@@ -2,7 +2,7 @@
   var Backbone, PlayerModel, PlayersCollection;
   if (typeof require !== "undefined" && require !== null) {
     Backbone = require('backbone');
-    PlayerModel = require('./src/scripts/player.model');
+    PlayerModel = require('./player.model');
   } else {
     Backbone = window.Backbone;
     PlayerModel = window.PlayerModel;
@@ -30,4 +30,9 @@
       });
     }
   });
+  if ((typeof module !== "undefined" && module !== null ? module.exports : void 0) != null) {
+    module.exports = PlayersCollection;
+  } else {
+    window.PlayersCollection = PlayersCollection;
+  }
 }).call(this);
