@@ -16,7 +16,10 @@ window.onload = ->
     players.draw(this)
   
   window.socket = socket = io.connect()
-  
+
+  socket.on 'error', (reason) ->
+    console.error('unable to connect socket.io', reason)
+
   socket.on 'players:update', (players_data) -> 
     # players.reset(players_data)
 

@@ -10,13 +10,19 @@ PlayersCollection = require('./src/scripts/players/players.collection')
 app = express.createServer()
 app.use(express.compiler(src: "#{__dirname}/src", dest: "#{__dirname}/public", enable: ['coffeescript', 'less']))
 app.use(express.static("#{__dirname}/public"))
-app.listen(process.env.PORT or 80)
+app.listen(80)
 
-console.log("listening on #{process.env.PORT or 80}...")
+console.log("listening on #{80}...")
 
 io = require('socket.io').listen(app)
-io.configure -> io.set('log level', 2)
-io.configure -> io.set('transports', ['websocket'])
+
+io.configure ->
+  io.set('log level', 2)
+  io.set('transports', ['websocket'])
+
+io.configure 'development', ->
+  io.set('transports', ['websocket'])
+  io.enable('log')
 
 players = new PlayersCollection()
 
