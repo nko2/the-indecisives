@@ -26,8 +26,10 @@ players.bind 'change', (player) ->
   io.sockets.volatile.emit('player:update', player.toJSON())
 
 game_loop = ->
+  console.log Date.now()
+  players.update()
+
   setTimeout ->
-    players.update()
     game_loop()
   , 1000 / 1
 

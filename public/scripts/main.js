@@ -33,9 +33,13 @@
       player.set(player_data);
       if (!player_data.self) {}
     });
-    return socket.on('player:disconnect', function(player_data) {
+    socket.on('player:disconnect', function(player_data) {
       player = players.get('player_data.id');
       return players.remove(player);
+    });
+    socket.on('connect', function() {});
+    return socket.on('disconnect', function() {
+      return console.error('disconnected');
     });
   };
 }).call(this);
