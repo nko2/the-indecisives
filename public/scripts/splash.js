@@ -15,7 +15,7 @@
       helper.translate(0, helper.half_height - this.height / 2);
       helper.rect(0, 0, helper.width, this.height);
       helper.translate(helper.half_width, 0);
-      helper.fill('rgba(225, 225, 225, 1)');
+      helper.fill('rgb(0, 0, 0)');
       helper.text(this.header, 0, 10, "48px 'IM Fell English SC', serif", 0, 'center');
       helper.text(this.body, 0, 70, "24px 'IM Fell English SC', serif", 24, 'center');
       return helper.restore();
