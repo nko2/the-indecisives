@@ -4,8 +4,8 @@ express = require('express')
 _ = require('underscore')
 
 Vector = require('./src/scripts/vector')
-PlayerModel = require('./src/scripts/player.model')
-PlayersCollection = require('./src/scripts/players.collection')
+PlayerModel = require('./src/scripts/players/player.model')
+PlayersCollection = require('./src/scripts/players/players.collection')
 
 app = express.createServer()
 app.use(express.compiler(src: "#{__dirname}/src", dest: "#{__dirname}/public", enable: ['coffeescript', 'less']))
