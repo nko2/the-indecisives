@@ -5,7 +5,6 @@ else
   Backbone = window.Backbone
   ProjectileModel = window.ProjectileModel
 
-
 ProjectilesCollection = Backbone.Collection.extend
   model: ProjectileModel
   

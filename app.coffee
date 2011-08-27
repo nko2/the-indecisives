@@ -47,7 +47,7 @@ game_loop = ->
 
   setTimeout ->
     game_loop()
-  , 1000 / 30
+  , 1000 / 30 #/
 
 game_loop()
 
@@ -72,6 +72,9 @@ io.sockets.on 'connection', (socket) ->
         projectile.projectiles = projectiles
         projectile.players = players
         projectiles.add(projectile, silent: true)
+        
+        console.log projectile.id
+        
         callback(projectile.id)
 
   socket.on 'disconnect', ->

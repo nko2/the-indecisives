@@ -9,6 +9,7 @@
     Vector = window.Vector;
     ProjectileModel = window.ProjectileModel;
   }
+  console.log(ProjectileModel);
   PlayerModel = Backbone.Model.extend({
     defaults: {
       team: 'ships',
@@ -69,7 +70,6 @@
     },
     fire: function() {
       var direction, id, offset, player_fires, player_id, player_position, player_team, player_trajectory, position, projectile, velocity;
-      console.log('fire away!');
       player_id = this.get('id');
       player_team = this.get('team');
       player_position = this.get('position');
@@ -88,7 +88,7 @@
         direction = 10;
       }
       position = new Vector(0, offset).rotate(player_position);
-      velocity = new Vector(1, direction).rotate(player_postion);
+      velocity = new Vector(1, direction).rotate(player_position);
       id = "" + player_id + "_" + (Date.now());
       return projectile = new ProjectileModel({
         id: id,

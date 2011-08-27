@@ -7,6 +7,8 @@ else
   Vector = window.Vector
   ProjectileModel = window.ProjectileModel
 
+console.log ProjectileModel
+
 PlayerModel = Backbone.Model.extend
 
   defaults:
@@ -39,7 +41,6 @@ PlayerModel = Backbone.Model.extend
     @set({ trajectory: trajectory -= 0.1 }, silent: true) if trajectory > -@max_angle
 
   fire: -> 
-    console.log 'fire away!'
     player_id = @get('id')
     player_team = @get('team')
     player_position = @get('position')
@@ -56,7 +57,7 @@ PlayerModel = Backbone.Model.extend
       direction = 10
     
     position = new Vector(0, offset).rotate(player_position)
-    velocity = new Vector(1, direction).rotate(player_postion)
+    velocity = new Vector(1, direction).rotate(player_position)
     id = "#{player_id}_#{Date.now()}"
     
     projectile = new ProjectileModel(id: id, player: player_id, position: position, velocity: velocity)  
