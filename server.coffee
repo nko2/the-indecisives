@@ -35,6 +35,11 @@ game_loop = ->
 game_loop()
 
 io.sockets.on 'connection', (socket) ->
+  team = if players.spores().length > players.ships().length then 'ships' else 'spores'
+
+  player = PlayerModel(id: socket.id, team: team)
+  player.players = players
+  players.add(player, silent: true)
 
   socket.on 'player:update',  (action, callback) ->
     player_state = player.get('state')
