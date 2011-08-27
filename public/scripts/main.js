@@ -35,6 +35,7 @@
             window.current_player = player;
           }
           player.players = players;
+          player.projectiles = projectiles;
           players.add(player);
           return;
         }
@@ -100,7 +101,7 @@
             });
         }
       }, this), false);
-      return socket.on('projectile:update', function(projectile_data) {
+      socket.on('projectile:update', function(projectile_data) {
         if (projectile_data.player === socket.socket.sessionid) {
           projectile_data.self = true;
         }
@@ -120,6 +121,10 @@
         }
         projectile.clear();
         return projectile.set(projectile_data);
+      });
+      return socket.on('projectile:remove', function(projectile_data) {
+        projectile = projectiles.get(projectile_data.id);
+        return projectiles.remove(projectile);
       });
     });
     return socket.on('disconnect', function() {

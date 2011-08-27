@@ -33,6 +33,7 @@ window.onload = ->
         player = new PlayerModel(player_data)
         window.current_player = player if player_data.self
         player.players = players
+        player.projectiles = projectiles
         players.add(player)
         return
       
@@ -45,9 +46,11 @@ window.onload = ->
     player = players.get('player_data.id')
     players.remove(player)
 
+  # CONNECT TO SOCKET
   socket.on 'connect', ->
     socket.on 'error',(err) -> console.error(err)
 
+    # KEYBOARD COMMANDS
     window.addEventListener 'keypress', (event) =>
       switch event.keyCode
         when 100, 68
@@ -57,7 +60,6 @@ window.onload = ->
           socket.emit('player:update', 'DOWN')  
           current_player.aim_right() if current_player.get('state') is 'alive'
     , false
-
     window.addEventListener 'keyup', (event) =>
       switch event.keyCode
         when 83
@@ -72,11 +74,11 @@ window.onload = ->
             projectile.projectiles = projectiles
             projectile.players = players
             projectiles.add(projectile)
-
           socket.emit 'player:update', 'SPACE', (projectile_id) ->
             projectile.set(id: projectile_id) if projectile_id
     , false
     
+    # PROJECTILE UPDATE
     socket.on 'projectile:update', (projectile_data) ->
       projectile_data.self = true if projectile_data.player is socket.socket.sessionid
       projectile = projectiles.get(projectile_data.id)
@@ -93,7 +95,10 @@ window.onload = ->
       projectile.clear()
       projectile.set(projectile_data)
       
-           
+    # PROJECTILE REMOVE  
+    socket.on 'projectile:remove', (projectile_data) ->
+      projectile = projectiles.get(projectile_data.id)
+      projectiles.remove(projectile)
       
   socket.on 'disconnect', -> 
     console.error('disconnected')
