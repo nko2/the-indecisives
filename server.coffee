@@ -1,5 +1,5 @@
 http = require('http') 
-nko = require('nko')('yourteamsecret')
+nko = require('nko')('L3U8N469dCVshmal')
 
 app = http.createServer (req, res) ->
   res.writeHead(200, 'Content-Type': 'text/html')

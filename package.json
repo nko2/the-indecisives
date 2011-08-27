@@ -1,7 +1,15 @@
 {
   "name": "the-indecisives",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "scripts": {
     "start": "coffee server.coffee"
+  },
+  "dependencies": {
+    "coffee-script": "*",
+    "express": "*",
+    "less": "*",
+    "socket.io": "*",
+    "underscore": "*",
+    "nko": "*"
   }
 }
