@@ -1,4 +1,5 @@
 (function() {
+  var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
   window.PlayersView = Backbone.View.extend({
     initialize: function() {
       _.bindAll(this, 'add', 'reset');
@@ -6,16 +7,29 @@
       return this.collection.bind('all', this.reset);
     },
     reset: function() {
+      var others, players, top;
       this.el.innerHTML = '';
-      return this.collection.each(this.add);
+      players = _.select(this.collection.models, function(player) {
+        return player.get('state') !== 'waiting';
+      });
+      others = _.select(players, function(player) {
+        return !player.get('self');
+      });
+      top = _.head(others, 3);
+      _.each(top, __bind(function(player) {
+        return this.add(player);
+      }, this));
+      if (window.current_player) {
+        return this.add(window.current_player);
+      }
     },
-    add: function(model) {
+    add: function(player) {
       var view;
       view = new PlayerView({
-        model: model
+        model: player
       });
-      model.view = view;
-      if (model.get('self')) {
+      player.view = view;
+      if (player.get('self')) {
         $(this.el).prepend(view.render().el);
         return;
       }

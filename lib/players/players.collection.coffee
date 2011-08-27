@@ -29,6 +29,18 @@ PlayersCollection = Backbone.Collection.extend
     projectile_player = @get(projectile.get('player'))
     @each (player) -> player.test(projectile, projectile_player)
 
+  others: ->
+    return @select (player) ->
+      return not player.get('self')
+
+  spectators: ->
+    return @select (player) ->
+      return player.get('state') is 'waiting'
+
+  players: ->
+    return @select (player) ->
+      return player.get('state') is 'alive'
+
   spores: -> 
     return @select (player) ->
       return player.get('team') is 'spores'

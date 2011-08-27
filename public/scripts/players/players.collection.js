@@ -43,6 +43,21 @@
         return player.test(projectile, projectile_player);
       });
     },
+    others: function() {
+      return this.select(function(player) {
+        return !player.get('self');
+      });
+    },
+    spectators: function() {
+      return this.select(function(player) {
+        return player.get('state') === 'waiting';
+      });
+    },
+    players: function() {
+      return this.select(function(player) {
+        return player.get('state') === 'alive';
+      });
+    },
     spores: function() {
       return this.select(function(player) {
         return player.get('team') === 'spores';

@@ -15,6 +15,7 @@
     enable: ['coffeescript', 'less']
   }));
   app.use(express.static("" + __dirname + "/public"));
+  app.post('/', function(req, res) {});
   app.listen(80, function() {
     if (process.getuid() === 0) {
       return require('fs').stat(__filename, function(err, stats) {
