@@ -1,12 +1,12 @@
 class window.Planet
   constructor: ->
-    helper = new Canvas(null, 220, 220)
+    helper = new Canvas(null, 224, 224)
     @canvas = helper.canvas
-    helper.circle(110,110,110)
-    helper.fill('rgba(255,255,255,0.4)')
+    helper.draw_image('/images/planet_grey.png', 0,0, 224, 224)
     
   draw:(helper) -> 
     helper.save()
     helper.translate(helper.width / 2, helper.height / 2) #/
-    helper.draw_image(@canvas, -110, -110, 220, 220)
+    helper.rotate(helper.ticks * 0.001)
+    helper.draw_image(@canvas, -112, -112, 224, 224)
     helper.restore()   

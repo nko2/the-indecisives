@@ -2,7 +2,7 @@ class window.Explosion
   total_width: 336
   width: 48
   height: 60
-  frames: 6
+  frames: 7
   
   constructor: ->
     helper = new Canvas(null, @total_width, @height)
