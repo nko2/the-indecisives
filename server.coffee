@@ -20,9 +20,11 @@ io.configure -> io.set('log level', 2)
 players = new PlayersCollection()
 
 players.bind 'remove', (player) ->
+  console.log 'player:disconnect'
   io.sockets.volatile.emit('player:disconnect', player.toJSON())
 
 players.bind 'change', (player) ->
+  console.log 'player:update'
   io.sockets.volatile.emit('player:update', player.toJSON())
 
 game_loop = ->
@@ -52,5 +54,7 @@ io.sockets.on 'connection', (socket) ->
       when 'UP' then player.aim_right()
 
   socket.on 'disconnect', ->
+    console.log "player disconnected: #{socket.id}"
+
     player = players.get(socket.id)
     players.remove(player)
