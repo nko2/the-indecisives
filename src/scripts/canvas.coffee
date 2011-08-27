@@ -72,7 +72,7 @@ class window.Canvas
            window.oRequestAnimationFrame or
            (callback, element) -> window.setTimeout(callback, 1000 / 60)
 
-  step: (timestamp) ->
+  step: (timestamp) =>
     @clear()
     @ticks++
     @draw_callback.call(this)

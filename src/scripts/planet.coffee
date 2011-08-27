@@ -2,7 +2,7 @@ class window.Planet
   constructor: ->
     helper = new Canvas(null, 220, 220)
     @canvas = helper.canvas
-    helper.circle(0,0,110)
+    helper.circle(110,110,110)
     helper.fill('rgba(255,255,255,0.4)')
     
   draw:(helper) -> 

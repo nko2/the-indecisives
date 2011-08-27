@@ -1,12 +1,12 @@
 window.onload = ->
   helper = new Canvas(document.getElementById('game-canvas'))
-  orbit = new Orbit()
-  planet = new Planet()
   background = new Background()
+  planet = new Planet()
+  orbit = new Orbit(200)
   
   
   helper.draw ->
-    orbit.draw(this)
-    planet.draw(this)
     background.draw(this)
+    planet.draw(this)
+    orbit.draw(this)
   
