@@ -1,7 +1,7 @@
 if require?
   Backbone = require('backbone')
-  Vector = require('/src/scripts/vector')
-  ProjectileModel = require('/src/scripts/projectile')
+  Vector = require('../vector')
+  ProjectileModel = require('../projectiles/projectile.model')
 else
   Backbone = window.Backbone
   Vector = window.Vector

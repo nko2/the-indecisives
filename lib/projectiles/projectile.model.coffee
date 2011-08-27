@@ -1,7 +1,7 @@
 if require?
   _ = require('underscore')
   Backbone = require('backbone')
-  Vector = require('/src/scripts/vector')
+  Vector = require('../vector')
 else
   _ = window._
   Backbone = window.Backbone

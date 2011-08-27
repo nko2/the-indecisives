@@ -1,6 +1,6 @@
 if require?
   Backbone = require('backbone')
-  ProjectileModel = require('/src/scripts/projectile.model')
+  ProjectileModel = require('./projectile.model')
 else
   Backbone = window.Backbone
   ProjectileModel = window.ProjectileModel
