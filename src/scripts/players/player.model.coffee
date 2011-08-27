@@ -48,7 +48,6 @@ PlayerModel = Backbone.Model.extend
 
     @set({ velocity: velocity, position: position }, silent: true)
     @change()
-    console.log 'update'
 
   test: -> # TODO: test collisions
 
