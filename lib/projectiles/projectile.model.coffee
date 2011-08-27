@@ -30,7 +30,7 @@ ProjectileModel = Backbone.Model.extend
       return
     
     if state is 'dying'
-      @set({ttl: ttl})
+      @set({ttl: ttl}, silent: true)
       return
       
     velocity = @get('velocity')
@@ -53,7 +53,6 @@ ProjectileModel = Backbone.Model.extend
       
       @set({ velocity: velocity, position: position, ttl: ttl }, silent: true)
       @players.test(this)
-      @change()
       
   draw: (helper) ->
     position = @get('position')

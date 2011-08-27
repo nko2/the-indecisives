@@ -32,6 +32,8 @@
       if (state === 'dying') {
         this.set({
           ttl: ttl
+        }, {
+          silent: true
         });
         return;
       }
@@ -56,8 +58,7 @@
         }, {
           silent: true
         });
-        this.players.test(this);
-        return this.change();
+        return this.players.test(this);
       }
     },
     draw: function(helper) {

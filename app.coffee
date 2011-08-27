@@ -24,7 +24,7 @@ app.listen 80, ->
 console.log("listening on #{80}...")
 
 io = require('socket.io').listen(app)
-io.configure -> io.set('log level', 2)
+io.configure -> io.set('log level', 1)
 io.configure 'production', ->
   io.enable('browser client minification')
   io.enable('browser client etag')
@@ -40,8 +40,14 @@ io.configure 'production', ->
 players = new PlayersCollection()
 projectiles = new ProjectilesCollection()
 
+players.bind 'add', (player) ->
+  io.sockets.emit('player:connect', player.toJSON())
+
 players.bind 'remove', (player) ->
-  io.sockets.volatile.emit('player:disconnect', player.toJSON())
+  io.sockets.emit('player:disconnect', player.toJSON())
+
+projectiles.bind 'add', (projectile) ->
+  io.sockets.volatile.emit('projectile:add', projectile.toJSON())
 
 projectiles.bind 'remove', (projectile) ->
   io.sockets.volatile.emit('projectile:remove', projectile.toJSON())
@@ -50,8 +56,8 @@ game_loop = ->
   projectiles.update()
   players.update()
 
-  io.sockets.volatile.emit('projectiles:update', projectiles.toJSON())
   io.sockets.volatile.emit('players:update', players.toJSON())
+  io.sockets.volatile.emit('projectiles:update', projectiles.toJSON())
 
   setTimeout ->
     game_loop()
@@ -64,7 +70,7 @@ io.sockets.on 'connection', (socket) ->
 
   player = new PlayerModel(id: socket.id, team: team)
   player.players = players
-  players.add(player, silent: true)
+  players.add(player)
 
   socket.on 'player:name', (name) ->
     player.set({ name: name }, silent: true)
@@ -84,9 +90,19 @@ io.sockets.on 'connection', (socket) ->
           projectile = player.fire()
           projectile.projectiles = projectiles
           projectile.players = players
-          projectiles.add(projectile, silent: true)
+          projectiles.add(projectile)
           callback(projectile.id)
 
   socket.on 'disconnect', ->
     player = players.get(socket.id)
     players.remove(player)
+
+    spores = players.spores()
+    ships = players.ships()
+
+    if spores.length > ships.length
+      diff = spores.length - ships.length
+      spores[0].set({ team: 'ships' }, silent: true) if diff > 1
+    else
+      diff = ships.length - spores.length
+      ships[0].set({ team: 'spores' }, silent: true) if diff > 1

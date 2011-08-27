@@ -64,21 +64,19 @@ window.onload = ->
             projectile.set(id: projectile_id) if projectile_id
     , false
 
+    # PLAYERS UPDATE
     socket.on 'players:update', (players_data) -> 
       _.each players_data, (player_data) ->
-        player_data.self = true if player_data.id is socket.socket.sessionid
         player = players.get(player_data.id)
-        
+        player_data.self = true if player_data.id is socket.socket.sessionid
+
         unless player
           player = new PlayerModel(player_data)
           window.current_player = player if player_data.self
           player.players = players
           player.projectiles = projectiles
           players.add(player)
-          return
-        
-        player.clear()
-        player.set(player_data)
+        else player.set(player_data)
         
         return unless player_data.self
 
@@ -105,6 +103,16 @@ window.onload = ->
         else unless state is 'waiting'
           splash.hide()
       
+    # PLAYER CONNECT
+    socket.on 'player:connect', (player_data) ->
+      player_data.self = true if player_data.id is socket.socket.sessionid
+      player = new PlayerModel(player_data)
+      window.current_player = player if player_data.self
+      player.players = players
+      player.projectiles = projectiles
+      players.add(player)
+
+    # PLAYER DISCONNECT
     socket.on 'player:disconnect', (player_data) ->
       player = players.get('player_data.id')
       players.remove(player)
@@ -116,16 +124,22 @@ window.onload = ->
         projectile_data.position = new Vector(projectile_data.position.x, projectile_data.position.y) if projectile_data.position
         projectile_data.velocity = new Vector(projectile_data.velocity.x, projectile_data.velocity.y) if projectile_data.velocity
         projectile = projectiles.get(projectile_data.id)
-
         unless projectile
           projectile = new ProjectileModel(projectile_data)
           projectile.players = players 
           projectile.projectiles = projectiles
           projectiles.add(projectile)
-          return
-        
-        projectile.clear()
-        projectile.set(projectile_data)
+        else projectile.set(projectile_data)
+
+    # PROJECTILE ADD
+    socket.on 'projectile:add', (projectile_data) ->
+      projectile_data.self = true if projectile_data.player is socket.socket.sessionid
+      projectile_data.position = new Vector(projectile_data.position.x, projectile_data.position.y) if projectile_data.position
+      projectile_data.velocity = new Vector(projectile_data.velocity.x, projectile_data.velocity.y) if projectile_data.velocity
+      projectile = new ProjectileModel(projectile_data)
+      projectile.players = players 
+      projectile.projectiles = projectiles
+      projectiles.add(projectile)
       
     # PROJECTILE REMOVE  
     socket.on 'projectile:remove', (projectile_data) ->

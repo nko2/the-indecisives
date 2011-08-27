@@ -81,10 +81,10 @@
       socket.on('players:update', function(players_data) {
         return _.each(players_data, function(player_data) {
           var accuracy, duration, fires, hits, kills, player, state;
+          player = players.get(player_data.id);
           if (player_data.id === socket.socket.sessionid) {
             player_data.self = true;
           }
-          player = players.get(player_data.id);
           if (!player) {
             player = new PlayerModel(player_data);
             if (player_data.self) {
@@ -93,10 +93,9 @@
             player.players = players;
             player.projectiles = projectiles;
             players.add(player);
-            return;
+          } else {
+            player.set(player_data);
           }
-          player.clear();
-          player.set(player_data);
           if (!player_data.self) {
             return;
           }
@@ -115,6 +114,19 @@
             return splash.hide();
           }
         });
+      });
+      socket.on('player:connect', function(player_data) {
+        var player;
+        if (player_data.id === socket.socket.sessionid) {
+          player_data.self = true;
+        }
+        player = new PlayerModel(player_data);
+        if (player_data.self) {
+          window.current_player = player;
+        }
+        player.players = players;
+        player.projectiles = projectiles;
+        return players.add(player);
       });
       socket.on('player:disconnect', function(player_data) {
         var player;
@@ -138,12 +150,27 @@
             projectile = new ProjectileModel(projectile_data);
             projectile.players = players;
             projectile.projectiles = projectiles;
-            projectiles.add(projectile);
-            return;
+            return projectiles.add(projectile);
+          } else {
+            return projectile.set(projectile_data);
           }
-          projectile.clear();
-          return projectile.set(projectile_data);
         });
+      });
+      socket.on('projectile:add', function(projectile_data) {
+        var projectile;
+        if (projectile_data.player === socket.socket.sessionid) {
+          projectile_data.self = true;
+        }
+        if (projectile_data.position) {
+          projectile_data.position = new Vector(projectile_data.position.x, projectile_data.position.y);
+        }
+        if (projectile_data.velocity) {
+          projectile_data.velocity = new Vector(projectile_data.velocity.x, projectile_data.velocity.y);
+        }
+        projectile = new ProjectileModel(projectile_data);
+        projectile.players = players;
+        projectile.projectiles = projectiles;
+        return projectiles.add(projectile);
       });
       return socket.on('projectile:remove', function(projectile_data) {
         var projectile;

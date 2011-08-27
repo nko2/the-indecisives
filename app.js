@@ -28,7 +28,7 @@
   console.log("listening on " + 80 + "...");
   io = require('socket.io').listen(app);
   io.configure(function() {
-    return io.set('log level', 2);
+    return io.set('log level', 1);
   });
   io.configure('production', function() {
     io.enable('browser client minification');
@@ -38,8 +38,14 @@
   });
   players = new PlayersCollection();
   projectiles = new ProjectilesCollection();
+  players.bind('add', function(player) {
+    return io.sockets.emit('player:connect', player.toJSON());
+  });
   players.bind('remove', function(player) {
-    return io.sockets.volatile.emit('player:disconnect', player.toJSON());
+    return io.sockets.emit('player:disconnect', player.toJSON());
+  });
+  projectiles.bind('add', function(projectile) {
+    return io.sockets.volatile.emit('projectile:add', projectile.toJSON());
   });
   projectiles.bind('remove', function(projectile) {
     return io.sockets.volatile.emit('projectile:remove', projectile.toJSON());
@@ -47,8 +53,8 @@
   game_loop = function() {
     projectiles.update();
     players.update();
-    io.sockets.volatile.emit('projectiles:update', projectiles.toJSON());
     io.sockets.volatile.emit('players:update', players.toJSON());
+    io.sockets.volatile.emit('projectiles:update', projectiles.toJSON());
     return setTimeout(function() {
       return game_loop();
     }, 1000 / 30);
@@ -62,9 +68,7 @@
       team: team
     });
     player.players = players;
-    players.add(player, {
-      silent: true
-    });
+    players.add(player);
     socket.on('player:name', function(name) {
       return player.set({
         name: name
@@ -100,16 +104,36 @@
             projectile = player.fire();
             projectile.projectiles = projectiles;
             projectile.players = players;
-            projectiles.add(projectile, {
-              silent: true
-            });
+            projectiles.add(projectile);
             return callback(projectile.id);
         }
       }
     });
     return socket.on('disconnect', function() {
+      var diff, ships, spores;
       player = players.get(socket.id);
-      return players.remove(player);
+      players.remove(player);
+      spores = players.spores();
+      ships = players.ships();
+      if (spores.length > ships.length) {
+        diff = spores.length - ships.length;
+        if (diff > 1) {
+          return spores[0].set({
+            team: 'ships'
+          }, {
+            silent: true
+          });
+        }
+      } else {
+        diff = ships.length - spores.length;
+        if (diff > 1) {
+          return ships[0].set({
+            team: 'spores'
+          }, {
+            silent: true
+          });
+        }
+      }
     });
   });
 }).call(this);
