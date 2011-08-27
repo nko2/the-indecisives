@@ -38,15 +38,6 @@ io.configure 'production', ->
          'jsonp-polling'
   ]
 
-players = new PlayersCollection()
-projectiles = new ProjectilesCollection()
-
-players.bind 'remove', (player) ->
-  io.sockets.emit('player:disconnect', player.toJSON())
-
-projectiles.bind 'remove', (projectile) ->
-  io.sockets.volatile.emit('projectile:remove', projectile.toJSON())
-
 send_updates = ->
   io.sockets.volatile.emit('players:update', players.toJSON())
   io.sockets.volatile.emit('projectiles:update', projectiles.toJSON())
