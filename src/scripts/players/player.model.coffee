@@ -47,3 +47,35 @@ PlayerModel = Backbone.Model.extend
     @change()
 
   draw: (helper) ->
+    team = @get('team')
+    self = @get('self')
+
+    position = @get('position')
+    trajectory = @get('trajectory')
+
+    helper.save()
+    helper.translate(helper.half_width, helper.half_height)
+    helper.rotate(position)
+    helper.translate(0, if team is 'spores' then -100 else -200)
+    helper.no_stroke()
+    helper.fill('rgba(255, 255, 255, 0.8)')
+    helper.circle(0, 0, 4, 4)
+    helper.no_fill()
+    helper.stroke_width(2)
+    helper.stroke("rgba(255, 255, 255, 1") # TODO: this will change opacity based on player hp
+    helper.circle(0, 0, 12, 12)
+
+    if self
+      helper.stroke('rgba(255, 0, 0, 0.8)')
+      helper.circle(0, 0, 20, 20)
+
+    helper.rotate(trajectory)
+    helper.no_stroke()
+    helper.fill('rgba(255, 255, 255, 0.8)')
+    
+    if team is 'spores'
+      helper.rect(-1, 4, 2, -18)
+    else
+      helper.rect(-1, 4, 2, 10)
+
+    helper.restore()
