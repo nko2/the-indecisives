@@ -70,7 +70,7 @@
             }
         }
       }, this), false);
-      return window.addEventListener('keyup', __bind(function(event) {
+      window.addEventListener('keyup', __bind(function(event) {
         switch (event.keyCode) {
           case 83:
             socket.emit('player:update', 'LEFT');
@@ -100,6 +100,27 @@
             });
         }
       }, this), false);
+      return socket.on('projectile:update', function(projectile_data) {
+        if (projectile_data.player === socket.socket.sessionid) {
+          projectile_data.self = true;
+        }
+        projectile = projectiles.get(projectile_data.id);
+        if (projectile_data.position) {
+          projectile_data.position = new Vector(projectile_data.position.x, projectile_data.position.y);
+        }
+        if (projectile_data.velocity) {
+          projectile_data.velocity = new Vector(projectile_data.velocity.x, projectile_data.velocity.y);
+        }
+        if (!projectile) {
+          projectile = new ProjectileModel(projectile_data);
+          projectile.players = players;
+          projectile.projectiles = projectiles;
+          projectiles.add(projectile);
+          return;
+        }
+        projectile.clear();
+        return projectile.set(projectile_data);
+      });
     });
     return socket.on('disconnect', function() {
       return console.error('disconnected');
