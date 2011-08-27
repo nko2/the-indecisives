@@ -14,6 +14,8 @@ io.configure -> io.set('log level', 2)
 
 game_loop = ->
   setTimeout ->
+    console.log 'game_loop'
+    # game_loop()
   , 1000 / 60
 
 game_loop()
