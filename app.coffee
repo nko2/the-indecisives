@@ -7,7 +7,6 @@ Vector = require('./public/scripts/vector')
 PlayerModel = require('./public/scripts/players/player.model')
 PlayersCollection = require('./public/scripts/players/players.collection')
 
-ProjectileModel = require('./public/scripts/projectiles/projectile.model')
 ProjectilesCollection = require('./public/scripts/projectiles/projectiles.collection')
 
 app = express.createServer()
@@ -43,7 +42,6 @@ players = new PlayersCollection()
 projectiles = new ProjectilesCollection()
 
 players.bind 'remove', (player) ->
-  console.log "removing player #{player.id}"
   io.sockets.emit('player:disconnect', player.toJSON())
 
 projectiles.bind 'remove', (projectile) ->
