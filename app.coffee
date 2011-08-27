@@ -52,7 +52,6 @@ game_loop = ->
 game_loop()
 
 io.sockets.on 'connection', (socket) ->
-  console.log "player connected: #{socket.id}"
   team = if players.spores().length > players.ships().length then 'ships' else 'spores'
 
   player = new PlayerModel(id: socket.id, team: team)
@@ -75,6 +74,5 @@ io.sockets.on 'connection', (socket) ->
         callback(projectile.id)
 
   socket.on 'disconnect', ->
-    console.log "player disconnected: #{socket.id}"
     player = players.get(socket.id)
     players.remove(player)

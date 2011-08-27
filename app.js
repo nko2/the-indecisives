@@ -48,7 +48,6 @@
   game_loop();
   io.sockets.on('connection', function(socket) {
     var player, team;
-    console.log("player connected: " + socket.id);
     team = players.spores().length > players.ships().length ? 'ships' : 'spores';
     player = new PlayerModel({
       id: socket.id,
@@ -81,7 +80,6 @@
       }
     });
     return socket.on('disconnect', function() {
-      console.log("player disconnected: " + socket.id);
       player = players.get(socket.id);
       return players.remove(player);
     });
