@@ -9,7 +9,6 @@
     Vector = window.Vector;
     ProjectileModel = window.ProjectileModel;
   }
-  console.log(ProjectileModel);
   PlayerModel = Backbone.Model.extend({
     defaults: {
       team: 'ships',

@@ -67,16 +67,14 @@ ProjectileModel = Backbone.Model.extend
     
     helper.save()
     helper.translate(helper.width / 2, helper.height / 2)
+    helper.translate(position.x, position.y)
     helper.circle(0, 0, 2, 2)
-    
     helper.restore()
 
 if module?.exports?
   module.exports = ProjectileModel
 else
-  window.ProjectileModel = ProjectileModel      
-      
-      
+  window.ProjectileModel = ProjectileModel
       
       
       
