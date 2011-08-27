@@ -125,7 +125,7 @@ PlayerModel = Backbone.Model.extend
     helper.circle(0, 0, 4, 4)
     helper.no_fill()
     helper.stroke_width(2)
-    helper.stroke("rgba(255, 255, 255, #{@get('hp') / 125}") # TODO: this will change opacity based on player hp
+    helper.stroke("rgba(255, 255, 255, #{@get('hp') / 125}")
     helper.circle(0, 0, 12, 12)
 
     if self
