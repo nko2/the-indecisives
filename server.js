@@ -1,5 +1,6 @@
 (function() {
-  var PlayerModel, PlayersCollection, Vector, app, express, game_loop, io, players, _;
+  var PlayerModel, PlayersCollection, Vector, app, express, game_loop, io, nko, players, _;
+  nko = require('nko')('L3U8N469dCVshmal');
   express = require('express');
   _ = require('underscore');
   Vector = require('./src/scripts/vector');
@@ -12,7 +13,16 @@
     enable: ['coffeescript', 'less']
   }));
   app.use(express.static("" + __dirname + "/public"));
-  app.listen(80);
+  app.listen(80, function() {
+    if (process.getuid() === 0) {
+      return require('fs').stat(__filename, function(err, stats) {
+        if (err) {
+          return console.log(err);
+        }
+        return process.setuid(stats.uid);
+      });
+    }
+  });
   console.log("listening on " + 80 + "...");
   io = require('socket.io').listen(app);
   io.configure('production', function() {
