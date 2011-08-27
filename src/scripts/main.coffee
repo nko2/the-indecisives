@@ -4,6 +4,8 @@ window.onload = ->
   planet = new Planet()
   orbit = new Orbit(200)
   
+  window.players = players = new PlayersCollection()
+  window.player = player = new PlayerModel()
   
   helper.draw ->
     background.draw(this)

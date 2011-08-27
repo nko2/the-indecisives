@@ -1,10 +1,12 @@
 (function() {
   window.onload = function() {
-    var background, helper, orbit, planet, socket;
+    var background, helper, orbit, planet, player, players, socket;
     helper = new Canvas(document.getElementById('game-canvas'));
     background = new Background();
     planet = new Planet();
     orbit = new Orbit(200);
+    window.players = players = new PlayersCollection();
+    window.player = player = new PlayerModel();
     helper.draw(function() {
       background.draw(this);
       planet.draw(this);
@@ -12,7 +14,6 @@
     });
     window.socket = socket = io.connect();
     socket.on('player:update', function(player_data) {
-      var player;
       if (player_data === socket.socket.sessionid) {
         player_data.self = true;
       }
@@ -31,7 +32,6 @@
       if (!player_data.self) {}
     });
     return socket.on('player:disconnect', function(player_data) {
-      var player;
       player = players.get('player_data.id');
       return players.remove(player);
     });
