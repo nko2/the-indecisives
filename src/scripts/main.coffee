@@ -66,5 +66,4 @@ window.onload = ->
           current_player.move_right() if current_player.get('state') is 'alive'
     , false
       
-  socket.on 'disconnect', ->
-    console.error('disconnected')
+  socket.on 'disconnect', -> console.error('disconnected')

@@ -41,6 +41,7 @@
       return players.remove(player);
     });
     socket.on('connect', function() {
+      console.log("connected");
       socket.on('error', function(err) {
         return console.error(err);
       });
