@@ -33,9 +33,6 @@
     io.set('log level', 1);
     return io.set('transports', ['websocket', 'flashsocket', 'htmlfile', 'xhr-polling', 'jsonp-polling']);
   });
-  io.configure('development', function() {
-    return io.set('transports', ['websocket']);
-  });
   players = new PlayersCollection();
   projectiles = new ProjectilesCollection();
   players.bind('remove', function(player) {

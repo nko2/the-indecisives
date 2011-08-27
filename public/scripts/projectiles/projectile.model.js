@@ -56,6 +56,7 @@
         }, {
           silent: true
         });
+        this.players.test(this);
         return this.change();
       }
     },

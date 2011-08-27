@@ -36,8 +36,6 @@ io.configure 'production', ->
          'jsonp-polling'
   ]
 
-io.configure 'development', -> io.set('transports', ['websocket'])
-
 players = new PlayersCollection()
 projectiles = new ProjectilesCollection()
 

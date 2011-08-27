@@ -101,26 +101,28 @@
             });
         }
       }, this), false);
-      socket.on('projectile:update', function(projectile_data) {
-        if (projectile_data.player === socket.socket.sessionid) {
-          projectile_data.self = true;
-        }
-        projectile = projectiles.get(projectile_data.id);
-        if (projectile_data.position) {
-          projectile_data.position = new Vector(projectile_data.position.x, projectile_data.position.y);
-        }
-        if (projectile_data.velocity) {
-          projectile_data.velocity = new Vector(projectile_data.velocity.x, projectile_data.velocity.y);
-        }
-        if (!projectile) {
-          projectile = new ProjectileModel(projectile_data);
-          projectile.players = players;
-          projectile.projectiles = projectiles;
-          projectiles.add(projectile);
-          return;
-        }
-        projectile.clear();
-        return projectile.set(projectile_data);
+      socket.on('projectiles:update', function(projectiles_data) {
+        return _.each(projectiles_data, function(projectile_data) {
+          if (projectile_data.player === socket.socket.sessionid) {
+            projectile_data.self = true;
+          }
+          projectile = projectiles.get(projectile_data.id);
+          if (projectile_data.position) {
+            projectile_data.position = new Vector(projectile_data.position.x, projectile_data.position.y);
+          }
+          if (projectile_data.velocity) {
+            projectile_data.velocity = new Vector(projectile_data.velocity.x, projectile_data.velocity.y);
+          }
+          if (!projectile) {
+            projectile = new ProjectileModel(projectile_data);
+            projectile.players = players;
+            projectile.projectiles = projectiles;
+            projectiles.add(projectile);
+            return;
+          }
+          projectile.clear();
+          return projectile.set(projectile_data);
+        });
       });
       return socket.on('projectile:remove', function(projectile_data) {
         projectile = projectiles.get(projectile_data.id);

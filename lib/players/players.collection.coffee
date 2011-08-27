@@ -9,13 +9,15 @@ PlayersCollection = Backbone.Collection.extend
   model: PlayerModel
   
   draw: (helper) ->
-    @each (player) -> 
-      player.draw(helper)
+    @each (player) -> player.draw(helper)
   
-  update: (helper) ->
-    @each (player) -> 
-      player.update()
+  update: ->
+    @each (player) -> player.update()
     
+  test: (projectile) ->
+    projectile_player = @get(projectile.get('player'))
+    @each (player) -> player.test(projectile, projectile_player)
+
   spores: -> 
     return @select (player) ->
       return player.get('team') is 'spores'

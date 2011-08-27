@@ -6,6 +6,7 @@ else
   ProjectileModel = window.ProjectileModel
 
 ProjectilesCollection = Backbone.Collection.extend
+
   model: ProjectileModel
   
   draw:(helper) ->
@@ -13,7 +14,6 @@ ProjectilesCollection = Backbone.Collection.extend
 
   update: ->
     @each (projectile) -> projectile.update()
-
 
 if module?.exports?
   module.exports = ProjectilesCollection
