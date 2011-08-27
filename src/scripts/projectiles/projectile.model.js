@@ -3,7 +3,7 @@
   if (typeof require !== "undefined" && require !== null) {
     _ = require('underscore');
     Backbone = require('backbone');
-    Vector = require('/src/scripts/vector');
+    Vector = require('../vector');
   } else {
     _ = window._;
     Backbone = window.Backbone;
@@ -14,7 +14,7 @@
       ttl: 100,
       state: 'alive',
       velocity: new Vector(),
-      position: new Position(),
+      position: new Vector(),
       self: false
     },
     initialize: function() {
