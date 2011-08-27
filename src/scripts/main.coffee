@@ -18,6 +18,8 @@ window.onload = ->
   window.socket = socket = io.connect()
   
   socket.on 'players:update', (players_data) -> 
+    # players.reset(players_data)
+
     _.each players_data, (player_data) ->
       player_data.self = true if player_data.id is socket.socket.sessionid
       player = players.get(player_data.id)
@@ -40,7 +42,10 @@ window.onload = ->
     players.remove(player)
 
   socket.on 'connect', ->
+    console.log "connected"
+
     socket.on 'error',(err) -> console.error(err)
+
     window.addEventListener 'keypress', (event) =>
       switch event.keyCode
         when 100, 68
@@ -50,6 +55,7 @@ window.onload = ->
           socket.emit('player:update', 'DOWN')  
           current_player.aim_right() if current_player.get('state') is 'alive'
     , false
+
     window.addEventListener 'keyup', (event) =>
       switch event.keyCode
         when 83
