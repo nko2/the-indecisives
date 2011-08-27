@@ -36,6 +36,7 @@ io.configure 'production', ->
 io.configure 'development', -> io.set('transports', ['websocket'])
 
 players = new PlayersCollection()
+
 players.bind 'remove', (player) ->
   io.sockets.volatile.emit('player:disconnect', player.toJSON())
 
