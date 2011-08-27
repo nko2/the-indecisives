@@ -37,3 +37,9 @@ window.onload = ->
   socket.on 'player:disconnect', (player_data) ->
     player = players.get('player_data.id')
     players.remove(player)
+
+
+  socket.on 'connect', ->
+  
+  socket.on 'disconnect', ->
+    console.error('disconnected')
