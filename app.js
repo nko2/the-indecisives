@@ -1,11 +1,13 @@
 (function() {
-  var PlayerModel, PlayersCollection, Vector, app, express, game_loop, io, nko, players, _;
+  var PlayerModel, PlayersCollection, ProjectileModel, ProjectilesCollection, Vector, app, express, game_loop, io, nko, players, projectiles, _;
   nko = require('nko')('L3U8N469dCVshmal');
   express = require('express');
   _ = require('underscore');
   Vector = require('./public/scripts/vector');
   PlayerModel = require('./public/scripts/players/player.model');
   PlayersCollection = require('./public/scripts/players/players.collection');
+  ProjectileModel = require('./public/scripts/projectiles/projectile.model');
+  ProjectilesCollection = require('./public/scripts/projectiles/projectiles.collection');
   app = express.createServer();
   app.use(express.compiler({
     src: "" + __dirname + "/src",
@@ -35,11 +37,17 @@
     return io.set('transports', ['websocket']);
   });
   players = new PlayersCollection();
+  projectiles = new ProjectilesCollection();
   players.bind('remove', function(player) {
     return io.sockets.volatile.emit('player:disconnect', player.toJSON());
   });
+  projectiles.bind('remove', function(projectile) {
+    return io.sockets.volatile.emit('projectile:remove', projectile.toJSON());
+  });
   game_loop = function() {
+    projectiles.update();
     players.update();
+    io.sockets.volatile.emit('projectiles:update', projectiles.toJSON());
     io.sockets.volatile.emit('players:update', players.toJSON());
     return setTimeout(function() {
       return game_loop();
@@ -76,6 +84,7 @@
           projectiles.add(projectile, {
             silent: true
           });
+          console.log(projectile.id);
           return callback(projectile.id);
       }
     });

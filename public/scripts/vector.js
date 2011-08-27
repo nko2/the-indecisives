@@ -19,6 +19,9 @@
       this.y = _y;
       return this;
     };
+    Vector.prototype.squared_distance = function(vector) {
+      return Math.pow(this.x - vector.x, 2) + Math.pow(this.y - vector.y, 2);
+    };
     Vector.prototype.toJSON = function() {
       return {
         x: this.x,

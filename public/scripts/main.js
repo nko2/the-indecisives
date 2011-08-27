@@ -50,7 +50,6 @@
       return players.remove(player);
     });
     socket.on('connect', function() {
-      console.log("connected");
       socket.on('error', function(err) {
         return console.error(err);
       });
@@ -86,14 +85,13 @@
             }
             break;
           case 32:
-            console.log(current_player.toJSON());
             if (current_player.get('state') === 'alive') {
               projectile = current_player.fire();
               projectile.projectiles = projectiles;
               projectile.players = players;
               projectiles.add(projectile);
             }
-            return socket.emit('player:update', 'SPACE', projectile_id)(function() {
+            return socket.emit('player:update', 'SPACE', function(projectile_id) {
               if (projectile_id) {
                 return projectile.set({
                   id: projectile_id

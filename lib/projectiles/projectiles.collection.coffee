@@ -9,12 +9,10 @@ ProjectilesCollection = Backbone.Collection.extend
   model: ProjectileModel
   
   draw:(helper) ->
-    @each (projectile) ->
-      projectile.draw(helper)
+    @each (projectile) -> projectile.draw(helper)
 
   update: ->
-    @each (projectile) ->
-      projectile.update()
+    @each (projectile) -> projectile.update()
 
 
 if module?.exports?

@@ -20,8 +20,8 @@ ProjectileModel = Backbone.Model.extend
     _.bindAll(this, 'update')
     
   update: ->
-    state: @get('state')
-    ttl: @get('ttl')
+    state = @get('state')
+    ttl = @get('ttl')
     
     ttl--
     
@@ -38,7 +38,7 @@ ProjectileModel = Backbone.Model.extend
 
     size = 100
     
-    r_squared = position.squared.distance(new Vector())
+    r_squared = position.squared_distance(new Vector())
     distance = Math.sqrt(r_squared)
     
     if distance < 100
@@ -47,29 +47,29 @@ ProjectileModel = Backbone.Model.extend
     if r_squared isnt 0
       strength = 1
       force = strength * (size / r_squared)  #/
-      delta = new Vector(-postion.x * force, -position.y * force)
+      delta = new Vector(-position.x * force, -position.y * force)
       velocity.add(delta)
       position.add(velocity)
       
       @set({velocity: velocity, position: position, ttl: ttl}, silent: true)
-      @players.test(this)
+      # @players.test(this)
       @change()
       
-    draw:(helper) ->
-      position = @get('position')
-      ttl = @get('ttl')
-      state = @get('state')
-      
-      helper.no_stroke()
-      
-      if @get('self') then helper.fill('rgba(255, 0, 0, 0.9)')
-      else helper.fill('rgba(192, 192, 192, 0.6)')
-      
-      helper.save()
-      helper.translate(helper.width / 2, helper.height / 2)
-      helper.circle(0, 0, 2, 2)
-      
-      helper.restore()
+  draw: (helper) ->
+    position = @get('position')
+    ttl = @get('ttl')
+    state = @get('state')
+    
+    helper.no_stroke()
+    
+    if @get('self') then helper.fill('rgba(255, 0, 0, 0.9)')
+    else helper.fill('rgba(192, 192, 192, 0.6)')
+    
+    helper.save()
+    helper.translate(helper.width / 2, helper.height / 2)
+    helper.circle(0, 0, 2, 2)
+    
+    helper.restore()
 
 if module?.exports?
   module.exports = ProjectileModel

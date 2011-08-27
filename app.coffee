@@ -7,6 +7,9 @@ Vector = require('./public/scripts/vector')
 PlayerModel = require('./public/scripts/players/player.model')
 PlayersCollection = require('./public/scripts/players/players.collection')
 
+ProjectileModel = require('./public/scripts/projectiles/projectile.model')
+ProjectilesCollection = require('./public/scripts/projectiles/projectiles.collection')
+
 app = express.createServer()
 app.use(express.compiler(src: "#{__dirname}/src", dest: "#{__dirname}/public", enable: ['coffeescript', 'less']))
 app.use(express.static("#{__dirname}/public"))
@@ -36,13 +39,19 @@ io.configure 'production', ->
 io.configure 'development', -> io.set('transports', ['websocket'])
 
 players = new PlayersCollection()
+projectiles = new ProjectilesCollection()
 
 players.bind 'remove', (player) ->
   io.sockets.volatile.emit('player:disconnect', player.toJSON())
 
+projectiles.bind 'remove', (projectile) ->
+  io.sockets.volatile.emit('projectile:remove', projectile.toJSON())
+
 game_loop = ->
+  projectiles.update()
   players.update()
 
+  io.sockets.volatile.emit('projectiles:update', projectiles.toJSON())
   io.sockets.volatile.emit('players:update', players.toJSON())
 
   setTimeout ->

@@ -25,8 +25,6 @@ window.onload = ->
     console.error('unable to connect socket.io', reason)
 
   socket.on 'players:update', (players_data) -> 
-    # players.reset(players_data)
-
     _.each players_data, (player_data) ->
       player_data.self = true if player_data.id is socket.socket.sessionid
       player = players.get(player_data.id)
@@ -48,8 +46,6 @@ window.onload = ->
     players.remove(player)
 
   socket.on 'connect', ->
-    console.log "connected"
-
     socket.on 'error',(err) -> console.error(err)
 
     window.addEventListener 'keypress', (event) =>
@@ -71,13 +67,13 @@ window.onload = ->
           socket.emit('player:update', 'RIGHT')  
           current_player.move_right() if current_player.get('state') is 'alive'
         when 32
-          console.log current_player.toJSON()
           if current_player.get('state') is 'alive'
             projectile = current_player.fire()
             projectile.projectiles = projectiles
             projectile.players = players
             projectiles.add(projectile)
-          socket.emit('player:update', 'SPACE', (projectile_id)) ->
+
+          socket.emit 'player:update', 'SPACE', (projectile_id) ->
             projectile.set(id: projectile_id) if projectile_id
     , false
       

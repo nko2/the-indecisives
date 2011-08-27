@@ -16,6 +16,9 @@ class Vector
 
     return this
 
+  squared_distance: (vector) ->
+    return Math.pow(@x - vector.x, 2) + Math.pow(@y - vector.y, 2)
+
   toJSON: -> return x: @x, y: @y
 
 if module?.exports?
