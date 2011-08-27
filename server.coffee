@@ -38,6 +38,8 @@ game_loop = ->
 game_loop()
 
 io.sockets.on 'connection', (socket) ->
+  console.log "player connected: #{socket.id}"
+
   team = if players.spores().length > players.ships().length then 'ships' else 'spores'
 
   player = new PlayerModel(id: socket.id, team: team)
