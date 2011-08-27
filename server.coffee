@@ -1,4 +1,4 @@
-nko = require('nko')('L3U8N469dCVshmal')
+# nko = require('nko')('L3U8N469dCVshmal')
 
 express = require('express')
 _ = require('underscore')

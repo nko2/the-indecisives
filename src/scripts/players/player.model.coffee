@@ -1,9 +1,11 @@
 if require?
   Backbone = require('backbone')
-  Vector = require('../vector')
+  Vector = require('/src/scripts/vector')
+  ProjectileModel = require('/src/scripts/projectile')
 else
   Backbone = window.Backbone
   Vector = window.Vector
+  ProjectileModel = window.ProjectileModel
 
 PlayerModel = Backbone.Model.extend
 
@@ -15,7 +17,7 @@ PlayerModel = Backbone.Model.extend
     trajectory: 0
 
   max_speed: 0.5
-  max_angle: Math.PI / 4
+  max_angle: Math.PI / 4 #/
 
   initialize: -> @speed = if @get('team') is 'spores' then 0.01 else 0.005
 
@@ -35,7 +37,14 @@ PlayerModel = Backbone.Model.extend
     trajectory = @get('trajectory')
     @set({ trajectory: trajectory -= 0.1 }, silent: true) if trajectory > -@max_angle
 
-  fire: -> # TODO: player fires their turret
+  fire: -> 
+    player_id = @get('id')
+    player_team = @get('team')
+    player_position = @get('position')
+    player_trajectory = @get('trajectory')
+    player_fires = @get('fires')
+    
+    @set({fires: ++player_fires}, silent: true)
 
   update: ->
     velocity = @get('velocity')
