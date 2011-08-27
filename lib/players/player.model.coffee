@@ -81,7 +81,6 @@ PlayerModel = Backbone.Model.extend
     position += velocity + rotation
 
     @set({ velocity: velocity, position: position }, silent: true)
-    @change()
 
   test: (projectile, projectile_player) ->
     return unless @get('state') is 'alive'

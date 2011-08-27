@@ -1,10 +1,12 @@
 (function() {
-  var Backbone, PlayerModel, PlayersCollection;
+  var Backbone, PlayerModel, PlayersCollection, _;
   if (typeof require !== "undefined" && require !== null) {
     Backbone = require('backbone');
+    _ = require('underscore');
     PlayerModel = require('./player.model');
   } else {
     Backbone = window.Backbone;
+    _ = window._;
     PlayerModel = window.PlayerModel;
   }
   PlayersCollection = Backbone.Collection.extend({
@@ -14,16 +16,46 @@
         return player.draw(helper);
       });
     },
+    comparator: function(player) {
+      return -player.get('score');
+    },
     update: function() {
       return this.each(function(player) {
         return player.update();
       });
+    },
+    changes: function() {
+      var changed_players;
+      changed_players = [];
+      this.each(function(player) {
+        var changed_player;
+        changed_player = player.changedAttributes();
+        if (changed_player) {
+          return changed_players.push(changed_player);
+        }
+      });
+      return changed_players;
     },
     test: function(projectile) {
       var projectile_player;
       projectile_player = this.get(projectile.get('player'));
       return this.each(function(player) {
         return player.test(projectile, projectile_player);
+      });
+    },
+    others: function() {
+      return this.select(function(player) {
+        return !player.get('self');
+      });
+    },
+    spectators: function() {
+      return this.select(function(player) {
+        return player.get('state') === 'waiting';
+      });
+    },
+    players: function() {
+      return this.select(function(player) {
+        return player.get('state') === 'alive';
       });
     },
     spores: function() {

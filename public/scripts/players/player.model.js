@@ -121,13 +121,12 @@
       rotation = team === 'spores' ? 0.001 : 0.005;
       velocity *= 0.9;
       position += velocity + rotation;
-      this.set({
+      return this.set({
         velocity: velocity,
         position: position
       }, {
         silent: true
       });
-      return this.change();
     },
     test: function(projectile, projectile_player) {
       var distance, hp, lives, offset, player_position, player_rotation, player_team, position, projectile_player_hits, projectile_player_kills, projectile_player_score, projectile_player_team;
