@@ -1,6 +1,6 @@
 if require?
   Backbone = require('backbone')
-  Vector = require('./src/scripts/vector')
+  Vector = require('../vector')
 else
   Backbone = window.Backbone
   Vector = window.Vector
@@ -84,7 +84,7 @@ PlayerModel = Backbone.Model.extend
 
     helper.restore()
 
-if model?.exports?
+if module?.exports?
   module.exports = PlayerModel
 else
   window.PlayerModel = PlayerModel

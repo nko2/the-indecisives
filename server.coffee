@@ -3,6 +3,7 @@ nko = require('nko')('L3U8N469dCVshmal')
 express = require('express')
 _ = require('underscore')
 
+console.log process.cwd()
 Vector = require('./src/scripts/vector')
 PlayerModel = require('./src/scripts/players/player.model')
 PlayersCollection = require('./src/scripts/players/players.collection')
