@@ -10,7 +10,13 @@ PlayersCollection = require('./src/scripts/players/players.collection')
 app = express.createServer()
 app.use(express.compiler(src: "#{__dirname}/src", dest: "#{__dirname}/public", enable: ['coffeescript', 'less']))
 app.use(express.static("#{__dirname}/public"))
-app.listen(80)
+
+app.listen 80, ->
+  # if run as root, downgrade to the owner of this file
+  if process.getuid() is 0
+    require('fs').stat __filename, (err, stats) ->
+      return console.log(err) if err
+      process.setuid(stats.uid)
 
 console.log("listening on #{80}...")
 
