@@ -3,7 +3,6 @@ nko = require('nko')('L3U8N469dCVshmal')
 express = require('express')
 _ = require('underscore')
 
-console.log process.cwd()
 Vector = require('./src/scripts/vector')
 PlayerModel = require('./src/scripts/players/player.model')
 PlayersCollection = require('./src/scripts/players/players.collection')
@@ -37,7 +36,7 @@ game_loop()
 io.sockets.on 'connection', (socket) ->
   team = if players.spores().length > players.ships().length then 'ships' else 'spores'
 
-  player = PlayerModel(id: socket.id, team: team)
+  player = new PlayerModel(id: socket.id, team: team)
   player.players = players
   players.add(player, silent: true)
 

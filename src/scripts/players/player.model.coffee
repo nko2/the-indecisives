@@ -6,6 +6,7 @@ else
   Vector = window.Vector
 
 PlayerModel = Backbone.Model.extend
+
   defaults:
     team: 'ships'
     self: false
