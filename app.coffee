@@ -66,7 +66,10 @@ io.sockets.on 'connection', (socket) ->
   player.players = players
   players.add(player, silent: true)
 
-  socket.on 'player:update',  (action, callback) ->
+  socket.on 'player:name', (name) ->
+    player.set({ name: name }, silent: true)
+
+  socket.on 'player:update', (action, callback) ->
     player_state = player.get('state')
 
     if action is 'SPACE' and (player_state is 'waiting' or player_state is 'dead')

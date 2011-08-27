@@ -24,11 +24,14 @@ PlayerModel = Backbone.Model.extend
     hits: 0
     fires: 0
     start: Date.now()
+    name: 'anonymous'
 
   max_speed: 0.5
   max_angle: Math.PI / 4 #/
 
   initialize: -> @speed = if @get('team') is 'spores' then 0.01 else 0.005
+
+  validate: (attrs) -> return 'invalid name' unless attrs?.name?.length < 11
 
   move_left: ->
     velocity = @get('velocity')
