@@ -14,9 +14,16 @@
         return player.draw(helper);
       });
     },
-    update: function(helper) {
+    update: function() {
       return this.each(function(player) {
         return player.update();
+      });
+    },
+    test: function(projectile) {
+      var projectile_player;
+      projectile_player = this.get(projectile.get('player'));
+      return this.each(function(player) {
+        return player.test(projectile, projectile_player);
       });
     },
     spores: function() {

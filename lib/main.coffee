@@ -77,21 +77,22 @@ window.onload = ->
             projectile.set(id: projectile_id) if projectile_id
     , false
     
-    socket.on 'projectile:update', (projectile_data) ->
-      projectile_data.self = true if projectile_data.player is socket.socket.sessionid
-      projectile = projectiles.get(projectile_data.id)
-      projectile_data.position = new Vector(projectile_data.position.x, projectile_data.position.y) if projectile_data.position
-      projectile_data.velocity = new Vector(projectile_data.velocity.x, projectile_data.velocity.y) if projectile_data.velocity
+    socket.on 'projectiles:update', (projectiles_data) ->
+      _.each projectiles_data, (projectile_data) ->
+        projectile_data.self = true if projectile_data.player is socket.socket.sessionid
+        projectile = projectiles.get(projectile_data.id)
+        projectile_data.position = new Vector(projectile_data.position.x, projectile_data.position.y) if projectile_data.position
+        projectile_data.velocity = new Vector(projectile_data.velocity.x, projectile_data.velocity.y) if projectile_data.velocity
 
-      unless projectile
-        projectile = new ProjectileModel(projectile_data)
-        projectile.players = players 
-        projectile.projectiles = projectiles
-        projectiles.add(projectile)
-        return
-      
-      projectile.clear()
-      projectile.set(projectile_data)
+        unless projectile
+          projectile = new ProjectileModel(projectile_data)
+          projectile.players = players 
+          projectile.projectiles = projectiles
+          projectiles.add(projectile)
+          return
+        
+        projectile.clear()
+        projectile.set(projectile_data)
       
            
       

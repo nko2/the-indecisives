@@ -51,8 +51,8 @@ ProjectileModel = Backbone.Model.extend
       velocity.add(delta)
       position.add(velocity)
       
-      @set({velocity: velocity, position: position, ttl: ttl}, silent: true)
-      # @players.test(this)
+      @set({ velocity: velocity, position: position, ttl: ttl }, silent: true)
+      @players.test(this)
       @change()
       
   draw: (helper) ->

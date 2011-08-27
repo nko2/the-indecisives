@@ -52,7 +52,7 @@ PlayerModel = Backbone.Model.extend
     player_trajectory = @get('trajectory')
     player_fires = @get('fires')
     
-    @set({fires: ++player_fires}, silent: true)
+    @set({ fires: ++player_fires }, silent: true)
     
     if player_team is 'spores'
       offset = -100
@@ -93,17 +93,26 @@ PlayerModel = Backbone.Model.extend
     offset = if player_team is 'spores' then -100 else -200
     player_position = new Vector(0, offset).rotate(player_rotation)
     distance = position.squared_distance(player_position)
+
     return unless distance < 100
+
     projectile_player_hits = projectile_player.get('hits')
-    projectile_player.set({ score: projectile_player_score += 10, hits: ++projectile_players_hits }, silent: true)
+    projectile_player.set({ score: projectile_player_score += 10, hits: ++projectile_player_hits }, silent: true)
+
     hp = @get('hp')
+
     @set({ hp: hp -= 10 }, silent: true)
+
     projectile.set({ ttl: 20, state: 'dying' }, silent: true)
+
     return unless hp < 0
+
     projectile_player_kills = projectile_player.get('kills')
     projectile_player.set({ score: projectile_player_score += 100, kills: ++projectile_player_kills }, silent: true)
+
     lives = @get('lives')
     lives--
+
     if lives < 0
       @set({ state: 'dead' }, silent: true)
     else
@@ -116,6 +125,8 @@ PlayerModel = Backbone.Model.extend
     position = @get('position')
     trajectory = @get('trajectory')
 
+    hp = @get('hp')
+
     helper.save()
     helper.translate(helper.half_width, helper.half_height)
     helper.rotate(position)
@@ -125,7 +136,7 @@ PlayerModel = Backbone.Model.extend
     helper.circle(0, 0, 4, 4)
     helper.no_fill()
     helper.stroke_width(2)
-    helper.stroke("rgba(255, 255, 255, #{@get('hp') / 125}")
+    helper.stroke("rgba(255, 255, 255, #{hp / 125}")
     helper.circle(0, 0, 12, 12)
 
     if self

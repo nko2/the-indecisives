@@ -143,7 +143,7 @@
       projectile_player_hits = projectile_player.get('hits');
       projectile_player.set({
         score: projectile_player_score += 10,
-        hits: ++projectile_players_hits
+        hits: ++projectile_player_hits
       }, {
         silent: true
       });
@@ -189,11 +189,12 @@
       }
     },
     draw: function(helper) {
-      var position, self, team, trajectory;
+      var hp, position, self, team, trajectory;
       team = this.get('team');
       self = this.get('self');
       position = this.get('position');
       trajectory = this.get('trajectory');
+      hp = this.get('hp');
       helper.save();
       helper.translate(helper.half_width, helper.half_height);
       helper.rotate(position);
@@ -203,7 +204,7 @@
       helper.circle(0, 0, 4, 4);
       helper.no_fill();
       helper.stroke_width(2);
-      helper.stroke("rgba(255, 255, 255, " + (this.get('hp') / 125));
+      helper.stroke("rgba(255, 255, 255, " + (hp / 125));
       helper.circle(0, 0, 12, 12);
       if (self) {
         helper.stroke('rgba(255, 0, 0, 0.8)');
