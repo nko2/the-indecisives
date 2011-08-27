@@ -15,6 +15,7 @@ PlayerModel = Backbone.Model.extend
     position: Math.random() * Math.PI * 2
     velocity: 0
     trajectory: 0
+    state: 'alive'
 
   max_speed: 0.5
   max_angle: Math.PI / 4 #/
@@ -38,6 +39,7 @@ PlayerModel = Backbone.Model.extend
     @set({ trajectory: trajectory -= 0.1 }, silent: true) if trajectory > -@max_angle
 
   fire: -> 
+    console.log 'fire away!'
     player_id = @get('id')
     player_team = @get('team')
     player_position = @get('position')

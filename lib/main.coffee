@@ -72,6 +72,7 @@ window.onload = ->
           socket.emit('player:update', 'RIGHT')  
           current_player.move_right() if current_player.get('state') is 'alive'
         when 32
+          console.log current_player.toJSON()
           if current_player.get('state') is 'alive'
             projectile = current_player.fire()
             projectile.projectiles = projectiles

@@ -15,7 +15,8 @@
       self: false,
       position: Math.random() * Math.PI * 2,
       velocity: 0,
-      trajectory: 0
+      trajectory: 0,
+      state: 'alive'
     },
     max_speed: 0.5,
     max_angle: Math.PI / 4,
@@ -67,16 +68,33 @@
       }
     },
     fire: function() {
-      var player_fires, player_id, player_position, player_team, player_trajectory;
+      var direction, id, offset, player_fires, player_id, player_position, player_team, player_trajectory, position, projectile, velocity;
+      console.log('fire away!');
       player_id = this.get('id');
       player_team = this.get('team');
       player_position = this.get('position');
       player_trajectory = this.get('trajectory');
       player_fires = this.get('fires');
-      return this.set({
+      this.set({
         fires: ++player_fires
       }, {
         silent: true
+      });
+      if (player_team === 'spores') {
+        offset = -100;
+        direction = -10;
+      } else {
+        offset = -200;
+        direction = 10;
+      }
+      position = new Vector(0, offset).rotate(player_position);
+      velocity = new Vector(1, direction).rotate(player_postion);
+      id = "" + player_id + "_" + (Date.now());
+      return projectile = new ProjectileModel({
+        id: id,
+        player: player_id,
+        position: position,
+        velocity: velocity
       });
     },
     update: function() {
