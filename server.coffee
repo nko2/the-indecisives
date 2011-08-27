@@ -20,10 +20,10 @@ io.configure -> io.set('log level', 2)
 players = new PlayersCollection()
 
 players.bind 'remove', (player) ->
-  io.sockets.emit('player:disconnect', player.toJSON())
+  io.sockets.volatile.emit('player:disconnect', player.toJSON())
 
 players.bind 'change', (player) ->
-  io.sockets.emit('player:update', player.toJSON())
+  io.sockets.volatile.emit('player:update', player.toJSON())
 
 game_loop = ->
   setTimeout ->
