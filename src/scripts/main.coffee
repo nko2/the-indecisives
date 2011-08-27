@@ -17,27 +17,27 @@ window.onload = ->
   
   window.socket = socket = io.connect()
   
-  socket.on 'player:update', (player_data) -> 
-    player_data.self = true if player_data.id is socket.socket.sessionid
-    player = players.get(player_data.id)
-    
-    unless player
-      player = new PlayerModel(player_data)
-      window.current_player = player if player_data.self
-      player.players = players
-      players.add(player)
+  socket.on 'players:update', (players_data) -> 
+    _.each players_data, (player_data) ->
+      player_data.self = true if player_data.id is socket.socket.sessionid
+      player = players.get(player_data.id)
       
-      return
-    
-    player.clear()
-    player.set(player_data)
-    
-    return unless player_data.self
+      unless player
+        player = new PlayerModel(player_data)
+        window.current_player = player if player_data.self
+        player.players = players
+        players.add(player)
+        
+        return
+      
+      player.clear()
+      player.set(player_data)
+      
+      return unless player_data.self
     
   socket.on 'player:disconnect', (player_data) ->
     player = players.get('player_data.id')
     players.remove(player)
-
 
   socket.on 'connect', ->
     socket.on 'error',(err) -> console.error(err)

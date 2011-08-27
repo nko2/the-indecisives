@@ -16,7 +16,7 @@
     },
     update: function(helper) {
       return this.each(function(player) {
-        return player.update(helper);
+        return player.update();
       });
     },
     spores: function() {

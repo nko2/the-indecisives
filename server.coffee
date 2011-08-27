@@ -16,21 +16,21 @@ console.log("listening on #{80}...")
 
 io = require('socket.io').listen(app)
 io.configure -> io.set('log level', 2)
+io.configure -> io.set('transports', ['websocket'])
 
 players = new PlayersCollection()
 
 players.bind 'remove', (player) ->
   io.sockets.volatile.emit('player:disconnect', player.toJSON())
 
-players.bind 'change', (player) ->
-  io.sockets.volatile.emit('player:update', player.toJSON())
-
 game_loop = ->
   players.update()
 
+  io.sockets.volatile.emit('players:update', players.toJSON())
+
   setTimeout ->
     game_loop()
-  , 1000 / 1
+  , 1000 / 60
 
 game_loop()
 

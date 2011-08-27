@@ -16,23 +16,25 @@
       return players.draw(this);
     });
     window.socket = socket = io.connect();
-    socket.on('player:update', function(player_data) {
-      if (player_data.id === socket.socket.sessionid) {
-        player_data.self = true;
-      }
-      player = players.get(player_data.id);
-      if (!player) {
-        player = new PlayerModel(player_data);
-        if (player_data.self) {
-          window.current_player = player;
+    socket.on('players:update', function(players_data) {
+      return _.each(players_data, function(player_data) {
+        if (player_data.id === socket.socket.sessionid) {
+          player_data.self = true;
         }
-        player.players = players;
-        players.add(player);
-        return;
-      }
-      player.clear();
-      player.set(player_data);
-      if (!player_data.self) {}
+        player = players.get(player_data.id);
+        if (!player) {
+          player = new PlayerModel(player_data);
+          if (player_data.self) {
+            window.current_player = player;
+          }
+          player.players = players;
+          players.add(player);
+          return;
+        }
+        player.clear();
+        player.set(player_data);
+        if (!player_data.self) {}
+      });
     });
     socket.on('player:disconnect', function(player_data) {
       player = players.get('player_data.id');
