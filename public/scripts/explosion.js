@@ -3,7 +3,7 @@
     Explosion.prototype.total_width = 336;
     Explosion.prototype.width = 48;
     Explosion.prototype.height = 60;
-    Explosion.prototype.frames = 6;
+    Explosion.prototype.frames = 7;
     function Explosion() {
       var helper;
       helper = new Canvas(null, this.total_width, this.height);
