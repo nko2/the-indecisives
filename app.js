@@ -43,7 +43,7 @@
     io.sockets.volatile.emit('players:update', players.toJSON());
     return setTimeout(function() {
       return game_loop();
-    }, 1000 / 60);
+    }, 1000 / 30);
   };
   game_loop();
   io.sockets.on('connection', function(socket) {
@@ -59,7 +59,7 @@
       silent: true
     });
     socket.on('player:update', function(action, callback) {
-      var player_state;
+      var player_state, projectile;
       player_state = player.get('state');
       switch (action) {
         case 'LEFT':
@@ -70,6 +70,14 @@
           return player.aim_left();
         case 'UP':
           return player.aim_right();
+        case 'SPACE':
+          projectile = player.fire();
+          projectile.projectiles = projectiles;
+          projectile.players = players;
+          projectiles.add(projectile, {
+            silent: true
+          });
+          return callback(projectile.id);
       }
     });
     return socket.on('disconnect', function() {

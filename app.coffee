@@ -47,7 +47,7 @@ game_loop = ->
 
   setTimeout ->
     game_loop()
-  , 1000 / 60
+  , 1000 / 30
 
 game_loop()
 
@@ -67,6 +67,12 @@ io.sockets.on 'connection', (socket) ->
       when 'RIGHT' then player.move_left()
       when 'DOWN' then player.aim_left()
       when 'UP' then player.aim_right()
+      when 'SPACE'
+        projectile = player.fire()
+        projectile.projectiles = projectiles
+        projectile.players = players
+        projectiles.add(projectile, silent: true)
+        callback(projectile.id)
 
   socket.on 'disconnect', ->
     console.log "player disconnected: #{socket.id}"
