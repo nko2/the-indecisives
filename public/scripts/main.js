@@ -1,21 +1,43 @@
 (function() {
   var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
+  soundManager.url = '/swfs/';
+  soundManager.flashVersion = 9;
+  soundManager.useFlashBlock = false;
+  soundManager.onready(function() {
+    soundManager.createSound({
+      id: 'background',
+      url: '/audio/background.mp3',
+      autoLoad: true,
+      autoPlay: true,
+      volume: 50
+    });
+    soundManager.createSound({
+      id: 'explosion',
+      url: '/audio/explosion.mp3',
+      autoLoad: true,
+      autoPlay: false,
+      volume: 50
+    });
+    soundManager.createSound({
+      id: 'fire1',
+      url: '/audio/fire1.mp3',
+      autoLoad: true,
+      autoPlay: false,
+      volume: 50
+    });
+    return soundManager.createSound({
+      id: 'fire2',
+      url: '/audio/fire2.mp3',
+      autoLoad: true,
+      autoPlay: false,
+      volume: 50
+    });
+  });
   window.onload = function() {
     var aim_left, aim_right, aiming_left, aiming_right, background, helper, orbit, planet, players, players_view, projectiles, socket, splash;
-    soundManager.url = '/swfs/';
-    soundManager.flashVersion = 9;
-    soundManager.useFlashBlock = false;
-    soundManager.onready(function() {
-      return soundManager.createSound({
-        id: 'explosion',
-        url: '/audio/some.mp3',
-        autoLoad: true,
-        autoPlay: false,
-        onload: function() {
-          return console.log("" + this.sID + " loaded");
-        },
-        volume: 50
-      });
+    $(document.getElementById('toggle-mute')).bind('click', function(e) {
+      e.preventDefault();
+      return soundManager.toggleMute();
     });
     helper = new Canvas(document.getElementById('game-canvas'));
     background = new Background();

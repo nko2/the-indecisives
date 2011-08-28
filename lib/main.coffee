@@ -1,17 +1,41 @@
+soundManager.url = '/swfs/'
+soundManager.flashVersion = 9
+soundManager.useFlashBlock = false
+
+soundManager.onready ->
+  soundManager.createSound
+    id: 'background'
+    url: '/audio/background.mp3'
+    autoLoad: true
+    autoPlay: true
+    volume: 50
+
+  soundManager.createSound
+    id: 'explosion'
+    url: '/audio/explosion.mp3'
+    autoLoad: true
+    autoPlay: false
+    volume: 50
+
+  soundManager.createSound
+    id: 'fire1'
+    url: '/audio/fire1.mp3'
+    autoLoad: true
+    autoPlay: false
+    volume: 50
+
+  soundManager.createSound
+    id: 'fire2'
+    url: '/audio/fire2.mp3'
+    autoLoad: true
+    autoPlay: false
+    volume: 50
+
 window.onload = ->
 
-  soundManager.url = '/swfs/'
-  soundManager.flashVersion = 9
-  soundManager.useFlashBlock = false
-
-  soundManager.onready ->
-    soundManager.createSound
-      id: 'explosion'
-      url: '/audio/some.mp3'
-      autoLoad: true
-      autoPlay: false
-      onload: -> console.log("#{this.sID} loaded")
-      volume: 50
+  $(document.getElementById('toggle-mute')).bind 'click', (e) ->
+    e.preventDefault()
+    soundManager.toggleMute()
 
   helper = new Canvas(document.getElementById('game-canvas'))
 
