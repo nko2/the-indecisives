@@ -16,7 +16,7 @@
       helper.rect(0, 0, helper.width, this.height);
       helper.translate(helper.half_width, 0);
       helper.fill('rgb(0, 0, 0)');
-      helper.text(this.header, 0, 10, "48px 'Maven Pro', Helvetica, Arial, sans-serif", 0, 'center');
+      helper.text(this.header, 0, 10, "bold 48px 'Maven Pro', Helvetica, Arial, sans-serif", 0, 'center');
       helper.text(this.body, 0, 70, "24px 'Maven Pro', Helvetica, Arial, sans-serif", 24, 'center');
       return helper.restore();
     };

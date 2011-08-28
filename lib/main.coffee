@@ -179,7 +179,7 @@ socket.on 'connect', ->
           #{accuracy}% accuracy
           survived #{duration} seconds
           
-          Press the spacebar to rejoin the fight!
+          Press the "J" to rejoin the fight!
           """
 
         splash.show()

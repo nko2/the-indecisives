@@ -1,7 +1,7 @@
 {
-  "name": "The Indecisives",
-  "description": "Planet defense game",
-  "version": "0.8.5",
+  "name": "Gemini Command",
+  "description": "Multiplayer game",
+  "version": "0.9.5",
   "app": {
     "urls": [
       "http://the-indecisives.nko2.nodeknockout.com"

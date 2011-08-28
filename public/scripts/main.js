@@ -190,7 +190,7 @@
           duration = (player.get('end') - player.get('start')) / 1000;
           splash.header = 'You died...';
           splash.height = 220;
-          splash.body = "" + kills + " total kills\n" + accuracy + "% accuracy\nsurvived " + duration + " seconds\n\nPress the spacebar to rejoin the fight!";
+          splash.body = "" + kills + " total kills\n" + accuracy + "% accuracy\nsurvived " + duration + " seconds\n\nPress the \"J\" to rejoin the fight!";
           return splash.show();
         } else if (state !== 'waiting') {
           return splash.hide();
