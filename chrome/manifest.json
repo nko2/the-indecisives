@@ -4,10 +4,10 @@
   "version": "0.9.5",
   "app": {
     "urls": [
-      "http://the-indecisives.nko2.nodeknockout.com"
+      "http://the-indecisives.nko2.nodeknockout.com/"
     ],
     "launch": {
-      "web_url": "http://the-indecisives.nko2.nodeknockout.com"
+      "web_url": "http://the-indecisives.nko2.nodeknockout.com/"
     }
   },
   "icons": {
