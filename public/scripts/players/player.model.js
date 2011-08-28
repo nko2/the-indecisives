@@ -155,7 +155,9 @@
       if (!(distance < 100)) {
         return;
       }
-      soundManager.play('explosion');
+      if (typeof soundManager !== "undefined" && soundManager !== null) {
+        soundManager.play('explosion');
+      }
       projectile_player_hits = projectile_player.get('hits');
       projectile_player.set({
         score: projectile_player_score += 10,

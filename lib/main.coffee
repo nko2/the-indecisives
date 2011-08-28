@@ -8,6 +8,7 @@ soundManager.onready ->
     url: '/audio/background.mp3'
     autoLoad: true
     autoPlay: true
+    loops: 5
     volume: 50
 
   soundManager.createSound
@@ -32,6 +33,9 @@ soundManager.onready ->
     volume: 50
 
 window.onload = ->
+
+  camera_position = new Vector()
+  camera_velocity = new Vector()
 
   $(document.getElementById('toggle-mute')).bind 'click', (e) ->
     e.preventDefault()
@@ -66,10 +70,19 @@ window.onload = ->
     socket.emit('player:aim:right')
     current_player.aim_right()
   , 1000 / 15
-  
+
+  k = (u) ->
+    k(0) + u * (k(1) - k(0))
+
   helper.draw ->
     aim_left() if aiming_left
     aim_right() if aiming_right
+
+    camera_position.add(new Vector(Math.sin(@ticks * 0.02) * 0.5 * Math.random(), Math.cos(@ticks * 0.02) * 0.5 * Math.random()))
+    camera_position.restrict(25)
+
+    @save()
+    @translate(camera_position.x, camera_position.y)
 
     projectiles.update()
     players.update()
@@ -80,6 +93,8 @@ window.onload = ->
 
     players.draw(this)
     projectiles.draw(this)
+
+    @restore()
 
     splash.draw(this)
   

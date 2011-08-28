@@ -9,6 +9,7 @@
       url: '/audio/background.mp3',
       autoLoad: true,
       autoPlay: true,
+      loops: 5,
       volume: 50
     });
     soundManager.createSound({
@@ -34,7 +35,9 @@
     });
   });
   window.onload = function() {
-    var aim_left, aim_right, aiming_left, aiming_right, background, helper, orbit, planet, players, players_view, projectiles, socket, splash;
+    var aim_left, aim_right, aiming_left, aiming_right, background, camera_position, camera_velocity, helper, k, orbit, planet, players, players_view, projectiles, socket, splash;
+    camera_position = new Vector();
+    camera_velocity = new Vector();
     $(document.getElementById('toggle-mute')).bind('click', function(e) {
       e.preventDefault();
       soundManager.toggleMute('background');
@@ -64,6 +67,9 @@
       socket.emit('player:aim:right');
       return current_player.aim_right();
     }, 1000 / 15);
+    k = function(u) {
+      return k(0) + u * (k(1) - k(0));
+    };
     helper.draw(function() {
       if (aiming_left) {
         aim_left();
@@ -71,6 +77,10 @@
       if (aiming_right) {
         aim_right();
       }
+      camera_position.add(new Vector(Math.sin(this.ticks * 0.02) * 0.5 * Math.random(), Math.cos(this.ticks * 0.02) * 0.5 * Math.random()));
+      camera_position.restrict(25);
+      this.save();
+      this.translate(camera_position.x, camera_position.y);
       projectiles.update();
       players.update();
       background.draw(this);
@@ -78,6 +88,7 @@
       orbit.draw(this);
       players.draw(this);
       projectiles.draw(this);
+      this.restore();
       return splash.draw(this);
     });
     window.socket = socket = io.connect();

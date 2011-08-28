@@ -101,7 +101,7 @@ PlayerModel = Backbone.Model.extend
 
     return unless distance < 100
 
-    soundManager.play('explosion')
+    soundManager.play('explosion') if soundManager?
 
     projectile_player_hits = projectile_player.get('hits')
     projectile_player.set({ score: projectile_player_score += 10, hits: ++projectile_player_hits }, silent: true)
