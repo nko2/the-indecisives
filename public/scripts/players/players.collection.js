@@ -58,6 +58,30 @@
         return player.get('state') === 'alive';
       });
     },
+    balance: function() {
+      var diff, ships, spores;
+      spores = this.spores();
+      ships = this.ships();
+      if (spores.length > ships.length) {
+        diff = spores.length - ships.length;
+        if (diff > 1) {
+          return spores[0].set({
+            team: 'ships'
+          }, {
+            silent: true
+          });
+        }
+      } else {
+        diff = ships.length - spores.length;
+        if (diff > 1) {
+          return ships[0].set({
+            team: 'spores'
+          }, {
+            silent: true
+          });
+        }
+      }
+    },
     spores: function() {
       return this.select(function(player) {
         return player.get('team') === 'spores';

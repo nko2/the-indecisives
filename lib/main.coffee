@@ -13,8 +13,24 @@ window.onload = ->
   splash = new Splash('Get Started', 'Press the spacebar to join the fight!')
 
   players_view = new PlayersView(collection: players, el: document.getElementById('players'))
+
+  aiming_left = false
+  aiming_right = false
+
+  aim_left = _.throttle ->
+    socket.emit('player:aim:left')
+    current_player.aim_left()
+  , 1000 / 15
+
+  aim_right = _.throttle ->
+    socket.emit('player:aim:right')
+    current_player.aim_right()
+  , 1000 / 15
   
   helper.draw ->
+    aim_left() if aiming_left
+    aim_right() if aiming_right
+
     projectiles.update()
     players.update()
     
@@ -34,33 +50,33 @@ window.onload = ->
       e.preventDefault()
       socket.emit('player:name', document.getElementById('name').value)
 
-    # KEYBOARD COMMANDS
-    window.addEventListener 'keypress', (event) =>
+    window.addEventListener 'keydown', (event) =>
       switch event.keyCode
-        when 100, 68
-          socket.emit('player:update', 'UP')
-          current_player.aim_left() if current_player.get('state') is 'alive'
-        when 97, 65
-          socket.emit('player:update', 'DOWN')  
-          current_player.aim_right() if current_player.get('state') is 'alive'
-    , false
+        when 68 then aiming_left = true if current_player.get('state') is 'alive'
+        when 65 then aiming_right = true if current_player.get('state') is 'alive'
 
     window.addEventListener 'keyup', (event) =>
       switch event.keyCode
+        when 68 then aiming_left = false
+        when 65 then aiming_right = false
         when 83
-          socket.emit('player:update', 'LEFT')
-          current_player.move_left() if current_player.get('state') is 'alive'
+          return unless current_player.get('state') is 'alive'
+          socket.emit('player:move:left')
+          current_player.move_left()
         when 87
-          socket.emit('player:update', 'RIGHT')  
-          current_player.move_right() if current_player.get('state') is 'alive'
-        when 32
-          if current_player.get('state') is 'alive'
-            projectile = current_player.fire()
-            projectile.projectiles = projectiles
-            projectile.players = players
-            projectiles.add(projectile)
+          return unless current_player.get('state') is 'alive'
+          socket.emit('player:move:right')
+          current_player.move_right()
+        when 74
+          socket.emit('player:join')
+        when 13
+          return unless current_player.get('state') is 'alive'
+          projectile = current_player.fire()
+          projectile.projectiles = projectiles
+          projectile.players = players
+          projectiles.add(projectile)
 
-          socket.emit 'player:update', 'SPACE', (projectile_id) ->
+          socket.emit 'player:fire', (projectile_id) ->
             projectile.set(id: projectile_id) if projectile_id
     , false
 

@@ -11,6 +11,7 @@
     <script src="/scripts/dependencies/jquery.js"></script>
     <script src="/scripts/dependencies/underscore.js"></script>
     <script src="/scripts/dependencies/backbone.js"></script>
+    <script src="/scripts/dependencies/soundmanager2.js"></script>
 
     <script src="/socket.io/socket.io.js"></script>
 
@@ -35,23 +36,26 @@
     <script type="text/template" id="player-template">
       <%= name %> (<%= lives %> lives): <%= score %> points
     </script>
-    <script type="text/javascript" src="http://connect.facebook.net/en_US/all.js"></script>
     
   </head>
   <body>
-    <div id="fb-root"></div>
-    <script type="text/javascript">FB.init({  appId: 166386256771796,  cookie: true,  status: true, xfbml: true, channelUrl: "http://the-indecisives.nko2.nodeknockout.com/" });</script>
+
     <!-- iframe src="http://nodeknockout.com/iframe/the-indecisives" frameborder="0" scrolling="no" allowtransparency="true" width="115" height="25"></iframe -->
 
     <h1>Attack!</h1>
+
     <canvas id="game-canvas"></canvas>
+
     <section class="spores left">
       <p>Some info about the spores goes here</p>
     </section>  
+
     <section class="invaders right">
       <p>Some info about the invaders goes here</p>
     </section>
+
     <section class="score left"></section>
+
     <section class="status right">
       <h2>Name:</h2>
       <form id="name-form">
@@ -64,6 +68,18 @@
 
     <script src="/scripts/players/player.view.js"></script>
     <script src="/scripts/players/players.view.js"></script>
+
+    <script type="text/javascript">
+      var _gaq = _gaq || [];
+      _gaq.push(['_setAccount', 'UA-22644328-6']);
+      _gaq.push(['_trackPageview']);
+
+      (function() {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+      })();
+    </script>
 
   </body>
 </html>

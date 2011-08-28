@@ -1,7 +1,7 @@
 (function() {
   var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
   window.onload = function() {
-    var background, helper, orbit, planet, players, players_view, projectiles, socket, splash;
+    var aim_left, aim_right, aiming_left, aiming_right, background, helper, orbit, planet, players, players_view, projectiles, socket, splash;
     helper = new Canvas(document.getElementById('game-canvas'));
     background = new Background();
     planet = new Planet();
@@ -14,7 +14,23 @@
       collection: players,
       el: document.getElementById('players')
     });
+    aiming_left = false;
+    aiming_right = false;
+    aim_left = _.throttle(function() {
+      socket.emit('player:aim:left');
+      return current_player.aim_left();
+    }, 1000 / 15);
+    aim_right = _.throttle(function() {
+      socket.emit('player:aim:right');
+      return current_player.aim_right();
+    }, 1000 / 15);
     helper.draw(function() {
+      if (aiming_left) {
+        aim_left();
+      }
+      if (aiming_right) {
+        aim_right();
+      }
       projectiles.update();
       players.update();
       background.draw(this);
@@ -30,46 +46,49 @@
         e.preventDefault();
         return socket.emit('player:name', document.getElementById('name').value);
       });
-      window.addEventListener('keypress', __bind(function(event) {
+      window.addEventListener('keydown', __bind(function(event) {
         switch (event.keyCode) {
-          case 100:
           case 68:
-            socket.emit('player:update', 'UP');
             if (current_player.get('state') === 'alive') {
-              return current_player.aim_left();
+              return aiming_left = true;
             }
             break;
-          case 97:
           case 65:
-            socket.emit('player:update', 'DOWN');
             if (current_player.get('state') === 'alive') {
-              return current_player.aim_right();
+              return aiming_right = true;
             }
         }
-      }, this), false);
+      }, this));
       window.addEventListener('keyup', __bind(function(event) {
         var projectile;
         switch (event.keyCode) {
+          case 68:
+            return aiming_left = false;
+          case 65:
+            return aiming_right = false;
           case 83:
-            socket.emit('player:update', 'LEFT');
-            if (current_player.get('state') === 'alive') {
-              return current_player.move_left();
+            if (current_player.get('state') !== 'alive') {
+              return;
             }
-            break;
+            socket.emit('player:move:left');
+            return current_player.move_left();
           case 87:
-            socket.emit('player:update', 'RIGHT');
-            if (current_player.get('state') === 'alive') {
-              return current_player.move_right();
+            if (current_player.get('state') !== 'alive') {
+              return;
             }
-            break;
-          case 32:
-            if (current_player.get('state') === 'alive') {
-              projectile = current_player.fire();
-              projectile.projectiles = projectiles;
-              projectile.players = players;
-              projectiles.add(projectile);
+            socket.emit('player:move:right');
+            return current_player.move_right();
+          case 74:
+            return socket.emit('player:join');
+          case 13:
+            if (current_player.get('state') !== 'alive') {
+              return;
             }
-            return socket.emit('player:update', 'SPACE', function(projectile_id) {
+            projectile = current_player.fire();
+            projectile.projectiles = projectiles;
+            projectile.players = players;
+            projectiles.add(projectile);
+            return socket.emit('player:fire', function(projectile_id) {
               if (projectile_id) {
                 return projectile.set({
                   id: projectile_id
