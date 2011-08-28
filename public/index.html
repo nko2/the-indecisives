@@ -2,63 +2,50 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8">
-    <title>Attack!</title>
-    
-    <!-- CSS -->
+    <title>Gemini Command</title>
     <link href="/styles/styles.css" rel="stylesheet" type="text/css">
-    
-    <!-- SCRIPT -->
-    <script src="/scripts/dependencies/jquery.js"></script>
-    <script src="/scripts/dependencies/underscore.js"></script>
-    <script src="/scripts/dependencies/backbone.js"></script>
-    <script src="/scripts/dependencies/soundmanager.js"></script>
-
-    <script src="/socket.io/socket.io.js"></script>
-
-    <script src="/scripts/vector.js"></script>
-    <script src="/scripts/canvas.js"></script>
-
-    <script src="/scripts/background.js"></script>
-    <script src="/scripts/planet.js"></script>
-    <script src="/scripts/orbit.js"></script>
-    <script src="/scripts/explosion.js"></script>
-
-    <script src="/scripts/projectiles/projectile.model.js"></script>
-    <script src="/scripts/projectiles/projectiles.collection.js"></script>
-
-    <script src="/scripts/players/player.model.js"></script>
-    <script src="/scripts/players/players.collection.js"></script>
-
-    <script src="/scripts/splash.js"></script>
-
-    <script src="/scripts/main.js"></script>
-
-    <script type="text/template" id="player-template">
-      <%= name %> (<%= lives %> lives): <%= score %> points
-    </script>
-    
   </head>
   <body>
+    <h1 id="logo">Gemini Command</h1>
+    
+    <menu id="main-navigation">
+      <li class="main_01"><a href="#the-fight">Join The Fight</a></li>
+      <li class="main_02"><a href="#history">Get Briefed</a></li>
+      <li class="main_03"><a href="#honors">Honors</a></li>
+    </menu>
 
-    <!-- iframe src="http://nodeknockout.com/iframe/the-indecisives" frameborder="0" scrolling="no" allowtransparency="true" width="115" height="25"></iframe -->
+    <menu id="social-navigation">
+      <li class="social_01"><a href="http://gplus.to/jimfleming">+ jimfleming</a></li>
+      <li class="social_02"><a href="http://gplus.to/danielleswank">+ danielleswank</a></li>
+    </menu>
 
-    <h1>Attack!</h1>
+    <section id="in-space">
 
-    <canvas id="game-canvas"></canvas>
-
-    <section class="spores left">
-      <p>Some info about the spores goes here</p>
-    </section>  
-
-    <section class="invaders right">
-      <p>Some info about the invaders goes here</p>
+      <section id="the-fight">
+        <canvas id="game-canvas"></canvas>
+      </section>
+  
+      <section id="history">
+        <div class="spores">
+          <h2>In memory of our fallen breathren...</h2>
+          <p>Some info about the spores goes here</p>
+        </div>  
+        <div class="invaders">
+          <h2>Let future generations hark our words...</h2>
+          <p>Some info about the invaders goes here</p>
+        </div>
+      </section>
+      
+      <section id="honors">
+        <h2>On the shoulders of giants...</h2>
+        <p>Credits go here</p>
+      </section>
+      <section class="score left"></section>
+      
     </section>
-
-    <section class="score left">
-      <a href="#" id="toggle-mute">MUTE!</a>
-    </section>
-
-    <section class="status right">
+    
+    <section id="ship-controls" class="status">
+      <iframe src="http://nodeknockout.com/iframe/the-indecisives" frameborder="0" scrolling="no" allowtransparency="true" width="115" height="25"></iframe>
       <h2>Name:</h2>
       <form id="name-form">
         <input type="text" placeholder="What's your name?" id="name" maxlength="10" required>
@@ -67,10 +54,38 @@
       <h2>Leader Board:</h2>
       <ul id="players"></ul>
     </section>
+    
+    <div id="ship">
+      <div id="ship-top"></div>
+      <div id="portal">Such a limited view of the world.</div>
+      <div id="ship-bottom"></div>
+    </div>
+    
 
+
+    <!-- SCRIPTS -->
+    <script type="text/template" id="player-template">
+      <%= name %> (<%= lives %> lives): <%= score %> points
+    </script>
+    <script src="/scripts/dependencies/jquery.js"></script>
+    <script src="/scripts/dependencies/underscore.js"></script>
+    <script src="/scripts/dependencies/backbone.js"></script>
+    <script src="/scripts/dependencies/soundmanager.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="/scripts/vector.js"></script>
+    <script src="/scripts/canvas.js"></script>
+    <script src="/scripts/background.js"></script>
+    <script src="/scripts/planet.js"></script>
+    <script src="/scripts/orbit.js"></script>
+    <script src="/scripts/explosion.js"></script>
+    <script src="/scripts/projectiles/projectile.model.js"></script>
+    <script src="/scripts/projectiles/projectiles.collection.js"></script>
+    <script src="/scripts/players/player.model.js"></script>
+    <script src="/scripts/players/players.collection.js"></script>
+    <script src="/scripts/splash.js"></script>
     <script src="/scripts/players/player.view.js"></script>
     <script src="/scripts/players/players.view.js"></script>
-
+    <script src="/scripts/main.js"></script>
     <script type="text/javascript">
       var _gaq = _gaq || [];
       _gaq.push(['_setAccount', 'UA-22644328-6']);
@@ -82,6 +97,5 @@
         var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
       })();
     </script>
-
   </body>
 </html>
