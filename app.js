@@ -1,5 +1,5 @@
 (function() {
-  var PlayerModel, PlayersCollection, ProjectilesCollection, RoomsCollection, Vector, app, express, game_loop, io, nko, rooms, _;
+  var PlayerModel, PlayersCollection, ProjectilesCollection, RoomsCollection, Vector, app, express, game_loop, io, nko, rooms, update_clients, _;
   nko = require('nko')('L3U8N469dCVshmal');
   express = require('express');
   _ = require('underscore');
@@ -40,8 +40,11 @@
   rooms = new RoomsCollection(null, {
     io: io
   });
+  update_clients = function() {};
+  update_clients = _.throttle(update_clients, 1000 / 15);
   game_loop = function() {
-    rooms.update_all();
+    rooms.update_states();
+    rooms.update_rooms();
     return setTimeout(function() {
       return game_loop();
     }, 1000 / 60);
@@ -68,64 +71,48 @@
         silent: true
       });
     });
-    socket.on('player:update', function(action, callback) {
-      var player_state, projectile;
-      player_state = player.get('state');
-      if (action === 'SPACE' && (player_state === 'waiting' || player_state === 'dead')) {
-        return player.set({
-          state: 'alive',
-          score: 0,
-          lives: 3,
-          hp: 100,
-          position: Math.random() * Math.PI * 2,
-          velocity: 0
-        }, {
-          silent: true
-        });
-      } else if (player_state === 'alive') {
-        switch (action) {
-          case 'LEFT':
-            return player.move_right();
-          case 'RIGHT':
-            return player.move_left();
-          case 'DOWN':
-            return player.aim_left();
-          case 'UP':
-            return player.aim_right();
-          case 'SPACE':
-            projectile = player.fire();
-            projectile.projectiles = projectiles;
-            projectile.players = players;
-            projectiles.add(projectile);
-            return callback(projectile.id);
-        }
+    socket.on('player:move:left', function() {
+      return player.move_right();
+    });
+    socket.on('player:move:right', function() {
+      return player.move_right();
+    });
+    socket.on('player:aim:left', function() {
+      return player.aim_left();
+    });
+    socket.on('player:aim:right', function() {
+      return player.aim_right();
+    });
+    socket.on('player:fire', function(callback) {
+      var projectile;
+      if (player.get('state') !== 'alive') {
+        return;
       }
+      projectile = player.fire();
+      projectile.projectiles = projectiles;
+      projectile.players = players;
+      projectiles.add(projectile);
+      return callback(projectile.id);
+    });
+    socket.on('player:join', function() {
+      var _ref;
+      if ((_ref = player.get('state')) !== 'waiting' && _ref !== 'dead') {
+        return;
+      }
+      return player.set({
+        state: 'alive',
+        score: 0,
+        lives: 3,
+        hp: 100,
+        position: Math.random() * Math.PI * 2,
+        velocity: 0
+      }, {
+        silent: true
+      });
     });
     return socket.on('disconnect', function() {
-      var diff, ships, spores;
       player = players.get(socket.id);
-      players.remove(player);
-      spores = players.spores();
-      ships = players.ships();
-      if (spores.length > ships.length) {
-        diff = spores.length - ships.length;
-        if (diff > 1) {
-          return spores[0].set({
-            team: 'ships'
-          }, {
-            silent: true
-          });
-        }
-      } else {
-        diff = ships.length - spores.length;
-        if (diff > 1) {
-          return ships[0].set({
-            team: 'spores'
-          }, {
-            silent: true
-          });
-        }
-      }
+      return players.remove(player);
     });
   });
 }).call(this);

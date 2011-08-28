@@ -34,42 +34,48 @@
         switch (event.keyCode) {
           case 100:
           case 68:
-            socket.emit('player:update', 'UP');
-            if (current_player.get('state') === 'alive') {
-              return current_player.aim_left();
+            if (current_player.get('state') !== 'alive') {
+              return;
             }
-            break;
+            socket.emit('player:aim:left');
+            return current_player.aim_left();
           case 97:
           case 65:
-            socket.emit('player:update', 'DOWN');
-            if (current_player.get('state') === 'alive') {
-              return current_player.aim_right();
+            if (current_player.get('state') !== 'alive') {
+              return;
             }
+            socket.emit('player:aim:right');
+            return current_player.aim_right();
         }
       }, this), false);
       window.addEventListener('keyup', __bind(function(event) {
         var projectile;
+        console.log(event.keyCode);
         switch (event.keyCode) {
           case 83:
-            socket.emit('player:update', 'LEFT');
-            if (current_player.get('state') === 'alive') {
-              return current_player.move_left();
+            if (current_player.get('state') !== 'alive') {
+              return;
             }
-            break;
+            socket.emit('player:move:left');
+            return current_player.move_left();
           case 87:
-            socket.emit('player:update', 'RIGHT');
-            if (current_player.get('state') === 'alive') {
-              return current_player.move_right();
+            if (current_player.get('state') !== 'alive') {
+              return;
             }
-            break;
-          case 32:
-            if (current_player.get('state') === 'alive') {
-              projectile = current_player.fire();
-              projectile.projectiles = projectiles;
-              projectile.players = players;
-              projectiles.add(projectile);
+            socket.emit('player:move:right');
+            return current_player.move_right();
+          case 74:
+            console.log('JOIN');
+            return socket.emit('player:join');
+          case 13:
+            if (current_player.get('state') !== 'alive') {
+              return;
             }
-            return socket.emit('player:update', 'SPACE', function(projectile_id) {
+            projectile = current_player.fire();
+            projectile.projectiles = projectiles;
+            projectile.players = players;
+            projectiles.add(projectile);
+            return socket.emit('player:fire', function(projectile_id) {
               if (projectile_id) {
                 return projectile.set({
                   id: projectile_id

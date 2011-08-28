@@ -37,8 +37,13 @@ io.configure 'production', ->
 
 rooms = new RoomsCollection(null, io: io)
 
+update_clients = ->
+
+update_clients = _.throttle(update_clients, 1000 / 15)
+
 game_loop = ->
-  rooms.update_all()
+  rooms.update_states()
+  rooms.update_rooms()
 
   setTimeout ->
     game_loop()
@@ -64,34 +69,23 @@ io.sockets.on 'connection', (socket) ->
   socket.on 'player:name', (name) ->
     player.set({ name: name }, silent: true)
 
-  socket.on 'player:update', (action, callback) ->
-    player_state = player.get('state')
+  socket.on 'player:move:left', -> player.move_right()
+  socket.on 'player:move:right', -> player.move_right()
+  socket.on 'player:aim:left', -> player.aim_left()
+  socket.on 'player:aim:right', -> player.aim_right()
 
-    if action is 'SPACE' and (player_state is 'waiting' or player_state is 'dead')
-      player.set({ state: 'alive', score: 0, lives: 3, hp: 100, position: Math.random() * Math.PI * 2, velocity: 0 }, silent: true)
-    else if player_state is 'alive'
-      switch action
-        when 'LEFT' then player.move_right()
-        when 'RIGHT' then player.move_left()
-        when 'DOWN' then player.aim_left()
-        when 'UP' then player.aim_right()
-        when 'SPACE'
-          projectile = player.fire()
-          projectile.projectiles = projectiles
-          projectile.players = players
-          projectiles.add(projectile)
-          callback(projectile.id)
+  socket.on 'player:fire', (callback) ->
+    return unless player.get('state') is 'alive'
+    projectile = player.fire()
+    projectile.projectiles = projectiles
+    projectile.players = players
+    projectiles.add(projectile)
+    callback(projectile.id)
+
+  socket.on 'player:join', ->
+    return unless player.get('state') in ['waiting', 'dead']
+    player.set({ state: 'alive', score: 0, lives: 3, hp: 100, position: Math.random() * Math.PI * 2, velocity: 0 }, silent: true)
 
   socket.on 'disconnect', ->
     player = players.get(socket.id)
     players.remove(player)
-
-    spores = players.spores()
-    ships = players.ships()
-
-    if spores.length > ships.length
-      diff = spores.length - ships.length
-      spores[0].set({ team: 'ships' }, silent: true) if diff > 1
-    else
-      diff = ships.length - spores.length
-      ships[0].set({ team: 'spores' }, silent: true) if diff > 1

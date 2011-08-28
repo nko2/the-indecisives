@@ -41,6 +41,17 @@ PlayersCollection = Backbone.Collection.extend
     return @select (player) ->
       return player.get('state') is 'alive'
 
+  balance: ->
+    spores = @spores()
+    ships = @ships()
+
+    if spores.length > ships.length
+      diff = spores.length - ships.length
+      spores[0].set({ team: 'ships' }, silent: true) if diff > 1
+    else
+      diff = ships.length - spores.length
+      ships[0].set({ team: 'spores' }, silent: true) if diff > 1
+
   spores: -> 
     return @select (player) ->
       return player.get('team') is 'spores'

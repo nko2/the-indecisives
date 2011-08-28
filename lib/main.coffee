@@ -38,29 +38,39 @@ window.onload = ->
     window.addEventListener 'keypress', (event) =>
       switch event.keyCode
         when 100, 68
-          socket.emit('player:update', 'UP')
-          current_player.aim_left() if current_player.get('state') is 'alive'
+          return unless current_player.get('state') is 'alive'
+          socket.emit('player:aim:left')
+          current_player.aim_left()
         when 97, 65
-          socket.emit('player:update', 'DOWN')  
-          current_player.aim_right() if current_player.get('state') is 'alive'
+          return unless current_player.get('state') is 'alive'
+          socket.emit('player:aim:right')  
+          current_player.aim_right()
     , false
 
+    # window.addEventListener 'keydown', (event) =>
+
     window.addEventListener 'keyup', (event) =>
+      console.log event.keyCode
       switch event.keyCode
         when 83
-          socket.emit('player:update', 'LEFT')
-          current_player.move_left() if current_player.get('state') is 'alive'
+          return unless current_player.get('state') is 'alive'
+          socket.emit('player:move:left')
+          current_player.move_left()
         when 87
-          socket.emit('player:update', 'RIGHT')  
-          current_player.move_right() if current_player.get('state') is 'alive'
-        when 32
-          if current_player.get('state') is 'alive'
-            projectile = current_player.fire()
-            projectile.projectiles = projectiles
-            projectile.players = players
-            projectiles.add(projectile)
+          return unless current_player.get('state') is 'alive'
+          socket.emit('player:move:right')
+          current_player.move_right()
+        when 74
+          console.log 'JOIN'
+          socket.emit('player:join')
+        when 13
+          return unless current_player.get('state') is 'alive'
+          projectile = current_player.fire()
+          projectile.projectiles = projectiles
+          projectile.players = players
+          projectiles.add(projectile)
 
-          socket.emit 'player:update', 'SPACE', (projectile_id) ->
+          socket.emit 'player:fire', (projectile_id) ->
             projectile.set(id: projectile_id) if projectile_id
     , false
 
