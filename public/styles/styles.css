@@ -144,7 +144,7 @@ h2#name-prompt {
 }
 #the-fight {
   width: 540px;
-  padding: 140px 30px 130px 0px;
+  padding: 110px 30px 120px 0px;
 }
 #history {
   width: 440px;
@@ -152,7 +152,7 @@ h2#name-prompt {
 }
 #honors {
   width: 440px;
-  padding: 300px 30px 200px 0px;
+  padding: 300px 30px 330px 0px;
 }
 #honors h3 {
   padding-top: 48px;
@@ -171,7 +171,7 @@ h2#name-prompt {
 }
 #ganymede {
   position: relative;
-  top: -60px;
+  top: -40px;
   left: -120px;
 }
 #callisto {
@@ -187,7 +187,7 @@ h2#name-prompt {
 
 }
 #ship {
-  background: url(/images/portal.gif) center center no-repeat;
+  background: url(/images/portal.gif) top center no-repeat;
   position: fixed;
   top: 0;
   bottom: 0;
@@ -197,9 +197,9 @@ h2#name-prompt {
   text-indent: -9999em;
 }
 #portal {
-  background: url(/images/portal.png) center center no-repeat;
+  background: url(/images/portal.png) top center no-repeat;
   position: fixed;
-  top: 0;
+  top: 56px;
   bottom: 0;
   left: 0;
   right: 0;
