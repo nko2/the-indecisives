@@ -35,33 +35,12 @@
     <script type="text/template" id="player-template">
       <%= name %> (<%= lives %> lives): <%= score %> points
     </script>
-
+    <script type="text/javascript" src="http://connect.facebook.net/en_US/all.js"></script>
     
   </head>
   <body>
-
     <div id="fb-root"></div>
-
-    <script type="text/javascript">
-      window.fbAsyncInit = function() {
-        FB.init({
-          appId  : '166386256771796',
-          status : true, // check login status
-          cookie : true, // enable cookies to allow the server to access the session
-          xfbml  : true,  // parse XFBML
-          channelUrl  : 'http://the-indecisives.nko2.nodeknockout.com/', // Custom Channel URL
-          oauth : true //enables OAuth 2.0
-        });
-      };
-    
-      (function() {
-        var e = document.createElement('script');
-        e.src = document.location.protocol + '//connect.facebook.net/en_US/all.js';
-        e.async = true;
-        document.getElementById('fb-root').appendChild(e);
-      }());
-    </script>
-
+    <script type="text/javascript">FB.init({  appId: 166386256771796,  cookie: true,  status: true, xfbml: true, channelUrl: "http://the-indecisives.nko2.nodeknockout.com/" });</script>
     <!-- iframe src="http://nodeknockout.com/iframe/the-indecisives" frameborder="0" scrolling="no" allowtransparency="true" width="115" height="25"></iframe -->
 
     <h1>Attack!</h1>
