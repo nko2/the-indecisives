@@ -56,5 +56,5 @@ module.exports = RoomsCollection = Backbone.Collection.extend
 
   next: ->
     room = @first()
-    room = @new(room) if not room or room.players.length < @max
+    room = @new(room) unless room and room.players.length < @max
     return room

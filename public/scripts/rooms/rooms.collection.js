@@ -58,7 +58,7 @@
     next: function() {
       var room;
       room = this.first();
-      if (!room || room.players.length < this.max) {
+      if (!(room && room.players.length < this.max)) {
         room = this["new"](room);
       }
       return room;
