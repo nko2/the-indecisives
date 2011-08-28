@@ -2,6 +2,21 @@
   var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
   window.onload = function() {
     var aim_left, aim_right, aiming_left, aiming_right, background, helper, orbit, planet, players, players_view, projectiles, socket, splash;
+    soundManager.url = '/swfs/';
+    soundManager.flashVersion = 9;
+    soundManager.useFlashBlock = false;
+    soundManager.onready(function() {
+      return soundManager.createSound({
+        id: 'explosion',
+        url: '/audio/some.mp3',
+        autoLoad: true,
+        autoPlay: false,
+        onload: function() {
+          return console.log("" + this.sID + " loaded");
+        },
+        volume: 50
+      });
+    });
     helper = new Canvas(document.getElementById('game-canvas'));
     background = new Background();
     planet = new Planet();

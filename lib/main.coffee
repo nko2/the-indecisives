@@ -1,5 +1,18 @@
 window.onload = ->
 
+  soundManager.url = '/swfs/'
+  soundManager.flashVersion = 9
+  soundManager.useFlashBlock = false
+
+  soundManager.onready ->
+    soundManager.createSound
+      id: 'explosion'
+      url: '/audio/some.mp3'
+      autoLoad: true
+      autoPlay: false
+      onload: -> console.log("#{this.sID} loaded")
+      volume: 50
+
   helper = new Canvas(document.getElementById('game-canvas'))
 
   background = new Background()
