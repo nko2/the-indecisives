@@ -69,7 +69,7 @@ io.sockets.on 'connection', (socket) ->
   socket.on 'player:name', (name) ->
     player.set({ name: name }, silent: true)
 
-  socket.on 'player:move:left', -> player.move_right()
+  socket.on 'player:move:left', -> player.move_left()
   socket.on 'player:move:right', -> player.move_right()
   socket.on 'player:aim:left', -> player.aim_left()
   socket.on 'player:aim:right', -> player.aim_right()

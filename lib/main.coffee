@@ -13,8 +13,24 @@ window.onload = ->
   splash = new Splash('Get Started', 'Press the spacebar to join the fight!')
 
   players_view = new PlayersView(collection: players, el: document.getElementById('players'))
+
+  aiming_left = false
+  aiming_right = false
+
+  aim_left = _.throttle ->
+    socket.emit('player:aim:left')
+    current_player.aim_left()
+  , 1000 / 15
+
+  aim_right = _.throttle ->
+    socket.emit('player:aim:right')
+    current_player.aim_right()
+  , 1000 / 15
   
   helper.draw ->
+    aim_left() if aiming_left
+    aim_right() if aiming_right
+
     projectiles.update()
     players.update()
     
@@ -34,24 +50,15 @@ window.onload = ->
       e.preventDefault()
       socket.emit('player:name', document.getElementById('name').value)
 
-    # KEYBOARD COMMANDS
-    window.addEventListener 'keypress', (event) =>
+    window.addEventListener 'keydown', (event) =>
       switch event.keyCode
-        when 100, 68
-          return unless current_player.get('state') is 'alive'
-          socket.emit('player:aim:left')
-          current_player.aim_left()
-        when 97, 65
-          return unless current_player.get('state') is 'alive'
-          socket.emit('player:aim:right')  
-          current_player.aim_right()
-    , false
-
-    # window.addEventListener 'keydown', (event) =>
+        when 68 then aiming_left = true if current_player.get('state') is 'alive'
+        when 65 then aiming_right = true if current_player.get('state') is 'alive'
 
     window.addEventListener 'keyup', (event) =>
-      console.log event.keyCode
       switch event.keyCode
+        when 68 then aiming_left = false
+        when 65 then aiming_right = false
         when 83
           return unless current_player.get('state') is 'alive'
           socket.emit('player:move:left')
@@ -61,7 +68,6 @@ window.onload = ->
           socket.emit('player:move:right')
           current_player.move_right()
         when 74
-          console.log 'JOIN'
           socket.emit('player:join')
         when 13
           return unless current_player.get('state') is 'alive'

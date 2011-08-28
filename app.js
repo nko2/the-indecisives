@@ -72,7 +72,7 @@
       });
     });
     socket.on('player:move:left', function() {
-      return player.move_right();
+      return player.move_left();
     });
     socket.on('player:move:right', function() {
       return player.move_right();
