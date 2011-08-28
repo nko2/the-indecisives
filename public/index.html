@@ -4,10 +4,15 @@
     <meta charset="UTF-8">
     <title>Gemini Command</title>
     <link href="/styles/styles.css" rel="stylesheet" type="text/css">
+    <link href="http://fonts.googleapis.com/css?family=Maven+Pro" rel="stylesheet" type="text/css">
   </head>
   <body>
     <h1 id="logo">Gemini Command</h1>
-    
+
+    <div id="voting-booth">
+      <iframe src="http://nodeknockout.com/iframe/the-indecisives" frameborder="0" scrolling="no" allowtransparency="true" width="115" height="25"></iframe>
+    </div>
+
     <menu id="main-navigation">
       <li class="main_01"><a href="#the-fight">Join The Fight</a></li>
       <li class="main_02"><a href="#history">Get Briefed</a></li>
@@ -45,14 +50,17 @@
     </section>
     
     <section id="ship-controls" class="status">
-      <iframe src="http://nodeknockout.com/iframe/the-indecisives" frameborder="0" scrolling="no" allowtransparency="true" width="115" height="25"></iframe>
-      <h2>Name:</h2>
-      <form id="name-form">
-        <input type="text" placeholder="What's your name?" id="name" maxlength="10" required>
-        <input type="submit" value="Update">
-      </form>
-      <h2>Leader Board:</h2>
-      <ul id="players"></ul>
+      <dl>
+        <dt><h2>Name:</h2></dt>
+        <dd>
+          <form id="name-form">
+            <input type="text" placeholder="What's your name?" id="name" maxlength="10" required>
+            <input type="submit" value="Update">
+          </form>
+        </dd>
+        <dt><h2>Leader Board:</h2></dt>
+        <dd><ul id="players"></ul></dd>
+      </dl>
     </section>
     
     <div id="ship">
@@ -60,8 +68,6 @@
       <div id="portal">Such a limited view of the world.</div>
       <div id="ship-bottom"></div>
     </div>
-    
-
 
     <!-- SCRIPTS -->
     <script type="text/template" id="player-template">

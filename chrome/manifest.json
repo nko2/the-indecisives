@@ -1,0 +1,17 @@
+{
+  "name": "The Indecisives",
+  "description": "Planet defense game",
+  "version": "0.8.5",
+  "app": {
+    "urls": [
+      "http://the-indecisives.nko2.nodeknockout.com"
+    ],
+    "launch": {
+      "web_url": "http://the-indecisives.nko2.nodeknockout.com"
+    }
+  },
+  "icons": {
+    "128": "icon_128.png"
+  },
+  "permissions": []
+}
