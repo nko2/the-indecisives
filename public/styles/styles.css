@@ -3,6 +3,7 @@ body {
   color: #efefef;
   font-family: 'Maven Pro', Helvetica, Arial, san-serif;
   min-width: 640px;
+  font-size: 14px;
 }
 canvas {
   width: 500px;
@@ -57,14 +58,14 @@ menu {
   z-index: -1;
 }
 #ship-controls {
-  margin-top: 180px;
+  margin-top: 200px;
   padding: 0 12px;
 }
 #ship-controls dl {
   list-style: none;
   margin: 0;
   padding: 0;
-  text-shadow: 0 -1px rgba(255, 255, 255, 0.4);
+  /* text-shadow: 0 -1px rgba(255, 255, 255, 0.4); */
   color: #fff;
 }
 #ship-controls dl dt {
@@ -75,7 +76,7 @@ menu {
   font-size: 16px;
 }
 #ship-controls dl dd {
-  margin: 0 0 40px;
+  margin: 0 0 10px;
 }
 #main-navigation {
   text-indent: -9999em;
@@ -96,7 +97,7 @@ iframe {
 }
 
 ul#players { list-style: none; margin: 0; padding: 0; }
-ul#players li.self { font-weight: bold; color: #f00; }
+ul#players li.self { font-weight: bold; color: #000; }
 
 menu#main-navigation li.main_01 a { background-position: 0 0; width: 210px; height: 48px; } 
 menu#main-navigation li.main_02 a { background-position: 0 -98px; width: 210px; height: 43px; } 
@@ -110,6 +111,22 @@ menu#main-navigation li.main_03 a:hover { background-position: 0 -191px; width: 
 menu#social-navigation li.social_01 a:hover { background-position: 0 -290px; width: 234px; height: 52px; } 
 menu#social-navigation li.social_02 a:hover { background-position: 0 -392px; width: 234px; height: 38px; } 
 
+h2#name-prompt {
+  background: url(/images/headings-sprite.png) no-repeat top left;
+  text-indent: -9999em;
+  position: relative;
+  right: 12px;
+  width: 202px; 
+  height: 48px;
+}
+#leader-board {
+  background: url(/images/headings-sprite.png) no-repeat bottom left;
+  text-indent: -9999em;
+  position: relative;
+  right: 12px;
+  width: 202px; 
+  height: 48px;
+}
 
 #in-space {
   background: #333;
