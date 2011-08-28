@@ -35,7 +35,10 @@ window.onload = ->
 
   $(document.getElementById('toggle-mute')).bind 'click', (e) ->
     e.preventDefault()
-    soundManager.toggleMute()
+    soundManager.toggleMute('background')
+    soundManager.toggleMute('explosion')
+    soundManager.toggleMute('fire1')
+    soundManager.toggleMute('fire2')
 
   helper = new Canvas(document.getElementById('game-canvas'))
 

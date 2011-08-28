@@ -37,7 +37,10 @@
     var aim_left, aim_right, aiming_left, aiming_right, background, helper, orbit, planet, players, players_view, projectiles, socket, splash;
     $(document.getElementById('toggle-mute')).bind('click', function(e) {
       e.preventDefault();
-      return soundManager.toggleMute();
+      soundManager.toggleMute('background');
+      soundManager.toggleMute('explosion');
+      soundManager.toggleMute('fire1');
+      return soundManager.toggleMute('fire2');
     });
     helper = new Canvas(document.getElementById('game-canvas'));
     background = new Background();
