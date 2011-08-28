@@ -27,7 +27,7 @@ io = require('socket.io').listen(app)
 
 io.configure ->
   io.set('log level', 2)
-  io.set 'transports', ['websocket']
+  io.set('transports', ['websocket', 'flashsocket', 'htmlfile', 'xhr-polling', 'jsonp-polling'])
 
 io.configure 'production', ->
   io.enable('browser client minification')

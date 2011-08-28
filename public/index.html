@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <title>Gemini Command</title>
     <link href="/styles/styles.css" rel="stylesheet" type="text/css">
+    <link href="http://fonts.googleapis.com/css?family=Maven+Pro" rel="stylesheet" type="text/css">
   </head>
   <body>
     <section id="left-column" class="column">
@@ -46,19 +47,24 @@
       </section>
       <section class="score left"></section>
     </section>
-                
+
     <section id="right-column"class="column">
       <div class="column-center"></div>
       <div class="column-footer"></div>
       <div class="column-content">
         <section id="ship-controls" class="status">
-          <h2>Name:</h2>
-          <form id="name-form">
-            <input type="text" placeholder="What's your name?" id="name" maxlength="10" required>
-            <input type="submit" value="Update">
-          </form>
-          <h2>Leader Board:</h2>
-          <ul id="players"></ul>
+          <dl>
+            <dt><h2>Name:</h2></dt>
+            <dd>
+              <form id="name-form">
+                <input type="text" placeholder="What's your name?" id="name" maxlength="10" required>
+                <input type="submit" value="Update">
+              </form>
+          
+            </dd>
+            <dt><h2>Leader Board:</h2></dt>
+            <dd><ul id="players"></ul></dd>
+          </dl>
         </section>
       </div>
     </section>

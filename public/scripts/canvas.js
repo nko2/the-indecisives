@@ -6,8 +6,8 @@
     Canvas.prototype.ticks = 0;
     function Canvas(canvas, width, height) {
       this.canvas = canvas;
-      this.width = width != null ? width : 640;
-      this.height = height != null ? height : 480;
+      this.width = width != null ? width : 500;
+      this.height = height != null ? height : 500;
       this.step = __bind(this.step, this);
       if (!this.canvas) {
         this.canvas = document.createElement('canvas');

@@ -5,7 +5,7 @@ class window.Canvas
   
   ticks: 0
 
-  constructor: (@canvas, @width = 640, @height = 480) ->
+  constructor: (@canvas, @width = 500, @height = 500) ->
     unless @canvas
       @canvas = document.createElement('canvas')
 
