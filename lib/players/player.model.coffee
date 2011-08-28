@@ -49,7 +49,7 @@ PlayerModel = Backbone.Model.extend
     trajectory = @get('trajectory')
     @set({ trajectory: trajectory -= 0.1 }, silent: true) if trajectory > -@max_angle
 
-  fire: -> 
+  fire: ->
     player_id = @get('id')
     player_team = @get('team')
     player_position = @get('position')
@@ -61,9 +61,11 @@ PlayerModel = Backbone.Model.extend
     if player_team is 'spores'
       offset = -100
       direction = -14
+      soundManager.play('fire1') if soundManager?
     else
       offset = -200
       direction = 14
+      soundManager.play('fire2') if soundManager?
     
     position = new Vector(0, offset).rotate(player_position)
     velocity = new Vector(1, direction).rotate(player_position).rotate(player_trajectory)
@@ -98,6 +100,8 @@ PlayerModel = Backbone.Model.extend
     distance = position.squared_distance(player_position)
 
     return unless distance < 100
+
+    soundManager.play('explosion') if soundManager?
 
     projectile_player_hits = projectile_player.get('hits')
     projectile_player.set({ score: projectile_player_score += 10, hits: ++projectile_player_hits }, silent: true)

@@ -1,7 +1,50 @@
 (function() {
   var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
+  soundManager.url = '/swfs/';
+  soundManager.flashVersion = 9;
+  soundManager.useFlashBlock = false;
+  soundManager.onready(function() {
+    soundManager.createSound({
+      id: 'background',
+      url: '/audio/background.mp3',
+      autoLoad: true,
+      autoPlay: true,
+      loops: 5,
+      volume: 50
+    });
+    soundManager.createSound({
+      id: 'explosion',
+      url: '/audio/explosion.mp3',
+      autoLoad: true,
+      autoPlay: false,
+      volume: 50
+    });
+    soundManager.createSound({
+      id: 'fire1',
+      url: '/audio/fire1.mp3',
+      autoLoad: true,
+      autoPlay: false,
+      volume: 50
+    });
+    return soundManager.createSound({
+      id: 'fire2',
+      url: '/audio/fire2.mp3',
+      autoLoad: true,
+      autoPlay: false,
+      volume: 50
+    });
+  });
   window.onload = function() {
-    var aim_left, aim_right, aiming_left, aiming_right, background, helper, orbit, planet, players, players_view, projectiles, socket, splash;
+    var aim_left, aim_right, aiming_left, aiming_right, background, camera_position, camera_velocity, helper, k, orbit, planet, players, players_view, projectiles, socket, splash;
+    camera_position = new Vector();
+    camera_velocity = new Vector();
+    $(document.getElementById('toggle-mute')).bind('click', function(e) {
+      e.preventDefault();
+      soundManager.toggleMute('background');
+      soundManager.toggleMute('explosion');
+      soundManager.toggleMute('fire1');
+      return soundManager.toggleMute('fire2');
+    });
     helper = new Canvas(document.getElementById('game-canvas'));
     background = new Background();
     planet = new Planet();
@@ -24,6 +67,9 @@
       socket.emit('player:aim:right');
       return current_player.aim_right();
     }, 1000 / 15);
+    k = function(u) {
+      return k(0) + u * (k(1) - k(0));
+    };
     helper.draw(function() {
       if (aiming_left) {
         aim_left();
@@ -31,6 +77,10 @@
       if (aiming_right) {
         aim_right();
       }
+      camera_position.add(new Vector(Math.sin(this.ticks * 0.02) * 0.5 * Math.random(), Math.cos(this.ticks * 0.02) * 0.5 * Math.random()));
+      camera_position.restrict(25);
+      this.save();
+      this.translate(camera_position.x, camera_position.y);
       projectiles.update();
       players.update();
       background.draw(this);
@@ -38,6 +88,7 @@
       orbit.draw(this);
       players.draw(this);
       projectiles.draw(this);
+      this.restore();
       return splash.draw(this);
     });
     window.socket = socket = io.connect();

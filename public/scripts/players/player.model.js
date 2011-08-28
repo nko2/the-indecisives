@@ -99,9 +99,15 @@
       if (player_team === 'spores') {
         offset = -100;
         direction = -14;
+        if (typeof soundManager !== "undefined" && soundManager !== null) {
+          soundManager.play('fire1');
+        }
       } else {
         offset = -200;
         direction = 14;
+        if (typeof soundManager !== "undefined" && soundManager !== null) {
+          soundManager.play('fire2');
+        }
       }
       position = new Vector(0, offset).rotate(player_position);
       velocity = new Vector(1, direction).rotate(player_position).rotate(player_trajectory);
@@ -148,6 +154,9 @@
       distance = position.squared_distance(player_position);
       if (!(distance < 100)) {
         return;
+      }
+      if (typeof soundManager !== "undefined" && soundManager !== null) {
+        soundManager.play('explosion');
       }
       projectile_player_hits = projectile_player.get('hits');
       projectile_player.set({
