@@ -6,25 +6,30 @@
     <link href="/styles/styles.css" rel="stylesheet" type="text/css">
   </head>
   <body>
-    <h1 id="logo">Gemini Command</h1>
+    <section id="left-column" class="column">
+      <div class="column-center"></div>
+      <div class="column-footer"></div>
+      <div class="column-content">
+        <h1 id="logo">Gemini Command</h1>
+        <menu id="main-navigation">
+          <li class="main_01"><a href="#the-fight">Join The Fight</a></li>
+          <li class="main_02"><a href="#history">Get Briefed</a></li>
+          <li class="main_03"><a href="#honors">Honors</a></li>
+        </menu>
     
-    <menu id="main-navigation">
-      <li class="main_01"><a href="#the-fight">Join The Fight</a></li>
-      <li class="main_02"><a href="#history">Get Briefed</a></li>
-      <li class="main_03"><a href="#honors">Honors</a></li>
-    </menu>
-
-    <menu id="social-navigation">
-      <li class="social_01"><a href="http://gplus.to/jimfleming">+ jimfleming</a></li>
-      <li class="social_02"><a href="http://gplus.to/danielleswank">+ danielleswank</a></li>
-    </menu>
+        <menu id="social-navigation">
+          <li class="social_01"><a href="http://gplus.to/jimfleming">+ jimfleming</a></li>
+          <li class="social_02"><a href="http://gplus.to/danielleswank">+ danielleswank</a></li>
+        </menu>
+        
+        <iframe src="http://nodeknockout.com/iframe/the-indecisives" frameborder="0" scrolling="no" allowtransparency="true" width="115" height="25"></iframe>
+      </div>
+    </section>
 
     <section id="in-space">
-
       <section id="the-fight">
         <canvas id="game-canvas"></canvas>
       </section>
-  
       <section id="history">
         <div class="spores">
           <h2>In memory of our fallen breathren...</h2>
@@ -35,33 +40,34 @@
           <p>Some info about the invaders goes here</p>
         </div>
       </section>
-      
       <section id="honors">
         <h2>On the shoulders of giants...</h2>
         <p>Credits go here</p>
       </section>
       <section class="score left"></section>
-      
     </section>
-    
-    <section id="ship-controls" class="status">
-      <iframe src="http://nodeknockout.com/iframe/the-indecisives" frameborder="0" scrolling="no" allowtransparency="true" width="115" height="25"></iframe>
-      <h2>Name:</h2>
-      <form id="name-form">
-        <input type="text" placeholder="What's your name?" id="name" maxlength="10" required>
-        <input type="submit" value="Update">
-      </form>
-      <h2>Leader Board:</h2>
-      <ul id="players"></ul>
+                
+    <section id="right-column"class="column">
+      <div class="column-center"></div>
+      <div class="column-footer"></div>
+      <div class="column-content">
+        <section id="ship-controls" class="status">
+          <h2>Name:</h2>
+          <form id="name-form">
+            <input type="text" placeholder="What's your name?" id="name" maxlength="10" required>
+            <input type="submit" value="Update">
+          </form>
+          <h2>Leader Board:</h2>
+          <ul id="players"></ul>
+        </section>
+      </div>
     </section>
-    
+
     <div id="ship">
       <div id="ship-top"></div>
       <div id="portal">Such a limited view of the world.</div>
       <div id="ship-bottom"></div>
     </div>
-    
-
 
     <!-- SCRIPTS -->
     <script type="text/template" id="player-template">
