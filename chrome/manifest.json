@@ -1,7 +1,7 @@
 {
   "name": "Gemini Command",
-  "description": "Multiplayer game",
-  "version": "0.9.6",
+  "description": "A fast-paced multiplayer game where two opposing sides battle each other for fame and glory.",
+  "version": "0.9.7",
   "app": {
     "urls": [
       "http://the-indecisives.nko2.nodeknockout.com/"
