@@ -35,8 +35,7 @@
       return this.speed = this.get('team') === 'spores' ? 0.01 : 0.005;
     },
     validate: function(attrs) {
-      var _ref;
-      if (!((attrs != null ? (_ref = attrs.name) != null ? _ref.length : void 0 : void 0) < 11)) {
+      if (!((attrs != null ? attrs.name : void 0) && attrs.name.length < 11)) {
         return 'invalid name';
       }
     },

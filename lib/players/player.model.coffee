@@ -31,7 +31,7 @@ PlayerModel = Backbone.Model.extend
 
   initialize: -> @speed = if @get('team') is 'spores' then 0.01 else 0.005
 
-  validate: (attrs) -> return 'invalid name' unless attrs?.name?.length < 11
+  validate: (attrs) -> return 'invalid name' unless attrs?.name and attrs.name.length < 11
 
   move_left: ->
     velocity = @get('velocity')

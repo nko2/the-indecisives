@@ -4,7 +4,7 @@
       this.header = header != null ? header : '';
       this.body = body != null ? body : '';
       this.visible = visible != null ? visible : true;
-      this.height = height != null ? height : 120;
+      this.height = height != null ? height : 180;
     }
     Splash.prototype.draw = function(helper) {
       if (!this.visible) {
@@ -16,8 +16,8 @@
       helper.rect(0, 0, helper.width, this.height);
       helper.translate(helper.half_width, 0);
       helper.fill('rgb(0, 0, 0)');
-      helper.text(this.header, 0, 10, "48px 'IM Fell English SC', serif", 0, 'center');
-      helper.text(this.body, 0, 70, "24px 'IM Fell English SC', serif", 24, 'center');
+      helper.text(this.header, 0, 10, "48px 'Maven Pro', Helvetica, Arial, sans-serif", 0, 'center');
+      helper.text(this.body, 0, 70, "24px 'Maven Pro', Helvetica, Arial, sans-serif", 24, 'center');
       return helper.restore();
     };
     Splash.prototype.show = function() {

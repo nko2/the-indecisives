@@ -49,7 +49,13 @@ window.players = players = new PlayersCollection()
 window.projectiles = projectiles = new ProjectilesCollection()
 window.explosion = new Explosion()
 
-splash = new Splash('Get Started', 'Press the spacebar to join the fight!')
+splash = new Splash()
+splash.header = 'Get Started'
+splash.height = 140
+splash.body = """
+  Press "J" to join the fight!
+  Press "ENTER" to fire!
+  """
 
 players_view = new PlayersView(collection: players, el: document.getElementById('players'))
 
@@ -72,6 +78,8 @@ $("a[href^='#']").bind 'click', (e) ->
   e.preventDefault()
   
   target = @hash
+  return unless target.length > 0
+
   $target = $(target)
   
   $('html, body').stop().animate
@@ -106,7 +114,7 @@ helper.draw ->
 window.socket = socket = io.connect()
 
 socket.on 'connect', ->
-  $(document.getElementById('name-form')).bind 'submit', (e) ->
+  $(document.getElementById('update-name')).bind 'click', (e) ->
     e.preventDefault()
     socket.emit('player:name', document.getElementById('name').value)
 
@@ -165,6 +173,7 @@ socket.on 'connect', ->
         duration = (player.get('end') - player.get('start')) / 1000
 
         splash.header = 'You died...'
+        splash.height = 220
         splash.body = """
           #{kills} total kills
           #{accuracy}% accuracy
@@ -173,7 +182,6 @@ socket.on 'connect', ->
           Press the spacebar to rejoin the fight!
           """
 
-        splash.height = 220
         splash.show()
       else unless state is 'waiting'
         splash.hide()
