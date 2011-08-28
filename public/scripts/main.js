@@ -97,7 +97,7 @@
         e.preventDefault();
         return socket.emit('player:name', document.getElementById('name').value);
       });
-      window.addEventListener('keydown', __bind(function(event) {
+      $(document).bind('keydown', __bind(function(event) {
         switch (event.keyCode) {
           case 68:
             if (current_player.get('state') === 'alive') {
@@ -110,7 +110,7 @@
             }
         }
       }, this));
-      window.addEventListener('keyup', __bind(function(event) {
+      $(document).bind('keyup', __bind(function(event) {
         var projectile;
         switch (event.keyCode) {
           case 68:
@@ -147,7 +147,7 @@
               }
             });
         }
-      }, this), false);
+      }, this));
       socket.on('players:update', function(players_data) {
         return _.each(players_data, function(player_data) {
           var accuracy, duration, fires, hits, kills, player, state;

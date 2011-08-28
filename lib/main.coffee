@@ -105,12 +105,12 @@ window.onload = ->
       e.preventDefault()
       socket.emit('player:name', document.getElementById('name').value)
 
-    window.addEventListener 'keydown', (event) =>
+    $(document).bind 'keydown', (event) =>
       switch event.keyCode
         when 68 then aiming_left = true if current_player.get('state') is 'alive'
         when 65 then aiming_right = true if current_player.get('state') is 'alive'
 
-    window.addEventListener 'keyup', (event) =>
+    $(document).bind 'keyup', (event) =>
       switch event.keyCode
         when 68 then aiming_left = false
         when 65 then aiming_right = false
@@ -133,7 +133,6 @@ window.onload = ->
 
           socket.emit 'player:fire', (projectile_id) ->
             projectile.set(id: projectile_id) if projectile_id
-    , false
 
     # PLAYERS UPDATE
     socket.on 'players:update', (players_data) -> 

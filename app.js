@@ -29,7 +29,7 @@
   io = require('socket.io').listen(app);
   io.configure(function() {
     io.set('log level', 2);
-    return io.set('transports', ['websocket']);
+    return io.set('transports', ['websocket', 'flashsocket', 'htmlfile', 'xhr-polling', 'jsonp-polling']);
   });
   io.configure('production', function() {
     io.enable('browser client minification');
