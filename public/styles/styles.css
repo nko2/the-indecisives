@@ -16,7 +16,9 @@ input[type="text"] {
   border: 1px solid #b19d6c;
   padding: 4px 8px;
   border-radius: 4px;
-  width: 140px;
+  width: 120px;
+  margin-left: 20px;
+  background: #efefef
 }
 h1 {
   text-indent: -999px;
