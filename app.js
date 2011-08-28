@@ -1,11 +1,13 @@
 (function() {
-  var PlayerModel, RoomsCollection, Vector, app, express, game_loop, io, nko, rooms, _;
+  var PlayerModel, PlayersCollection, ProjectilesCollection, RoomsCollection, Vector, app, express, game_loop, io, nko, rooms, _;
   nko = require('nko')('L3U8N469dCVshmal');
   express = require('express');
   _ = require('underscore');
   Vector = require('./public/scripts/vector');
   PlayerModel = require('./public/scripts/players/player.model');
   RoomsCollection = require('./public/scripts/rooms/rooms.collection');
+  PlayersCollection = require('./public/scripts/players/players.collection');
+  ProjectilesCollection = require('./public/scripts/projectiles/projectiles.collection');
   app = express.createServer();
   app.use(express.compiler({
     src: "" + __dirname + "/src",
@@ -13,9 +15,6 @@
     enable: ['coffeescript', 'less']
   }));
   app.use(express.static("" + __dirname + "/public"));
-  app.post('/', function(req, res) {
-    return res.end();
-  });
   app.listen(80, function() {
     if (process.getuid() === 0) {
       return require('fs').stat(__filename, function(err, stats) {
@@ -29,7 +28,8 @@
   console.log("listening on " + 80 + "...");
   io = require('socket.io').listen(app);
   io.configure(function() {
-    return io.set('log level', 1);
+    io.set('log level', 2);
+    return io.set('transports', ['websocket']);
   });
   io.configure('production', function() {
     io.enable('browser client minification');
@@ -41,15 +41,17 @@
     io: io
   });
   game_loop = function() {
-    rooms.update();
+    rooms.update_all();
     return setTimeout(function() {
       return game_loop();
     }, 1000 / 60);
   };
   game_loop();
   io.sockets.on('connection', function(socket) {
-    var player, players, projectiles, room, team;
+    var player, players, projectiles, room, room_name, team;
     room = rooms.next();
+    room_name = room.get('name');
+    socket.join(room_name);
     players = room.players;
     projectiles = room.projectiles;
     team = players.spores().length > players.ships().length ? 'ships' : 'spores';

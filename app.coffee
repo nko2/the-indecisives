@@ -7,11 +7,12 @@ Vector = require('./public/scripts/vector')
 PlayerModel = require('./public/scripts/players/player.model')
 RoomsCollection = require('./public/scripts/rooms/rooms.collection')
 
+PlayersCollection = require('./public/scripts/players/players.collection')
+ProjectilesCollection = require('./public/scripts/projectiles/projectiles.collection')
+
 app = express.createServer()
 app.use(express.compiler(src: "#{__dirname}/src", dest: "#{__dirname}/public", enable: ['coffeescript', 'less']))
 app.use(express.static("#{__dirname}/public"))
-
-app.post '/', (req, res) -> res.end()
 
 app.listen 80, ->
   # if run as root, downgrade to the owner of this file
@@ -23,23 +24,21 @@ app.listen 80, ->
 console.log("listening on #{80}...")
 
 io = require('socket.io').listen(app)
-io.configure -> io.set('log level', 1)
+
+io.configure ->
+  io.set('log level', 2)
+  io.set 'transports', ['websocket']
+
 io.configure 'production', ->
   io.enable('browser client minification')
   io.enable('browser client etag')
   io.set('log level', 1)
-  io.set 'transports', [
-         'websocket'
-         'flashsocket'
-         'htmlfile'
-         'xhr-polling'
-         'jsonp-polling'
-  ]
+  io.set('transports', ['websocket', 'flashsocket', 'htmlfile', 'xhr-polling', 'jsonp-polling'])
 
 rooms = new RoomsCollection(null, io: io)
 
 game_loop = ->
-  rooms.update()
+  rooms.update_all()
 
   setTimeout ->
     game_loop()
@@ -49,6 +48,10 @@ game_loop()
 
 io.sockets.on 'connection', (socket) ->
   room = rooms.next()
+  room_name = room.get('name')
+
+  socket.join(room_name)
+
   players = room.players
   projectiles = room.projectiles
 
