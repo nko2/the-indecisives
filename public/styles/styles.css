@@ -4,6 +4,8 @@ body {
   font-family: 'Maven Pro', Helvetica, Arial, san-serif;
   min-width: 640px;
   font-size: 14px;
+  margin: 0;
+  padding: 0;
 }
 canvas {
   width: 500px;
@@ -28,63 +30,54 @@ menu {
   padding: 0;
 }
 #left-column {
-  left: 20px;
+  background: url(/images/logo_small.png) 20px 0 no-repeat;
+  left: 0px;
 }
 #right-column {
-  right: 20px;
+  right: 0px;
+  top: 80px;
 }
 .column {
-  background: url(/images/logo_small.png) no-repeat;
+  color: #efefef;
   position: fixed;
   z-index: 3;
   top: 0px;
-  bottom: 20px;
+  bottom: 0px;
   width: 210px;
 }
-.column-center {
-  background: url(/images/logo_small_center.png) repeat-y;
-  position: absolute;
-  width: 210px;
-  top: 440px;
-  bottom: 0;
-  z-index: -1;
-}
-.column-footer {
-  background: url(/images/logo_small_bottom.png) left bottom no-repeat;
-  position: absolute;
-  height: 100px;
-  width: 210px;
-  bottom: 0;
-  z-index: -1;
+.column a {
+  color: #fff;
+  text-decoration: underline;
 }
 #ship-controls {
-  margin-top: 200px;
-  padding: 0 12px;
+  margin-top: 20px;
+  padding: 0;
+  border: 1px solid redl
 }
 #ship-controls dl {
   list-style: none;
   margin: 0;
   padding: 0;
-  /* text-shadow: 0 -1px rgba(255, 255, 255, 0.4); */
-  color: #fff;
+  text-shadow: 0 -1px rgba(255, 255, 255, 0.4);
+  margin-bottom: 40px;
 }
 #ship-controls dl dt {
-  margin: 0 0 5px;
+  margin: 0;
 }
 #ship-controls dl dt h2 {
   margin: 0;
   font-size: 16px;
 }
 #ship-controls dl dd {
-  margin: 0 0 10px;
+  margin: 0 0 40px;
 }
 #main-navigation {
   text-indent: -9999em;
-  margin-top: 150px;
+  margin: 150px 0 0 0;
 }
 #social-navigation {
   text-indent: -9999em;
-  margin-top: 80px;
+  margin: 80px 0 0 0;
 }
 #main-navigation a, #social-navigation a {
   background: url(/images/menu-sprite.png) no-repeat top left;
@@ -96,14 +89,15 @@ iframe {
   
 }
 
-ul#players { list-style: none; margin: 0; padding: 0; }
-ul#players li.self { font-weight: bold; color: #000; }
+ul#players { list-style: none; margin: 0; padding: 0 10px 0 0; width: 160px; float: right; }
+ul#players li.self { font-weight: bold; color: #efefef; }
 
 menu#main-navigation li.main_01 a { background-position: 0 0; width: 210px; height: 48px; } 
 menu#main-navigation li.main_02 a { background-position: 0 -98px; width: 210px; height: 43px; } 
 menu#main-navigation li.main_03 a { background-position: 0 -191px; width: 210px; height: 49px; } 
 menu#social-navigation li.social_01 a { background-position: 0 -290px; width: 234px; height: 52px; } 
 menu#social-navigation li.social_02 a { background-position: 0 -392px; width: 234px; height: 38px; } 
+menu#social-navigation li.social_03 a { background-position: 0 -442px; width: 234px; height: 52px; } 
 
 menu#main-navigation li.main_01 a:hover { background-position: 0 0; width: 210px; height: 48px; } 
 menu#main-navigation li.main_02 a:hover { background-position: 0 -98px; width: 210px; height: 43px; } 
@@ -112,19 +106,17 @@ menu#social-navigation li.social_01 a:hover { background-position: 0 -290px; wid
 menu#social-navigation li.social_02 a:hover { background-position: 0 -392px; width: 234px; height: 38px; } 
 
 h2#name-prompt {
-  background: url(/images/headings-sprite.png) no-repeat top left;
+  background: url(/images/headings-sprite.png)  top right no-repeat;
   text-indent: -9999em;
   position: relative;
-  right: 12px;
-  width: 202px; 
+  right: 0;
   height: 48px;
 }
 #leader-board {
-  background: url(/images/headings-sprite.png) no-repeat bottom left;
+  background: url(/images/headings-sprite.png) bottom right no-repeat;
   text-indent: -9999em;
   position: relative;
-  right: 12px;
-  width: 202px; 
+  right: 0;
   height: 48px;
 }
 
