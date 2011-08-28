@@ -112,6 +112,16 @@ h2#name-prompt {
   right: 0;
   height: 48px;
 }
+#update-name {
+  background: url(/images/button.gif) no-repeat;
+  width: 24px;
+  height: 24px;
+  display: inline-block;
+  text-indent: -9999em;
+}
+#update-name:hover {
+  background: url(/images/button2.gif) no-repeat;
+}
 #leader-board {
   background: url(/images/headings-sprite.png) bottom right no-repeat;
   text-indent: -9999em;
@@ -119,7 +129,6 @@ h2#name-prompt {
   right: 0;
   height: 48px;
 }
-
 #in-space {
   background: #444;
   margin: 0 auto;
