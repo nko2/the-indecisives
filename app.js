@@ -1,10 +1,11 @@
 (function() {
-  var PlayerModel, PlayersCollection, ProjectilesCollection, Vector, app, express, game_loop, io, nko, players, projectiles, send_updates, _;
+  var PlayerModel, PlayersCollection, ProjectilesCollection, RoomsCollection, Vector, app, express, game_loop, io, nko, rooms, _;
   nko = require('nko')('L3U8N469dCVshmal');
   express = require('express');
   _ = require('underscore');
   Vector = require('./public/scripts/vector');
   PlayerModel = require('./public/scripts/players/player.model');
+  RoomsCollection = require('./public/scripts/rooms/rooms.collection');
   PlayersCollection = require('./public/scripts/players/players.collection');
   ProjectilesCollection = require('./public/scripts/projectiles/projectiles.collection');
   app = express.createServer();
@@ -14,9 +15,6 @@
     enable: ['coffeescript', 'less']
   }));
   app.use(express.static("" + __dirname + "/public"));
-  app.post('/', function(req, res) {
-    return res.end();
-  });
   app.listen(80, function() {
     if (process.getuid() === 0) {
       return require('fs').stat(__filename, function(err, stats) {
@@ -30,7 +28,8 @@
   console.log("listening on " + 80 + "...");
   io = require('socket.io').listen(app);
   io.configure(function() {
-    return io.set('log level', 1);
+    io.set('log level', 2);
+    return io.set('transports', ['websocket']);
   });
   io.configure('production', function() {
     io.enable('browser client minification');
@@ -38,30 +37,23 @@
     io.set('log level', 1);
     return io.set('transports', ['websocket', 'flashsocket', 'htmlfile', 'xhr-polling', 'jsonp-polling']);
   });
-  players = new PlayersCollection();
-  projectiles = new ProjectilesCollection();
-  players.bind('remove', function(player) {
-    return io.sockets.emit('player:disconnect', player.toJSON());
+  rooms = new RoomsCollection(null, {
+    io: io
   });
-  projectiles.bind('remove', function(projectile) {
-    return io.sockets.volatile.emit('projectile:remove', projectile.toJSON());
-  });
-  send_updates = function() {
-    io.sockets.volatile.emit('players:update', players.toJSON());
-    return io.sockets.volatile.emit('projectiles:update', projectiles.toJSON());
-  };
-  send_updates = _.throttle(send_updates, 1000 / 15);
   game_loop = function() {
-    projectiles.update();
-    players.update();
-    send_updates();
+    rooms.update_all();
     return setTimeout(function() {
       return game_loop();
     }, 1000 / 60);
   };
   game_loop();
   io.sockets.on('connection', function(socket) {
-    var player, team;
+    var player, players, projectiles, room, room_name, team;
+    room = rooms.next();
+    room_name = room.get('name');
+    socket.join(room_name);
+    players = room.players;
+    projectiles = room.projectiles;
     team = players.spores().length > players.ships().length ? 'ships' : 'spores';
     player = new PlayerModel({
       id: socket.id,
