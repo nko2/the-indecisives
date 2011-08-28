@@ -8,7 +8,7 @@ body {
 canvas {
   width: 500px;
   height: 500px;
-  background: #333;
+  background: #444;
 }
 input[type="text"] {
   border: 1px solid #b19d6c;
@@ -129,27 +129,60 @@ h2#name-prompt {
 }
 
 #in-space {
-  background: #333;
+  background: #444;
   margin: 0 auto;
   width: 660px;
 }
 #the-fight,
 #history,
 #honors {
+  position: relative;
   margin: 0 auto;
+  text-align: center;
 }
 #the-fight {
   width: 540px;
-  padding: 140px 0px;
-  margin: 0 auto;
-}
-#honors {
-  width: 440px;
-  padding: 200px 20px 600px 20px;
+  padding: 140px 30px 130px 0px;
 }
 #history {
   width: 440px;
-  padding: 200px 20px;
+  padding: 0px 30px 0px 0px;
+}
+#honors {
+  width: 440px;
+  padding: 300px 30px 200px 0px;
+}
+#honors h3 {
+  padding-top: 48px;
+  clear: both;
+}
+#honors ul {
+  list-style: none;
+}
+#honors li {
+  float: left;
+  padding: 3px 5px;
+}
+#honors a {
+  color: #fff;
+  text-decoration: underline;
+}
+#ganymede {
+  position: relative;
+  top: -60px;
+  left: -120px;
+}
+#callisto {
+  position: relative;
+  top: 40px;
+  right: -120px;
+}
+#europa {
+}
+#europa2 {
+}
+#bubble {
+
 }
 #ship {
   background: url(/images/portal.gif) center center no-repeat;
