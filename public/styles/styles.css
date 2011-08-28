@@ -1,35 +1,99 @@
 body {
-  background: #222;
+  background: #000;
   color: #efefef;
   font-family: Tahoma, san-serif;
-  min-width: 980px;
+  min-width: 640px;
 }
 canvas {
   width: 640px;
   height: 480px;
   background: #444;
-  position: absolute;
-  left: 50%;
-  margin-left: -320px;
-  top: 98px;
 }
-.left {
-  float: left;
-  clear: left;
+menu {
+  position: fixed;
+  left: 0;
+  z-index: 3;
+  list-style: none;
+  margin: 0;
+  padding: 0;
 }
-.right {
-  float: right;
-  clear: right;
+#logo {
+  position: fixed;
+  right: 0;
+  z-index: 3;
+  top: 40px;
+  width: 240px;
 }
-.spores,
-.invaders,
-.score,
-.status {
-  width: 260px;
-  border: 1px solid #333;
-  border-radius: 12px;
+#main-navigation {
+  top: 40px;
+}
+#social-navigation {
+  bottom: 40px;
+}
+#main-navigation a, #social-navigation a {
+  background: url(/images/menu-sprite.png) no-repeat top left;
+  text-indent: -9999em;
+  display: block;
+}
+
+menu#main-navigation li.main_01 a { background-position: 0 0; width: 210px; height: 48px; } 
+menu#main-navigation li.main_02 a { background-position: 0 -98px; width: 210px; height: 43px; } 
+menu#main-navigation li.main_03 a { background-position: 0 -191px; width: 210px; height: 49px; } 
+menu#social-navigation li.social_01 a { background-position: 0 -290px; width: 234px; height: 52px; } 
+menu#social-navigation li.social_02 a { background-position: 0 -392px; width: 234px; height: 38px; } 
+
+menu#main-navigation li.main_01 a:hover { background-position: 0 0; width: 210px; height: 48px; } 
+menu#main-navigation li.main_02 a:hover { background-position: 0 -98px; width: 210px; height: 43px; } 
+menu#main-navigation li.main_03 a:hover { background-position: 0 -191px; width: 210px; height: 49px; } 
+menu#social-navigation li.social_01 a:hover { background-position: 0 -290px; width: 234px; height: 52px; } 
+menu#social-navigation li.social_02 a:hover { background-position: 0 -392px; width: 234px; height: 38px; } 
+
+
+#in-space {
   background: #444;
-  box-shadow: 2, 2, 2, #111;
-  margin: 24px;
-  padding: 12px;
+  margin: 0 auto;
+  width: 640px;
+}
+#the-fight,
+#history,
+#honors {
+  margin: 0 auto;
+}
+#the-fight {
+  width: 640px;
+  padding: 140px 0px;
+}
+#honors {
+  width: 440px;
+  padding: 200px 20px 600px 20px;
+}
+#history {
+  width: 440px;
+  padding: 200px 20px;
+}
+#ship-controls {
+  position: fixed;
+  right: 0;
+  top: 200px;
+  border: 1px solid red;
+  z-index: 3;
+}
+#ship {
+  background: url(/images/portal.gif) center center no-repeat;
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 2;  
+  text-indent: -9999em;
+}
+#portal {
+  background: url(/images/portal.png) center center no-repeat;
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 3;  
 }
