@@ -33,6 +33,7 @@
       </section>
       <section id="history">
         <div class="spores">
+          <img src="/images/ganymede.png" id="ganymede" alt="ganymede" width="320" height="320">
           <h2>In memory of our fallen breathren...</h2>
           <p>Once a peaceful alliance of botanical species the spores must now fight to defend their homeworld from the invaders.</p>
         </div>  
@@ -40,6 +41,7 @@
           <h2>Let future generations hark our words...</h2>
           <p>The Invaders are a scavenging specials, desperate for resources; traversing the galaxy, searching for resources necessary to fuel their continued survival.</p>
         </div>
+        <img src="/images/callisto.png" id="callisto" alt="callisto" width="320" height="320">
       </section>
       <section id="honors">
 
@@ -57,17 +59,18 @@
           <li><a href="http://imakewebthings.github.com/jquery-waypoints/">jQuery Waypoints</a></li>
           <li><a href="http://www.schillmania.com/projects/soundmanager2/">SoundManager2</a></li>
         </ul>
+        <img src="/images/europa.png" id="europa" alt="europa" width="320" height="320">
 
         <h3>Web Font</h3>
         <p><a href="http://www.google.com/webfonts/specimen/Maven+Pro">Maven Pro</a></p>
 
         <h3>Image Assets</h3>
         <ul>
+          <li><a href="http://www.sxc.hu/photo/1351431">Background composite (layer 1)</a></li>
           <li><a href="http://psd.tutsplus.com/tutorials/designing-tutorials/creating-a-stunning-old-world-look-in-photoshop/">Logo</a></li>
           <li><a href="http://www.lostgarden.com/">Explosion</a></li>
           <li><a href="http://www.flickr.com/photos/lunarandplanetaryinstitute/4110039720/sizes/o/in/set-72157622768084832/">Planet</a></li>
           <li><a href="http://www.sxc.hu/photo/1343660">Porthole</a></li>
-          <li><a href="http://www.sxc.hu/photo/1351431">Background composite (layer 1)</a></li>
           <li><a href="http://luxa.org/tutorial_making_a_grungy_business_card.php">Background composite (layer 2)</a></li>
           <li><a href="http://xkcd.com/">Stick figure</a></li>
         </ul>
@@ -79,6 +82,8 @@
           <li><a href="http://www.freesound.org/samplesViewSingle.php?id=47252">Explosion</a></li>
           <li><a href="http://www.freesound.org/samplesViewSingle.php?id=61321">Background</a></li>
         </ul>
+        <img src="/images/bubble.png" id="bubble" alt="We heart XKCD" width="118" height="114">
+        <img src="/images/europa2.png" id="europa2" width="320" alt="europa" height="320">
 
       </section>
       <section class="score left"></section>
@@ -90,12 +95,12 @@
       <div class="column-content">
         <section id="ship-controls" class="status">
           <dl>
-            <dt><h2>Name:</h2></dt>
+            <dt><h2 id="name-prompt">Name:</h2></dt>
             <dd>
               <input type="text" placeholder="What's your name?" id="name" maxlength="10" required>
               <a href="#" id="update-name">Update</a>
             </dd>
-            <dt><h2>Leader Board:</h2></dt>
+            <dt><h2 id="leader-board">Leader Board:</h2></dt>
             <dd><ul id="players"></ul></dd>
           </dl>
         </section>
