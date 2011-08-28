@@ -72,7 +72,7 @@
     $target = $(target);
     return $('html, body').stop().animate({
       scrollTop: $target.offset().top
-    }, 250, function() {
+    }, 500, function() {
       return window.location.hash = target;
     });
   });
