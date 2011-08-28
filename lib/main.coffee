@@ -84,7 +84,7 @@ $("a[href^='#']").bind 'click', (e) ->
   
   $('html, body').stop().animate
     scrollTop: $target.offset().top
-  , 500, ->
+  , 750, ->
     window.location.hash = target
 		
 helper.draw ->
