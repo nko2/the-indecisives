@@ -35,8 +35,7 @@
       return this.speed = this.get('team') === 'spores' ? 0.01 : 0.005;
     },
     validate: function(attrs) {
-      var _ref;
-      if (!((attrs != null ? (_ref = attrs.name) != null ? _ref.length : void 0 : void 0) < 11)) {
+      if (!((attrs != null ? attrs.name : void 0) && attrs.name.length < 11)) {
         return 'invalid name';
       }
     },
@@ -208,7 +207,7 @@
       }
     },
     draw: function(helper) {
-      var hp, position, self, team, trajectory;
+      var hp, name, position, self, team, trajectory;
       if (this.get('state') !== 'alive') {
         return;
       }
@@ -217,6 +216,7 @@
       position = this.get('position');
       trajectory = this.get('trajectory');
       hp = this.get('hp');
+      name = this.get('name');
       helper.save();
       helper.translate(helper.half_width, helper.half_height);
       helper.rotate(position);
@@ -231,6 +231,12 @@
       if (self) {
         helper.stroke('rgba(255, 0, 0, 0.8)');
         helper.circle(0, 0, 20, 20);
+      }
+      if (!self) {
+        helper.save();
+        helper.rotate(-position);
+        helper.text(name, 20, -10, "12px 'Maven Pro', Helvetica, Arial, sans-serif");
+        helper.restore();
       }
       helper.rotate(trajectory);
       helper.no_stroke();

@@ -49,7 +49,10 @@
   window.players = players = new PlayersCollection();
   window.projectiles = projectiles = new ProjectilesCollection();
   window.explosion = new Explosion();
-  splash = new Splash('Get Started', 'Press the spacebar to join the fight!');
+  splash = new Splash();
+  splash.header = 'Get Started';
+  splash.height = 140;
+  splash.body = "Press \"J\" to join the fight!\nPress \"ENTER\" to fire!";
   players_view = new PlayersView({
     collection: players,
     el: document.getElementById('players')
@@ -69,6 +72,9 @@
     var $target, target;
     e.preventDefault();
     target = this.hash;
+    if (!(target.length > 0)) {
+      return;
+    }
     $target = $(target);
     return $('html, body').stop().animate({
       scrollTop: $target.offset().top
@@ -99,7 +105,7 @@
   });
   window.socket = socket = io.connect();
   socket.on('connect', function() {
-    $(document.getElementById('name-form')).bind('submit', function(e) {
+    $(document.getElementById('update-name')).bind('click', function(e) {
       e.preventDefault();
       return socket.emit('player:name', document.getElementById('name').value);
     });
@@ -183,8 +189,8 @@
           accuracy = fires > 0 ? (hits / fires).toPrecision(2) : 0;
           duration = (player.get('end') - player.get('start')) / 1000;
           splash.header = 'You died...';
-          splash.body = "" + kills + " total kills\n" + accuracy + "% accuracy\nsurvived " + duration + " seconds\n\nPress the spacebar to rejoin the fight!";
           splash.height = 220;
+          splash.body = "" + kills + " total kills\n" + accuracy + "% accuracy\nsurvived " + duration + " seconds\n\nPress the \"J\" to rejoin the fight!";
           return splash.show();
         } else if (state !== 'waiting') {
           return splash.hide();

@@ -31,7 +31,7 @@ PlayerModel = Backbone.Model.extend
 
   initialize: -> @speed = if @get('team') is 'spores' then 0.01 else 0.005
 
-  validate: (attrs) -> return 'invalid name' unless attrs?.name?.length < 11
+  validate: (attrs) -> return 'invalid name' unless attrs?.name and attrs.name.length < 11
 
   move_left: ->
     velocity = @get('velocity')
@@ -135,6 +135,7 @@ PlayerModel = Backbone.Model.extend
     trajectory = @get('trajectory')
 
     hp = @get('hp')
+    name = @get('name')
 
     helper.save()
     helper.translate(helper.half_width, helper.half_height)
@@ -151,6 +152,12 @@ PlayerModel = Backbone.Model.extend
     if self
       helper.stroke('rgba(255, 0, 0, 0.8)')
       helper.circle(0, 0, 20, 20)
+
+    unless self
+      helper.save()
+      helper.rotate(-position)
+      helper.text(name, 20, -10, "12px 'Maven Pro', Helvetica, Arial, sans-serif")
+      helper.restore()
 
     helper.rotate(trajectory)
     helper.no_stroke()

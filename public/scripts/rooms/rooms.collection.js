@@ -6,7 +6,7 @@
   RoomModel = require('./room.model');
   module.exports = RoomsCollection = Backbone.Collection.extend({
     model: RoomModel,
-    max: 3,
+    max: 10,
     initialize: function(models, options) {
       _.bindAll(this, 'update_rooms', 'update_room', 'update_states', 'update_state');
       this.update_rooms = _.throttle(this.update_rooms, 1000 / 15);

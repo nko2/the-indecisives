@@ -1,6 +1,6 @@
 class window.Splash
 
-  constructor: (@header = '', @body = '', @visible = true, @height = 120) ->
+  constructor: (@header = '', @body = '', @visible = true, @height = 180) ->
   
   draw: (helper) ->
     return unless @visible
@@ -11,8 +11,8 @@ class window.Splash
     helper.rect(0, 0, helper.width, @height)
     helper.translate(helper.half_width, 0)
     helper.fill('rgb(0, 0, 0)')
-    helper.text(@header, 0, 10, "48px 'IM Fell English SC', serif", 0, 'center')
-    helper.text(@body, 0, 70, "24px 'IM Fell English SC', serif", 24, 'center')
+    helper.text(@header, 0, 10, "bold 48px 'Maven Pro', Helvetica, Arial, sans-serif", 0, 'center')
+    helper.text(@body, 0, 70, "24px 'Maven Pro', Helvetica, Arial, sans-serif", 24, 'center')
     helper.restore()
     
   show: -> @visible = true
